@@ -1,8 +1,9 @@
 # Cloudflare Workers + D1 + R2 for BIG 3D - Production
 # https://developers.cloudflare.com/workers/
+# Deploy from worker/: cd worker && wrangler deploy
 
 name = "big3d"
-main = "worker/index.js"
+main = "index.js"
 compatibility_date = "2024-01-01"
 
 # Production URL: https://big3d.111dordavid.workers.dev

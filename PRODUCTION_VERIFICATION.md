@@ -4,8 +4,8 @@
 
 | Item | Status |
 |------|--------|
-| https://big3d.co.il | ✅ In wrangler.toml |
-| https://www.big3d.co.il | ✅ In wrangler.toml |
+| https://big3d.co.il | ✅ In worker/wrangler.toml |
+| https://www.big3d.co.il | ✅ In worker/wrangler.toml |
 | Dynamic CORS from Origin | ✅ Worker uses `getCorsHeaders(origin, env)` |
 | CORS on success responses | ✅ All handlers pass `cors` |
 | CORS on error responses | ✅ `errorResponse()` includes cors |
@@ -16,11 +16,11 @@
 | Item | Status |
 |------|--------|
 | ADMIN_API_KEY | Secret via `wrangler secret put` (not in wrangler.toml) |
-| D1 binding: DB | ✅ In wrangler.toml |
-| R2 binding: BUCKET | ✅ In wrangler.toml |
+| D1 binding: DB | ✅ In worker/wrangler.toml |
+| R2 binding: BUCKET | ✅ In worker/wrangler.toml |
 | compatibility_date | ✅ `2024-01-01` |
 
-**Note:** Set `database_id` in wrangler.toml after `wrangler d1 create big3d-db`.
+**Note:** Set `database_id` in worker/wrangler.toml after `cd worker && wrangler d1 create big3d-db`.
 
 ## ✅ 3. Headers & Security
 
@@ -83,13 +83,13 @@
 
 ## 9. Pre-Deploy Actions
 
-1. Run `wrangler d1 create big3d-db` and set `database_id` in wrangler.toml
-2. Run `wrangler d1 execute big3d-db --remote --file=./cloudflare-schema.sql`
-3. Run `wrangler secret put ADMIN_API_KEY`
-4. Add your Pages URL to `ALLOWED_ORIGINS` in wrangler.toml
+1. Run `cd worker && wrangler d1 create big3d-db` and set `database_id` in worker/wrangler.toml
+2. Run `cd worker && wrangler d1 execute big3d-db --remote --file=./cloudflare-schema.sql`
+3. Run `cd worker && wrangler secret put ADMIN_API_KEY`
+4. Add your Pages URL to `ALLOWED_ORIGINS` in worker/wrangler.toml
 5. CLOUDFLARE_API_URL: `https://big3d.111dordavid.workers.dev` (already set in cloudflare-config.js and portfolio-loader.js)
-6. Deploy Worker: `wrangler deploy`
-7. Deploy Pages: connect Git or `wrangler pages deploy`
+6. Deploy Worker: `cd worker && wrangler deploy`
+7. Deploy Pages: connect Git or deploy static output (no Functions, no wrangler.toml at root)
 
 ## Production Risks (Low)
 

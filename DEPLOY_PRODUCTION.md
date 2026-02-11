@@ -2,7 +2,7 @@
 
 ## Repository (Configured)
 
-- [x] `wrangler.toml` – production ALLOWED_ORIGINS (no pages.dev)
+- [x] `worker/wrangler.toml` – production ALLOWED_ORIGINS (no pages.dev)
 - [x] Frontend API URL: `https://big3d.111dordavid.workers.dev`
 - [x] CORS: only `https://www.big3d.co.il` and `https://big3d.co.il`
 - [x] Protected routes require X-Admin-Key
@@ -28,10 +28,19 @@
 5. **DNS** (only if using Custom Domain)
    - Add A/AAAA or CNAME for `api.big3d.co.il` as needed
 
-## Deploy
+## Deploy Worker
 
 ```bash
-npx wrangler deploy
+cd worker && npx wrangler deploy
 ```
 
 Then add the Custom Domain in the dashboard if not using a route.
+
+## Deploy Pages (static only)
+
+Pages is separate from the Worker. Deploy the project root as a static site.
+
+- **No wrangler.toml at root** – Worker config lives in `worker/` so Pages won't treat this as a Workers/Pages hybrid
+- **No _redirects** – Removed to avoid SPA fallback infinite loop (site uses hash routing)
+- **No Pages Functions** – In Cloudflare Dashboard: Pages → your project → Settings → Functions → **Disable** if enabled
+- **Build output:** Root directory (or `output` if using a static site generator)

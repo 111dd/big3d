@@ -1,5 +1,5 @@
 -- Cloudflare D1 Database Schema for BIG 3D
--- Run with: wrangler d1 execute big3d-db --remote --file=./cloudflare-schema.sql
+-- Run from worker/: wrangler d1 execute big3d-db --remote --file=./cloudflare-schema.sql
 
 -- Projects table
 CREATE TABLE IF NOT EXISTS projects (

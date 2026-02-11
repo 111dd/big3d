@@ -8,7 +8,7 @@
 |------|--------|---------|
 | No secrets in frontend | ✅ | ADMIN_API_KEY is only in Worker secrets (wrangler secret). Never in JS. |
 | admin.js | ✅ | No hardcoded keys. Key entered at login, stored in localStorage. |
-| CORS | ✅ | Restricted via `ALLOWED_ORIGINS` in wrangler.toml. Set to production domains. |
+| CORS | ✅ | Restricted via `ALLOWED_ORIGINS` in worker/wrangler.toml. Set to production domains. |
 | Rate limiting | ⚠️ | Not in code. **Action:** Configure via Cloudflare Dashboard WAF (see CLOUDFLARE_SETUP.md). |
 | File upload validation | ✅ | Worker validates: MIME type (image/*), max 10 MB. Frontend pre-validates size. |
 
@@ -71,7 +71,7 @@
    Configure WAF rate limiting in Cloudflare Dashboard for the Worker.
 
 2. **ALLOWED_ORIGINS**  
-   For production, set in wrangler.toml:
+   For production, set in worker/wrangler.toml:
    ```toml
    ALLOWED_ORIGINS = "https://www.big3d.co.il,https://big3d.co.il"
    ```
@@ -88,7 +88,7 @@
 ## Files Modified
 
 - `worker/index.js` – CORS, file validation, error handling
-- `wrangler.toml` – `ALLOWED_ORIGINS` var
+- `worker/wrangler.toml` – `ALLOWED_ORIGINS` var
 - `js/cloudflare-config.js` – Error handling for non-JSON
 - `js/admin.js` – Console cleanup, upload validation, error messages
 - `js/portfolio-loader.js` – Removed console.warn

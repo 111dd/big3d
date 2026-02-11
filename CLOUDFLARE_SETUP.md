@@ -19,7 +19,7 @@ wrangler login
 ### 2. יצירת D1 Database
 
 ```bash
-wrangler d1 create big3d-db
+cd worker && wrangler d1 create big3d-db
 ```
 
 פלט לדוגמה:
@@ -31,30 +31,31 @@ database_name = "big3d-db"
 database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
-העתק את `database_id` ל-`wrangler.toml`.
+העתק את `database_id` ל-`worker/wrangler.toml`.
 
 ### 3. יצירת R2 Bucket
 
 ```bash
-wrangler r2 bucket create big3d-images
+cd worker && wrangler r2 bucket create big3d-images
 ```
 
 ### 4. עדכון wrangler.toml
 
-ערוך את `wrangler.toml`:
+ערוך את `worker/wrangler.toml`:
 
 - החלף `YOUR_D1_DATABASE_ID` ב-`database_id` מהשלב הקודם.
 
 ### 5. הרצת סכמת DB
 
 ```bash
+cd worker
 wrangler d1 execute big3d-db --remote --file=./cloudflare-schema.sql
 ```
 
 ### 6. הגדרת Admin API Key
 
 ```bash
-wrangler secret put ADMIN_API_KEY
+cd worker && wrangler secret put ADMIN_API_KEY
 ```
 
 הזן סיסמה חזקה (למשל מ־`openssl rand -base64 32`).
@@ -62,6 +63,7 @@ wrangler secret put ADMIN_API_KEY
 ### 7. פריסת Worker
 
 ```bash
+cd worker
 wrangler deploy
 ```
 
@@ -108,11 +110,11 @@ wrangler deploy
 
 ## CORS – ALLOWED_ORIGINS
 
-ב־`wrangler.toml` (פרודקשן): רק `https://www.big3d.co.il` ו־`https://big3d.co.il`.
+ב־`worker/wrangler.toml` (פרודקשן): רק `https://www.big3d.co.il` ו־`https://big3d.co.il`.
 
 ## רשימת בדיקה לפני Deploy
 
-1. **Worker:** `wrangler deploy`
+1. **Worker:** `cd worker && wrangler deploy`
 2. **Pages:** פריסת התיקייה דרך Git או `wrangler pages deploy`
 3. **עדכון URL:** וודא ש־`CLOUDFLARE_API_URL` ב־`js/cloudflare-config.js` ו־`js/portfolio-loader.js` מצביע ל־`https://big3d.111dordavid.workers.dev`
 4. **בדיקות:** גלריה נטענת, Admin login, העלאת תמונות, API מחזיר JSON תקין
@@ -122,8 +124,8 @@ wrangler deploy
 ```
 worker/
   index.js          # Cloudflare Worker
-wrangler.toml       # תצורת Cloudflare
-cloudflare-schema.sql   # סכמת D1
+  wrangler.toml     # תצורת Cloudflare
+  cloudflare-schema.sql   # סכמת D1
 js/
   cloudflare-config.js  # תצורה ו־API client
   admin.js              # פאנל ניהול

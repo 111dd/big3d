@@ -21,8 +21,10 @@ See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) for deployment instructions.
 ├── admin.html          # Admin panel
 ├── js/                 # Scripts
 ├── worker/             # Cloudflare Worker API
-├── wrangler.toml       # Worker config
-├── cloudflare-schema.sql
-├── _headers            # Pages cache headers
-└── _redirects          # Pages redirects
+│   ├── index.js        # Worker entry
+│   ├── wrangler.toml   # Worker config (deploy: cd worker && wrangler deploy)
+│   └── cloudflare-schema.sql
+└── _headers            # Pages cache headers
 ```
+
+Pages root is purely static (no wrangler.toml, no _redirects, no Functions).
