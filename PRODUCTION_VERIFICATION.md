@@ -4,6 +4,7 @@
 
 | Item | Status |
 |------|--------|
+| https://big3d.pages.dev | ✅ In worker/wrangler.toml |
 | https://big3d.co.il | ✅ In worker/wrangler.toml |
 | https://www.big3d.co.il | ✅ In worker/wrangler.toml |
 | Dynamic CORS from Origin | ✅ Worker uses `getCorsHeaders(origin, env)` |

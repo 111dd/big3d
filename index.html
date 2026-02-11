@@ -147,23 +147,9 @@
     }
     </script>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
-
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
-    
-    <!-- Cloudflare API config -->
-    <script src="js/cloudflare-config.js" defer></script>
-    
-    <!-- Favicon - הוסף favicon.ico בתיקייה הראשית -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-    <!-- Tailwind Dark Mode -->
+    <!-- 1. Tailwind CDN (no defer) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Tailwind config - immediately after CDN -->
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -191,6 +177,26 @@
             }
         }
     </script>
+    <!-- 3. Lucide (no defer) -->
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script>
+    function safeCreateIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === "function") {
+        window.lucide.createIcons();
+      }
+    }
+    window.safeCreateIcons = safeCreateIcons;
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 4. Project scripts (defer) -->
+    <script src="js/cloudflare-config.js?v=3" defer></script>
+    
+    <!-- Favicon - הוסף favicon.ico בתיקייה הראשית -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <style>
         html { scroll-behavior: smooth; }
@@ -388,7 +394,7 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Navbar Logo Only (right side in RTL) -->
                 <div class="flex items-center cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-                    <img src="dark_logo_big3d.jpg"
+                    <img src="dark_logo_big3d.webp"
                          alt="BIG 3D"
                          class="h-10 object-contain opacity-80" />
                 </div>
@@ -438,7 +444,7 @@
         <div class="relative text-center px-4 max-w-2xl reveal">
             <!-- Hero Logo -->
             <div class="hero-logo mb-4 md:mb-6">
-                <img src="dark_logo_big3d.jpg"
+                <img src="dark_logo_big3d.webp"
                      alt="BIG 3D" />
             </div>
 
@@ -474,6 +480,7 @@
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/plastic_printing/icon.png" 
                              alt="הדפסות תלת מימד ענקיות" 
+                             loading="lazy"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">הדפסות תלת מימד ענקיות</h3>
@@ -490,6 +497,7 @@
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/metal_printing/icon.png" 
                              alt="הדפסת מתכות" 
+                             loading="lazy"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">הדפסת מתכות</h3>
@@ -507,6 +515,7 @@
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/cnc/icon.png" 
                              alt="עיבוד שבבי CNC" 
+                             loading="lazy"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">עיבוד שבבי</h3>
@@ -523,6 +532,7 @@
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/liser/icon.png" 
                              alt="חיתוך וחריטה בלייזר" 
+                             loading="lazy"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">חיתוך וחריטה בלייזר CO₂</h3>
@@ -541,6 +551,7 @@
                     <div class="flex items-start gap-4 mb-4">
                         <img src="icons/ALLIN/icon.png" 
                              alt="מעטפת מלאה" 
+                             loading="lazy"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0 mt-1">
                         <div class="flex-1">
                             <p class="text-gray-300 text-base leading-relaxed">
@@ -840,10 +851,10 @@
     </footer>
 
     <!-- Portfolio Loader -->
-    <script src="js/portfolio-loader.js" defer></script>
+    <script src="js/portfolio-loader.js?v=3" defer></script>
     
     <script>
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => safeCreateIcons());
         
         /* SCROLL PROGRESS INDICATOR */
         const scrollProgress = document.getElementById('scroll-progress');
@@ -1302,9 +1313,7 @@
             modal.classList.add("flex");
             
             // Recreate icons after modal opens
-            setTimeout(() => {
-                lucide.createIcons();
-            }, 50);
+            setTimeout(() => safeCreateIcons(), 50);
             
             // Reset scroll after a brief delay to ensure images are rendered
             setTimeout(() => {

@@ -110,7 +110,7 @@ wrangler deploy
 
 ## CORS – ALLOWED_ORIGINS
 
-ב־`worker/wrangler.toml` (פרודקשן): רק `https://www.big3d.co.il` ו־`https://big3d.co.il`.
+ב־`worker/wrangler.toml` (פרודקשן): `https://big3d.pages.dev`, `https://big3d.co.il`, `https://www.big3d.co.il`.
 
 ## רשימת בדיקה לפני Deploy
 

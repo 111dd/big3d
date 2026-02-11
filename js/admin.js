@@ -5,7 +5,7 @@ let uploadedImages = [];
 let currentLogoFile = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    lucide.createIcons();
+    safeCreateIcons();
     setupEventListeners();
     checkAuth();
 });
@@ -32,7 +32,7 @@ function showConnectionStatus(isConnected, message) {
     div.className = `fixed top-4 left-4 p-3 rounded-lg text-sm z-50 ${isConnected ? 'bg-green-600/80' : 'bg-amber-600/80'} text-white`;
     div.innerHTML = `<div class="flex items-center gap-2"><i data-lucide="${isConnected ? 'check-circle' : 'alert-circle'}" class="h-4 w-4"></i><span>${message}</span></div>`;
     loginScreen.appendChild(div);
-    lucide.createIcons();
+    safeCreateIcons();
     if (isConnected) setTimeout(() => div.remove(), 4000);
 }
 
@@ -167,7 +167,7 @@ async function loadProjects() {
                         <i data-lucide="upload" class="h-5 w-5"></i>ייבא פרויקטים קיימים
                     </button>
                 </div>`;
-            setTimeout(() => lucide.createIcons(), 100);
+            setTimeout(() => safeCreateIcons(), 100);
             return;
         }
         data.forEach(project => container.appendChild(createProjectCard(project)));
@@ -191,7 +191,7 @@ function createProjectCard(project) {
             <button onclick="editProject('${project.id}')" class="flex-1 bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-500 transition flex items-center justify-center gap-2"><i data-lucide="edit" class="h-4 w-4"></i>ערוך</button>
             <button onclick="deleteProject('${project.id}')" class="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center justify-center gap-2"><i data-lucide="trash" class="h-4 w-4"></i>מחק</button>
         </div>`;
-    setTimeout(() => lucide.createIcons(), 100);
+    setTimeout(() => safeCreateIcons(), 100);
     return card;
 }
 
@@ -239,7 +239,7 @@ function updateImagePreview() {
             <button onclick="removeImage(${i})" class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-700"><i data-lucide="x" class="h-4 w-4"></i></button>`;
         container.appendChild(div);
     });
-    lucide.createIcons();
+    safeCreateIcons();
 }
 
 function removeImage(index) {
@@ -338,7 +338,7 @@ function showDefaultLogo() {
     const container = document.getElementById('current-logo-container');
     if (!container) return;
     container.innerHTML = `
-        <img src="dark_logo_big3d.jpg" alt="Current Logo" class="logo-preview">
+        <img src="dark_logo_big3d.webp" alt="Current Logo" class="logo-preview">
         <p class="text-gray-300 mt-2">לוגו נוכחי (מתיקיית האתר)</p>
         <p class="text-gray-500 text-xs mt-2">💡 העלה לוגו חדש כדי לשמור ב-Cloudflare</p>`;
 }

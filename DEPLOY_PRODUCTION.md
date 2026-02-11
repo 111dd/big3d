@@ -4,7 +4,7 @@
 
 - [x] `worker/wrangler.toml` – production ALLOWED_ORIGINS (no pages.dev)
 - [x] Frontend API URL: `https://big3d.111dordavid.workers.dev`
-- [x] CORS: only `https://www.big3d.co.il` and `https://big3d.co.il`
+- [x] CORS: `https://big3d.pages.dev`, `https://www.big3d.co.il`, `https://big3d.co.il`
 - [x] Protected routes require X-Admin-Key
 
 ## Cloudflare Dashboard (Manual)

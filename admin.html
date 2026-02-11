@@ -5,18 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - BIG 3D</title>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
-    
-    <!-- Cloudflare API - no external scripts needed -->
-    
-    <!-- Tailwind Dark Mode -->
+    <!-- 1. Tailwind CDN (no defer) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Tailwind config - immediately after CDN -->
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -44,6 +35,19 @@
             }
         }
     </script>
+    <!-- 3. Lucide (no defer) -->
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script>
+    function safeCreateIcons() {
+      if (window.lucide && typeof window.lucide.createIcons === "function") {
+        window.lucide.createIcons();
+      }
+    }
+    window.safeCreateIcons = safeCreateIcons;
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <style>
         html { scroll-behavior: smooth; }
@@ -90,7 +94,7 @@
     <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-neutral-dark">
         <div class="bg-neutral p-8 rounded-3xl shadow-card max-w-md w-full">
             <div class="text-center mb-6">
-                <img src="dark_logo_big3d.jpg" alt="BIG 3D" class="h-16 mx-auto mb-4 opacity-80">
+                <img src="dark_logo_big3d.webp" alt="BIG 3D" class="h-16 mx-auto mb-4 opacity-80">
                 <h1 class="text-3xl font-extrabold text-brand-500">BIG 3D</h1>
                 <p class="text-gray-400 text-sm mt-2">מנהל מערכת</p>
             </div>
@@ -117,7 +121,7 @@
         <nav class="bg-neutral/70 backdrop-blur-md border-b border-neutral-light p-4 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <img src="dark_logo_big3d.jpg" alt="BIG 3D" class="h-10 opacity-80">
+                    <img src="dark_logo_big3d.webp" alt="BIG 3D" class="h-10 opacity-80">
                     <h1 class="text-2xl font-extrabold text-brand-500">מנהל מערכת</h1>
                 </div>
                 <div class="flex items-center gap-4">
@@ -275,7 +279,7 @@
         </div>
     </div>
 
-    <script src="js/cloudflare-config.js" defer></script>
-    <script src="js/admin.js" defer></script>
+    <script src="js/cloudflare-config.js?v=3" defer></script>
+    <script src="js/admin.js?v=3" defer></script>
 </body>
 </html>

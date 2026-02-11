@@ -73,7 +73,7 @@
 2. **ALLOWED_ORIGINS**  
    For production, set in worker/wrangler.toml:
    ```toml
-   ALLOWED_ORIGINS = "https://www.big3d.co.il,https://big3d.co.il"
+   ALLOWED_ORIGINS = "https://big3d.pages.dev,https://big3d.co.il,https://www.big3d.co.il"
    ```
    Add your Pages preview URL for local/preview testing.
 
