@@ -1,24 +1,27 @@
-# Cloudflare Workers + D1 + R2 for BIG 3D
+# Cloudflare Workers + D1 + R2 for BIG 3D - Production
 # https://developers.cloudflare.com/workers/
 
-name = "big3d-api"
+name = "big3d"
 main = "worker/index.js"
 compatibility_date = "2024-01-01"
+
+# Production URL: https://big3d.111dordavid.workers.dev
+# Workers & Pages → big3d → Settings → Domains → Add Custom Domain
 
 # D1 Database
 [[d1_databases]]
 binding = "DB"
 database_name = "big3d-db"
-database_id = "YOUR_D1_DATABASE_ID"  # Replace after: wrangler d1 create big3d-db
+database_id = "2da6b712-a288-4985-9a3a-69a9d685bc8f"
 
 # R2 Storage for images
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "big3d-images"
 
-# Admin API key for authentication (set in Cloudflare dashboard Secrets)
-# wrangler secret put ADMIN_API_KEY
+# ADMIN_API_KEY: set via Dashboard (Workers → big3d → Settings → Secrets)
+# or: wrangler secret put ADMIN_API_KEY
 
 [vars]
-# Optional: Set API base URL for CORS
-# API_URL = "https://big3d.co.il"
+# Production CORS - only these origins allowed. No wildcards.
+ALLOWED_ORIGINS = "https://www.big3d.co.il,https://big3d.co.il"

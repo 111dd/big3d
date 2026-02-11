@@ -148,16 +148,16 @@
     </script>
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     
     <!-- Cloudflare API config -->
-    <script src="js/cloudflare-config.js"></script>
+    <script src="js/cloudflare-config.js" defer></script>
     
     <!-- Favicon - הוסף favicon.ico בתיקייה הראשית -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -839,8 +839,8 @@
         © 2025 BIG 3D — כל הזכויות שמורות
     </footer>
 
-    <!-- Portfolio Loader (Supabase integration) -->
-    <script src="js/portfolio-loader.js"></script>
+    <!-- Portfolio Loader -->
+    <script src="js/portfolio-loader.js" defer></script>
     
     <script>
         lucide.createIcons();
@@ -1127,7 +1127,6 @@
                         throw new Error('Form submission failed');
                     }
                 } catch (err) {
-                    console.error("Form submit error:", err);
                     alert('אירעה שגיאה בשליחת הטופס. אנא נסה שוב או צור קשר ישירות.');
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
@@ -1261,7 +1260,6 @@
                 }
                 
                 img.onerror = function() {
-                    console.error('Failed to load image:', imgPath);
                     this.style.display = 'none';
                 };
                 

@@ -1,6 +1,6 @@
 // Portfolio Loader - Loads projects from Cloudflare API
 
-window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d-api.YOUR_SUBDOMAIN.workers.dev';
+window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d.111dordavid.workers.dev';
 
 async function loadProjectsFromCloudflare() {
     try {
@@ -28,8 +28,7 @@ async function loadProjectsFromCloudflare() {
         window.projectTitles = { ...(window.projectTitles || {}), ...projectTitles };
         updatePortfolioGrid(projects);
         updateThumbnails(projects);
-    } catch (err) {
-        console.warn('Cloudflare API not available, using fallback:', err.message);
+    } catch {
         useHardcodedProjects();
     }
 }

@@ -1,11 +1,8 @@
 /**
- * Cloudflare API Config - BIG 3D
- * Replace these with your deployed Worker URL and Admin API Key
+ * Cloudflare API Config - BIG 3D (Production)
  */
 
-// Your Cloudflare Worker URL (after deployment)
-// Example: https://big3d-api.YOUR_SUBDOMAIN.workers.dev
-window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d-api.YOUR_SUBDOMAIN.workers.dev';
+window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d.111dordavid.workers.dev';
 
 // Admin API Key - set via wrangler secret put ADMIN_API_KEY
 // Stored in localStorage after login
@@ -26,8 +23,9 @@ window.cfApi = {
     },
     async get(path) {
         const res = await fetch(this.getBaseUrl() + path);
-        if (!res.ok) throw new Error((await res.json()).error || res.statusText);
-        return res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
+        return data;
     },
     async post(path, body, useFormData = false) {
         const key = window.CLOUDFLARE_ADMIN_KEY || localStorage.getItem('cf_admin_key');
@@ -38,8 +36,9 @@ window.cfApi = {
         };
         // FormData: don't set Content-Type - fetch adds multipart boundary automatically
         const res = await fetch(this.getBaseUrl() + path, opts);
-        if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || res.statusText);
-        return res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
+        return data;
     },
     async put(path, body) {
         const res = await fetch(this.getBaseUrl() + path, {
@@ -47,15 +46,17 @@ window.cfApi = {
             headers: this.getHeaders(true),
             body: JSON.stringify(body)
         });
-        if (!res.ok) throw new Error((await res.json()).error || res.statusText);
-        return res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
+        return data;
     },
     async delete(path) {
         const res = await fetch(this.getBaseUrl() + path, {
             method: 'DELETE',
             headers: this.getHeaders(true)
         });
-        if (!res.ok) throw new Error((await res.json()).error || res.statusText);
-        return res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
+        return data;
     }
 };

@@ -1,10 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://www.big3d.co.il/sitemap.xml
+# Disallow admin from indexing (security)
+Disallow: /admin.html
 
-# Disallow specific paths if needed
-# Disallow: /admin/
-# Disallow: /private/
+# Sitemap
+Sitemap: https://www.big3d.co.il/sitemap.xml
 

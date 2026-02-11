@@ -1,6 +1,6 @@
 # הגדרת Backend ב-Cloudflare – BIG 3D
 
-ה-Backend הועבר מ-Supabase ל-Cloudflare Workers + D1 + R2.
+Backend: Cloudflare Workers + D1 + R2.
 
 ## דרישות
 
@@ -66,15 +66,11 @@ wrangler deploy
 ```
 
 הפלט יכיל URL כמו:  
-`https://big3d-api.<your-subdomain>.workers.dev`
+`https://big3d.111dordavid.workers.dev`
 
 ### 8. עדכון ה-URL בקוד
 
-ב־`js/cloudflare-config.js` (ובמידת הצורך גם ב־`js/portfolio-loader.js`):
-
-```javascript
-window.CLOUDFLARE_API_URL = 'https://big3d-api.<your-subdomain>.workers.dev';
-```
+בפרודקשן משתמשים ב־`https://big3d.111dordavid.workers.dev` (Workers URL).
 
 ## API Endpoints
 
@@ -90,6 +86,16 @@ window.CLOUDFLARE_API_URL = 'https://big3d-api.<your-subdomain>.workers.dev';
 | POST | `/site-logos` | כן | העלאת לוגו (FormData) |
 | GET | `/storage/:path` | לא | שירות קבצים מ-R2 |
 
+## Rate Limiting (Production)
+
+מומלץ להגדיר **Rate limiting** ב-Cloudflare Dashboard:
+
+1. דף ה-Worker → Settings → Add trigger
+2. או: Security → WAF → Rate limiting rules
+3. הגדר למשל: 100 requests/minute ל-API, 10/min ל-POST/PUT/DELETE
+
+זה מגן מפני brute-force והתקפות DDoS.
+
 ## התחברות ל-Admin
 
 1. היכנס ל־`admin.html`
@@ -99,6 +105,17 @@ window.CLOUDFLARE_API_URL = 'https://big3d-api.<your-subdomain>.workers.dev';
 ## ייבוא פרויקטים קיימים
 
 ב־Admin לחץ על **"ייבא פרויקטים קיימים"** – הפרויקטים מהאתר ייובאו ל־D1 עם קישורים לתמונות הקיימות.
+
+## CORS – ALLOWED_ORIGINS
+
+ב־`wrangler.toml` (פרודקשן): רק `https://www.big3d.co.il` ו־`https://big3d.co.il`.
+
+## רשימת בדיקה לפני Deploy
+
+1. **Worker:** `wrangler deploy`
+2. **Pages:** פריסת התיקייה דרך Git או `wrangler pages deploy`
+3. **עדכון URL:** וודא ש־`CLOUDFLARE_API_URL` ב־`js/cloudflare-config.js` ו־`js/portfolio-loader.js` מצביע ל־`https://big3d.111dordavid.workers.dev`
+4. **בדיקות:** גלריה נטענת, Admin login, העלאת תמונות, API מחזיר JSON תקין
 
 ## מבנה הפרויקט
 

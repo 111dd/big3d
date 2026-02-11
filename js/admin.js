@@ -172,7 +172,6 @@ async function loadProjects() {
         }
         data.forEach(project => container.appendChild(createProjectCard(project)));
     } catch (err) {
-        console.error('Error loading projects:', err);
         container.innerHTML = `<div class="col-span-full text-center py-8"><p class="text-red-400">שגיאה: ${err.message}</p><p class="text-gray-400 text-sm mt-2">ודא ש-CLOUDFLARE_API_URL מצביע ל-Worker שלך</p></div>`;
     }
 }
@@ -214,8 +213,10 @@ function closeProjectModal() {
     document.getElementById('project-modal').classList.remove('flex');
 }
 
+const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10 MB
 function handleImageSelect(e) {
     Array.from(e.target.files || []).forEach(file => {
+        if (file.size > MAX_IMAGE_SIZE) return;
         if (file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = ev => {
@@ -278,7 +279,6 @@ async function handleProjectSubmit(e) {
         loadProjects();
         alert('הפרויקט נשמר בהצלחה!');
     } catch (err) {
-        console.error('Error saving project:', err);
         alert('שגיאה: ' + err.message);
     }
 }
@@ -363,6 +363,10 @@ function cancelLogoUpload() {
 
 async function uploadLogo() {
     if (!currentLogoFile) { alert('אנא בחר לוגו להעלאה'); return; }
+    if (currentLogoFile.size > 10 * 1024 * 1024) {
+        alert('הקובץ גדול מדי. מקסימום 10 MB.');
+        return;
+    }
     try {
         const fd = new FormData();
         fd.append('file', currentLogoFile);
@@ -371,7 +375,8 @@ async function uploadLogo() {
         cancelLogoUpload();
         loadCurrentLogo();
     } catch (err) {
-        alert('שגיאה בהעלאת הלוגו: ' + err.message);
+        const msg = err.message || 'שגיאה בהעלאת הלוגו';
+        alert(msg.includes('large') ? 'הקובץ גדול מדי (מקסימום 10 MB)' : msg.includes('Invalid') ? 'סוג קובץ לא נתמך. השתמש ב-JPEG, PNG, GIF או WebP' : msg);
     }
 }
 
