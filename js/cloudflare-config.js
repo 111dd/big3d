@@ -10,6 +10,7 @@ window.CLOUDFLARE_ADMIN_KEY = window.CLOUDFLARE_ADMIN_KEY || localStorage.getIte
 
 /** API client helpers */
 window.cfApi = {
+    on401: null,
     getBaseUrl() {
         return (window.CLOUDFLARE_API_URL || '').replace(/\/$/, '');
     },
@@ -21,9 +22,22 @@ window.cfApi = {
         }
         return h;
     },
-    async get(path) {
-        const res = await fetch(this.getBaseUrl() + path);
+    async verifyAuth(key) {
+        const res = await fetch(this.getBaseUrl() + '/admin/me', {
+            headers: { 'X-Admin-Key': key || '' }
+        });
+        if (res.status === 401) return false;
+        if (!res.ok) throw new Error('Request failed');
+        return true;
+    },
+    async get(path, includeAuth = false) {
+        const opts = includeAuth ? { headers: this.getHeaders(true) } : {};
+        const res = await fetch(this.getBaseUrl() + path, opts);
         const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+            this.on401?.();
+            throw new Error(data.error || 'Unauthorized');
+        }
         if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
         return data;
     },
@@ -34,9 +48,12 @@ window.cfApi = {
             headers: useFormData ? { 'X-Admin-Key': key || '' } : this.getHeaders(true),
             body: useFormData ? body : JSON.stringify(body)
         };
-        // FormData: don't set Content-Type - fetch adds multipart boundary automatically
         const res = await fetch(this.getBaseUrl() + path, opts);
         const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+            this.on401?.();
+            throw new Error(data.error || 'Unauthorized');
+        }
         if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
         return data;
     },
@@ -47,6 +64,10 @@ window.cfApi = {
             body: JSON.stringify(body)
         });
         const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+            this.on401?.();
+            throw new Error(data.error || 'Unauthorized');
+        }
         if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
         return data;
     },
@@ -56,6 +77,10 @@ window.cfApi = {
             headers: this.getHeaders(true)
         });
         const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+            this.on401?.();
+            throw new Error(data.error || 'Unauthorized');
+        }
         if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
         return data;
     }

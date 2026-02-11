@@ -7,18 +7,38 @@ let currentLogoFile = null;
 document.addEventListener('DOMContentLoaded', () => {
     safeCreateIcons();
     setupEventListeners();
+    window.cfApi.on401 = () => {
+        logout();
+        showLoginScreen();
+    };
     checkAuth();
 });
 
-function checkAuth() {
+async function checkAuth() {
+    showLoginScreen();
     const key = localStorage.getItem('cf_admin_key');
-    if (key) {
+    if (!key) {
+        showConnectionStatus(false, 'הכנס API Key כדי להתחבר');
+        return;
+    }
+    if (!window.cfApi?.verifyAuth) {
+        showConnectionStatus(false, 'שגיאת טעינה – רענן את העמוד');
+        return;
+    }
+    try {
+        const valid = await window.cfApi.verifyAuth(key);
+        if (!valid) {
+            localStorage.removeItem('cf_admin_key');
+            if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
+            showConnectionStatus(false, 'API Key לא תקף או פג תוקף');
+            return;
+        }
+        window.CLOUDFLARE_ADMIN_KEY = key;
         showAdminPanel();
         loadProjects();
         showConnectionStatus(true, 'חיבור ל-Cloudflare');
-    } else {
-        showLoginScreen();
-        showConnectionStatus(false, 'הכנס API Key כדי להתחבר');
+    } catch {
+        showConnectionStatus(false, 'שגיאת חיבור לשרת');
     }
 }
 
@@ -34,16 +54,6 @@ function showConnectionStatus(isConnected, message) {
     loginScreen.appendChild(div);
     safeCreateIcons();
     if (isConnected) setTimeout(() => div.remove(), 4000);
-}
-
-async function performAuthCheck() {
-    const key = localStorage.getItem('cf_admin_key');
-    if (key) {
-        showAdminPanel();
-        loadProjects();
-    } else {
-        showLoginScreen();
-    }
 }
 
 function setupEventListeners() {
@@ -90,18 +100,30 @@ async function handleLogin(e) {
         return;
     }
 
+    if (!window.cfApi?.verifyAuth) {
+        if (errorDiv) { errorDiv.textContent = 'שגיאת טעינה – רענן את העמוד'; errorDiv.classList.remove('hidden'); }
+        return;
+    }
+
     if (submitBtn) { submitBtn.textContent = 'מתחבר...'; submitBtn.disabled = true; }
+    if (errorDiv) errorDiv.classList.add('hidden');
 
     try {
+        const valid = await window.cfApi.verifyAuth(key);
+        if (!valid) {
+            localStorage.removeItem('cf_admin_key');
+            if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
+            if (errorDiv) { errorDiv.textContent = 'API Key שגוי'; errorDiv.classList.remove('hidden'); }
+            return;
+        }
         localStorage.setItem('cf_admin_key', key);
         window.CLOUDFLARE_ADMIN_KEY = key;
-        const projects = await window.cfApi.get('/projects');
         showAdminPanel();
         loadProjects();
         showConnectionStatus(true, 'חיבור ל-Cloudflare');
     } catch (err) {
         localStorage.removeItem('cf_admin_key');
-        window.CLOUDFLARE_ADMIN_KEY = '';
+        if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
         if (errorDiv) {
             errorDiv.textContent = err.message === 'Unauthorized' ? 'API Key שגוי' : (err.message || 'שגיאת חיבור');
             errorDiv.classList.remove('hidden');
@@ -286,7 +308,7 @@ async function handleProjectSubmit(e) {
 async function editProject(projectId) {
     currentProjectId = projectId;
     try {
-        const project = await window.cfApi.get(`/projects/${projectId}`);
+        const project = await window.cfApi.get(`/projects/${projectId}`, true);
         document.getElementById('modal-title').textContent = 'ערוך פרויקט';
         document.getElementById('project-title').value = project.title;
         document.getElementById('project-key').value = project.key;
