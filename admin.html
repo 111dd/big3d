@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - BIG 3D</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Cloudflare API - no external scripts needed -->
+    
+    <!-- Tailwind Dark Mode -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Heebo', 'sans-serif'],
+                    },
+                    colors: {
+                        neutral: {
+                            light: '#fafafa',
+                            DEFAULT: '#2b2b2f',
+                            dark: '#1c1c1e'
+                        },
+                        brand: {
+                            500: '#00D4FF',
+                            600: '#0099CC',
+                            accent: '#FF3366'
+                        }
+                    },
+                    boxShadow: {
+                        card: '0 4px 15px rgba(0,0,0,0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Heebo', sans-serif; }
+        
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 4px; }
+        
+        .reveal { opacity: 0; transform: translateY(20px); transition: .8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #00D4FF;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .upload-area.dragover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #0099CC;
+        }
+        
+        .logo-preview {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+
+<body class="dark bg-neutral-dark text-gray-200 min-h-screen">
+    
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-neutral-dark">
+        <div class="bg-neutral p-8 rounded-3xl shadow-card max-w-md w-full">
+            <div class="text-center mb-6">
+                <img src="dark_logo_big3d.jpg" alt="BIG 3D" class="h-16 mx-auto mb-4 opacity-80">
+                <h1 class="text-3xl font-extrabold text-brand-500">BIG 3D</h1>
+                <p class="text-gray-400 text-sm mt-2">מנהל מערכת</p>
+            </div>
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">Admin API Key</label>
+                    <input type="password" id="login-api-key" 
+                           class="w-full bg-neutral-dark border border-neutral-light p-3 rounded-lg text-gray-200 focus:border-brand-500 focus:outline-none transition" 
+                           required placeholder="הכנס Admin API Key מ-Cloudflare">
+                    <p class="text-xs text-gray-400 mt-1">מוגדר ב-wrangler secret put ADMIN_API_KEY</p>
+                </div>
+                <button type="submit" 
+                        class="w-full bg-brand-600 py-3 rounded-lg text-white font-bold hover:bg-brand-500 transition">
+                    התחבר
+                </button>
+                <div id="login-error" class="text-red-400 text-sm text-center hidden mt-2"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="hidden min-h-screen bg-neutral-dark">
+        <!-- Header -->
+        <nav class="bg-neutral/70 backdrop-blur-md border-b border-neutral-light p-4 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img src="dark_logo_big3d.jpg" alt="BIG 3D" class="h-10 opacity-80">
+                    <h1 class="text-2xl font-extrabold text-brand-500">מנהל מערכת</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-gray-300 hover:text-brand-500 transition flex items-center gap-2">
+                        <i data-lucide="home" class="h-5 w-5"></i>
+                        <span class="hidden md:inline">חזרה לאתר</span>
+                    </a>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition flex items-center gap-2">
+                        <i data-lucide="log-out" class="h-5 w-5"></i>
+                        <span>התנתק</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-7xl mx-auto p-6">
+            <!-- Tabs -->
+            <div class="mb-6 border-b border-neutral-light">
+                <div class="flex gap-4">
+                    <button onclick="showTab('projects')" id="tab-projects" 
+                            class="px-6 py-3 font-semibold border-b-2 border-brand-500 text-brand-500 transition">
+                        פרויקטים
+                    </button>
+                    <button onclick="showTab('logo')" id="tab-logo" 
+                            class="px-6 py-3 font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition">
+                        לוגו האתר
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Tab -->
+            <div id="content-projects" class="tab-content">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold">פרויקטים</h2>
+                    <div class="flex gap-2">
+                        <button onclick="importExistingProjects()" 
+                                class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-500 transition flex items-center gap-2">
+                            <i data-lucide="upload" class="h-5 w-5"></i>
+                            ייבא פרויקטים קיימים
+                        </button>
+                        <button onclick="showAddProjectModal()" 
+                                class="bg-brand-600 text-white px-6 py-2 rounded-lg hover:bg-brand-500 transition flex items-center gap-2">
+                            <i data-lucide="plus" class="h-5 w-5"></i>
+                            הוסף פרויקט
+                        </button>
+                    </div>
+                </div>
+                <div id="projects-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Projects will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Logo Tab -->
+            <div id="content-logo" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-6">ניהול לוגו האתר</h2>
+                
+                <div class="bg-neutral p-6 rounded-3xl shadow-card">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold mb-4">לוגו נוכחי</h3>
+                        <div id="current-logo-container" class="flex flex-col items-center gap-4 p-6 bg-neutral-dark rounded-xl">
+                            <p class="text-gray-400">טוען...</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">העלה לוגו חדש</h3>
+                        <div id="logo-upload-area" class="upload-area cursor-pointer">
+                            <p class="text-gray-400 mb-2">גרור לוגו לכאן או לחץ לבחירה</p>
+                            <input type="file" id="logo-upload" accept="image/*" class="hidden">
+                            <button type="button" onclick="document.getElementById('logo-upload').click()" 
+                                    class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-500 transition">
+                                בחר לוגו
+                            </button>
+                        </div>
+                        <div id="logo-preview-container" class="mt-4 hidden">
+                            <div class="bg-neutral-dark p-4 rounded-xl">
+                                <p class="text-sm text-gray-400 mb-2">תצוגה מקדימה:</p>
+                                <img id="logo-preview" class="logo-preview mx-auto" alt="Logo preview">
+                                <div class="flex gap-4 mt-4 justify-center">
+                                    <button onclick="uploadLogo()" 
+                                            class="bg-brand-600 text-white px-6 py-2 rounded-lg hover:bg-brand-500 transition">
+                                        שמור לוגו
+                                    </button>
+                                    <button onclick="cancelLogoUpload()" 
+                                            class="bg-neutral border border-neutral-light text-gray-200 px-6 py-2 rounded-lg hover:bg-neutral-light transition">
+                                        ביטול
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Project Modal -->
+    <div id="project-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-[999] flex items-center justify-center p-4">
+        <div class="bg-neutral-dark rounded-3xl shadow-card max-w-3xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeProjectModal()" class="absolute top-4 left-4 text-gray-300 hover:text-white">
+                <i data-lucide="x" class="h-6 w-6"></i>
+            </button>
+            
+            <h2 id="modal-title" class="text-2xl font-bold mb-6 text-brand-500 text-center">הוסף פרויקט</h2>
+            
+            <form id="project-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">שם הפרויקט (עברית)</label>
+                    <input type="text" id="project-title" 
+                           class="w-full bg-neutral border border-neutral-light p-3 rounded-lg text-gray-200 focus:border-brand-500 focus:outline-none" 
+                           required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">שם הפרויקט (אנגלית - למפתח)</label>
+                    <input type="text" id="project-key" 
+                           class="w-full bg-neutral border border-neutral-light p-3 rounded-lg text-gray-200 focus:border-brand-500 focus:outline-none" 
+                           required pattern="[a-z0-9-_]+" 
+                           placeholder="לדוגמה: new-project">
+                    <p class="text-xs text-gray-400 mt-1">רק אותיות קטנות, מספרים, מקף ותחתית</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">תיאור (אופציונלי)</label>
+                    <textarea id="project-description" rows="3"
+                              class="w-full bg-neutral border border-neutral-light p-3 rounded-lg text-gray-200 focus:border-brand-500 focus:outline-none"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">תמונות</label>
+                    <div id="upload-area" class="upload-area cursor-pointer">
+                        <p class="text-gray-400 mb-2">גרור תמונות לכאן או לחץ לבחירה</p>
+                        <input type="file" id="image-upload" multiple accept="image/*" class="hidden">
+                        <button type="button" onclick="document.getElementById('image-upload').click()" 
+                                class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-500 transition">
+                            בחר תמונות
+                        </button>
+                    </div>
+                    <div id="image-preview-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                        <!-- Image previews will appear here -->
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" 
+                            class="flex-1 bg-brand-600 py-3 rounded-lg text-white font-bold hover:bg-brand-500 transition">
+                        שמור
+                    </button>
+                    <button type="button" onclick="closeProjectModal()" 
+                            class="flex-1 bg-neutral border border-neutral-light py-3 rounded-lg text-gray-200 hover:bg-neutral transition">
+                        ביטול
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/cloudflare-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

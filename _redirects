@@ -1,0 +1,8 @@
+# Netlify redirects file
+# Redirect www to non-www or vice versa (optional)
+# www.big3d.co.il/*  https://big3d.co.il/:splat  301
+# big3d.co.il/*      https://www.big3d.co.il/:splat  301
+
+# SPA fallback - redirect all routes to index.html
+/*    /index.html   200
+
