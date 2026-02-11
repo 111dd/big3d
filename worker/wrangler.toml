@@ -25,4 +25,4 @@ bucket_name = "big3d-images"
 
 [vars]
 # Production CORS - only these origins allowed. No wildcards.
-ALLOWED_ORIGINS = "https://www.big3d.co.il,https://big3d.co.il"
+ALLOWED_ORIGINS = "https://big3d.pages.dev,https://big3d.co.il,https://www.big3d.co.il"
