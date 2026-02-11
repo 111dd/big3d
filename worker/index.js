@@ -20,16 +20,29 @@ function getCorsHeaders(origin, env) {
   };
 }
 
-// Simple auth - check X-Admin-Key header matches secret
-async function isAuthenticated(request, env) {
+/** Check if request has valid admin key (X-Admin-Key matches env.ADMIN_API_KEY) */
+function isValidAdmin(request, env) {
   const key = request.headers.get('X-Admin-Key');
-  return key && key === env.ADMIN_API_KEY;
+  const secret = env.ADMIN_API_KEY;
+  if (!key || !secret) return false;
+  if (key.length !== secret.length) return false;
+  let diff = 0;
+  for (let i = 0; i < key.length; i++) diff |= key.charCodeAt(i) ^ secret.charCodeAt(i);
+  return diff === 0;
+}
+
+/** Guard: returns 401 Response if invalid, null if allowed */
+function requireAdmin(request, env, cors) {
+  if (!isValidAdmin(request, env)) {
+    return errorResponse('Unauthorized', 401, cors);
+  }
+  return null;
 }
 
 function jsonResponse(data, status = 200, cors = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...cors },
+    headers: { 'Content-Type': 'application/json; charset=utf-8', ...cors },
   });
 }
 
@@ -56,14 +69,21 @@ export default {
       if (path === '/site-logos' && request.method === 'GET') {
         return await getActiveLogo(env, cors);
       }
+      const storageMatch = path.match(/^\/storage\/(.+)$/);
+      if (storageMatch && request.method === 'GET') {
+        return await serveStorage(storageMatch[1], env, cors);
+      }
 
       const isPublic =
         ((path === '/' || path === '/projects') && request.method === 'GET') ||
         (path === '/site-logos' && request.method === 'GET') ||
         (path.match(/^\/storage\//) && request.method === 'GET');
-      const authenticated = await isAuthenticated(request, env);
-      if (!isPublic && !authenticated) {
-        return errorResponse('Unauthorized', 401, cors);
+
+      const authError = requireAdmin(request, env, cors);
+      if (authError) return authError;
+
+      if (path === '/admin/me' && request.method === 'GET') {
+        return jsonResponse({ ok: true }, 200, cors);
       }
 
       if (path === '/projects' && request.method === 'POST') {
@@ -83,11 +103,6 @@ export default {
       }
       if (path === '/site-logos' && request.method === 'POST') {
         return await uploadLogo(request, env, cors);
-      }
-
-      const storageMatch = path.match(/^\/storage\/(.+)$/);
-      if (storageMatch && request.method === 'GET') {
-        return await serveStorage(storageMatch[1], env, cors);
       }
 
       return errorResponse('Not found', 404, cors);
