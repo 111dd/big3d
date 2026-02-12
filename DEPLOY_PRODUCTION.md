@@ -49,8 +49,8 @@ Then add the Custom Domain in the dashboard if not using a route.
 
 Pages is separate from the Worker. Deploy the project as a static site.
 
-- **Build command:** `npm run build` (compiles Tailwind CSS + prepares dist/)
-- **Build output directory:** `dist` ← **חשוב:** חייב להיות `dist` כדי ש־sitemap.xml וכל הקבצים יישלחו
+- **Build/Deploy command:** `npm run deploy` (בונה dist ומפריס ב־wrangler)
+- **הערה:** אם משתמשים ב־wrangler deploy, אין צורך ב־Build output directory – wrangler מפריס את התיקייה dist
 
 - **No wrangler.toml at root** – Worker config lives in `worker/` so Pages won't treat this as a Workers/Pages hybrid
 - **No _redirects** – Removed to avoid SPA fallback infinite loop (site uses hash routing)
