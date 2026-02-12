@@ -51,7 +51,7 @@ function createProjectCard(project) {
     <div id="${safeKey}-skeleton" class="skeleton w-full h-60 absolute"></div>
     <img id="${safeKey}-thumb" width="400" height="240" loading="lazy" decoding="async" fetchpriority="low" src="${thumbUrl}"
          class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-         alt="${(project.title || '').replace(/"/g, '&quot;')}"
+         alt="פרויקט הדפסת תלת מימד וייצור – ${(project.title || '').replace(/"/g, '&quot;')}"
          onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('${safeKey}-skeleton'); if(el) el.style.display='none'"
          onload="const el=document.getElementById('${safeKey}-skeleton'); if(el) el.style.display='none'">
     <div class="absolute bottom-0 w-full p-4 bg-neutral/90">

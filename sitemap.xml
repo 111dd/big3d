@@ -6,38 +6,58 @@
     
     <url>
         <loc>https://www.big3d.co.il/</loc>
-        <lastmod>2025-12-13</lastmod>
+        <lastmod>2026-01-26</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     
     <url>
-        <loc>https://www.big3d.co.il/#home</loc>
-        <lastmod>2025-12-13</lastmod>
+        <loc>https://www.big3d.co.il/3d-printing-large.html</loc>
+        <lastmod>2026-01-26</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    
-    <url>
-        <loc>https://www.big3d.co.il/#services</loc>
-        <lastmod>2025-12-13</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
-        <loc>https://www.big3d.co.il/#portfolio</loc>
-        <lastmod>2025-12-13</lastmod>
-        <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     
     <url>
-        <loc>https://www.big3d.co.il/#contact</loc>
-        <lastmod>2025-12-13</lastmod>
+        <loc>https://www.big3d.co.il/laser-cutting.html</loc>
+        <lastmod>2026-01-26</lastmod>
         <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.big3d.co.il/engineering-design.html</loc>
+        <lastmod>2026-01-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.big3d.co.il/3d-printing-industrial.html</loc>
+        <lastmod>2026-01-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.big3d.co.il/prototype-printing.html</loc>
+        <lastmod>2026-01-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://www.big3d.co.il/blog/</loc>
+        <lastmod>2026-01-26</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     
+    <url>
+        <loc>https://www.big3d.co.il/blog/how-to-choose-3d-printing-service.html</loc>
+        <lastmod>2026-01-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
 </urlset>
-
