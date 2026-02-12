@@ -71,7 +71,7 @@ export default {
       }
       const storageMatch = path.match(/^\/storage\/(.+)$/);
       if (storageMatch && request.method === 'GET') {
-        return await serveStorage(storageMatch[1], env, cors);
+        return await serveStorage(storageMatch[1], request, env, cors);
       }
 
       const isPublic =
@@ -234,7 +234,28 @@ async function getActiveLogo(env, cors = {}) {
   return jsonResponse(logo || null, 200, cors);
 }
 
-async function serveStorage(key, env, cors = {}) {
+async function serveStorage(key, request, env, cors = {}) {
+  const url = new URL(request.url);
+  const w = url.searchParams.get('w') || url.searchParams.get('width');
+  const isResizeRequest = /image-resizing/.test(request.headers.get('Via') || '');
+
+  if (w && !isResizeRequest) {
+    const originUrl = new URL(request.url);
+    originUrl.search = '';
+    const width = Math.min(parseInt(w, 10) || 400, 1200);
+    try {
+      const res = await fetch(originUrl.toString(), {
+        cf: { image: { width, fit: 'scale-down', format: 'auto' } },
+      });
+      if (res.ok) {
+        const headers = new Headers(res.headers);
+        Object.entries(cors).forEach(([k, v]) => headers.set(k, v));
+        headers.set('Cache-Control', 'public, max-age=31536000');
+        return new Response(res.body, { status: res.status, headers });
+      }
+    } catch (_) {}
+  }
+
   const obj = await env.BUCKET.get(key);
   if (!obj) return errorResponse('Not found', 404, cors);
   const contentType = obj.httpMetadata?.contentType || 'application/octet-stream';

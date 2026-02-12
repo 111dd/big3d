@@ -86,7 +86,9 @@ wrangler deploy
 | POST | `/projects/:id/images` | כן | העלאת תמונה (FormData) |
 | GET | `/site-logos` | לא | לוגו פעיל |
 | POST | `/site-logos` | כן | העלאת לוגו (FormData) |
-| GET | `/storage/:path` | לא | שירות קבצים מ-R2 |
+| GET | `/storage/:path` | לא | שירות קבצים מ-R2 (תמיכה ב־`?w=400` לצמצום thumbnails) |
+
+**Image Resizing:** תמונות מ-R2 תומכות ב־`?w=400` (או `?width=400`) – Cloudflare מקטין אותן אוטומטית. ודא ש־**Image Resizing** מופעל ב־Dashboard → Speed → Optimization → Image Resizing. (חינמי עד 5,000 טרנספורמציות/חודש.)
 
 ## Rate Limiting (Production)
 

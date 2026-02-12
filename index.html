@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload LCP image ASAP for faster paint -->
+    <link rel="preload" as="image" href="/dark_logo_big3d.webp" fetchpriority="high">
     <title>BIG 3D | הדפסות תלת מימד ענקיות, הדפסת מתכות, חיתוך לייזר ועיבוד שבבי</title>
 
     <!-- Meta Description -->
@@ -147,28 +149,50 @@
     }
     </script>
 
-    <!-- Compiled Tailwind CSS (no render-blocking) -->
-    <link rel="stylesheet" href="/css/tailwind.css">
-    <!-- Google Fonts -->
+    <!-- Critical CSS: hero + LCP (prevents FOUC) -->
+    <style>
+*,::after,::before{box-sizing:border-box}
+html,body{margin:0;background:#1c1c1e;font-family:Heebo,sans-serif;color:#fff}
+.relative{position:relative}.absolute{position:absolute}.inset-0{inset:0}
+.min-h-\[75vh\]{min-height:75vh}.flex{display:flex}.items-center{align-items:center}.justify-center{justify-content:center}
+.pt-20{padding-top:5rem}.pb-8{padding-bottom:2rem}.overflow-hidden{overflow:hidden}
+.bg-gradient-to-b{background-image:linear-gradient(to bottom,rgba(28,28,30,.9),rgba(43,43,47,.8),rgba(28,28,30,.9))}
+.text-center{text-align:center}.px-4{padding-left:1rem;padding-right:1rem}.max-w-2xl{max-width:42rem;margin:0 auto}
+.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}
+.text-3xl{font-size:1.875rem;line-height:2.25rem}.font-extrabold{font-weight:800}
+.text-brand-500{color:#00D4FF}.text-gray-300{color:#d1d5db}
+img{max-width:100%;height:auto;display:block}
+@media(min-width:768px){.md\:text-6xl{font-size:3.75rem;line-height:1}.md\:mb-4{margin-bottom:1rem}.md\:mb-6{margin-bottom:1.5rem}}
+    </style>
+    <!-- Full Tailwind (loaded async, non-blocking) -->
+    <link rel="preload" href="/css/tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css"></noscript>
+    <!-- Google Fonts (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <!-- Lucide Icons (defer) -->
-    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
-    <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      if (window.lucide?.createIcons) window.lucide.createIcons();
-    });
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet"></noscript>
+    <!-- Lucide Icons (loaded after LCP to avoid blocking) -->
+    <script>
     window.safeCreateIcons = function() {
       if (window.lucide?.createIcons) window.lucide.createIcons();
     };
+    function loadLucideAndInit() {
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js';
+      s.onload = () => safeCreateIcons();
+      document.head.appendChild(s);
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => loadLucideAndInit(), { timeout: 2000 });
+    } else {
+      window.addEventListener('load', () => setTimeout(loadLucideAndInit, 100));
+    }
     </script>
     
     <!-- 4. Project scripts (defer) -->
     <script src="js/cloudflare-config.js?v=4" defer></script>
     
-    <!-- Preload LCP image (hero logo) -->
-    <link rel="preload" as="image" href="/dark_logo_big3d.webp" fetchpriority="high">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -414,10 +438,7 @@
     <!-- Hero -->
     <section id="home" class="relative min-h-[75vh] flex items-center justify-center pt-20 pb-8 overflow-hidden">
 
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop')] 
-                                  bg-cover bg-center opacity-20">
-        </div>
-        <div class="absolute inset-0 bg-neutral/70"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-neutral-dark/90 via-neutral/80 to-neutral-dark/90"></div>
 
         <div class="relative text-center px-4 max-w-2xl reveal">
             <!-- Hero Logo (LCP element) -->

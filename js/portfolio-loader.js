@@ -16,6 +16,22 @@ function buildProject(key, images, title) {
   return { key, title, images: imgs };
 }
 
+/** Returns thumbnail URL with ?w=400 for Worker storage (smaller payload) */
+function getThumbnailUrl(url) {
+  if (!url) return url;
+  try {
+    const u = new URL(url);
+    const apiBase = (window.CLOUDFLARE_API_URL || '').replace(/\/$/, '');
+    if (!apiBase) return url;
+    const apiOrigin = new URL(apiBase).origin;
+    if (u.origin === apiOrigin && u.pathname.includes('/storage/')) {
+      u.searchParams.set('w', '400');
+      return u.toString();
+    }
+  } catch (_) {}
+  return url;
+}
+
 function createProjectCard(project) {
   if (!project.images || project.images.length === 0) return null;
   const thumbnail = project.images.find(img => img.is_thumbnail) || project.images[0];
@@ -30,9 +46,10 @@ function createProjectCard(project) {
   card.setAttribute('aria-label', `פתח גלריית תמונות - ${project.title}`);
   card.setAttribute('onkeypress', `if(event.key==='Enter') openPortfolioModal('${safeKey}')`);
 
+  const thumbUrl = getThumbnailUrl(thumbnailUrl);
   card.innerHTML = `
     <div id="${safeKey}-skeleton" class="skeleton w-full h-60 absolute"></div>
-    <img id="${safeKey}-thumb" width="400" height="240" loading="lazy" decoding="async" src="${thumbnailUrl}"
+    <img id="${safeKey}-thumb" width="400" height="240" loading="lazy" decoding="async" fetchpriority="low" src="${thumbUrl}"
          class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
          alt="${(project.title || '').replace(/"/g, '&quot;')}"
          onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('${safeKey}-skeleton'); if(el) el.style.display='none'"
@@ -107,7 +124,7 @@ function updateThumbnails(projects) {
     if (!project.images || project.images.length === 0) return;
     const thumbnail = project.images.find(img => img.is_thumbnail) || project.images[0];
     const imgElement = document.getElementById(`${project.key}-thumb`);
-    if (imgElement) imgElement.src = thumbnail.url;
+    if (imgElement) imgElement.src = getThumbnailUrl(thumbnail.url);
   });
 }
 
