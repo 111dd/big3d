@@ -47,12 +47,14 @@ Then add the Custom Domain in the dashboard if not using a route.
 
 ## Deploy Pages (static only)
 
-Pages is separate from the Worker. Deploy the project root as a static site.
+Pages is separate from the Worker. Deploy the project as a static site.
 
-- **Build command:** `npm run build` (compiles Tailwind CSS)
-- **Build output directory:** `/` (root)
+- **Build command:** `npm run build` (compiles Tailwind CSS + prepares dist/)
+- **Build output directory:** `dist` ← **חשוב:** חייב להיות `dist` כדי ש־sitemap.xml וכל הקבצים יישלחו
 
 - **No wrangler.toml at root** – Worker config lives in `worker/` so Pages won't treat this as a Workers/Pages hybrid
 - **No _redirects** – Removed to avoid SPA fallback infinite loop (site uses hash routing)
 - **No Pages Functions** – In Cloudflare Dashboard: Pages → your project → Settings → Functions → **Disable** if enabled
-- **Build output:** Root directory (or `output` if using a static site generator)
+
+### אם sitemap.xml מחזיר 404
+וודא ש־**Build output directory** ב־Cloudflare Pages מוגדר ל־`dist`. אם השדה ריק או מפנה לתיקייה אחרת, sitemap.xml לא יישלח.

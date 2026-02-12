@@ -70,6 +70,14 @@ wrangler deploy
 הפלט יכיל URL כמו:  
 `https://big3d.111dordavid.workers.dev`
 
+### 7a. Build output directory – Cloudflare Pages
+
+**חשוב:** כדי ש־sitemap.xml וכל הקבצים יישלחו, ב־Cloudflare Pages מוגדר:
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+
+אם `build output directory` ריק או שונה, sitemap.xml עלול להחזיר 404. ראה DEPLOY_PRODUCTION.md.
+
 ### 8. עדכון ה-URL בקוד
 
 בפרודקשן משתמשים ב־`https://big3d.111dordavid.workers.dev` (Workers URL).

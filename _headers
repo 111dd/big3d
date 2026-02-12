@@ -34,3 +34,7 @@
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/sitemap.xml
+  Content-Type: application/xml
+  Cache-Control: public, max-age=3600
