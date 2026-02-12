@@ -147,54 +147,29 @@
     }
     </script>
 
-    <!-- 1. Tailwind CDN (no defer) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 2. Tailwind config - immediately after CDN -->
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Heebo', 'sans-serif'],
-                    },
-                    colors: {
-                        neutral: {
-                            light: '#fafafa',
-                            DEFAULT: '#2b2b2f',
-                            dark: '#1c1c1e'
-                        },
-                        brand: {
-                            500: '#00D4FF',
-                            600: '#0099CC',
-                            accent: '#FF3366'
-                        }
-                    },
-                    boxShadow: {
-                        card: '0 4px 15px rgba(0,0,0,0.35)',
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- 3. Lucide (no defer) -->
-    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-    <script>
-    function safeCreateIcons() {
-      if (window.lucide && typeof window.lucide.createIcons === "function") {
-        window.lucide.createIcons();
-      }
-    }
-    window.safeCreateIcons = safeCreateIcons;
-    </script>
-
+    <!-- Compiled Tailwind CSS (no render-blocking) -->
+    <link rel="stylesheet" href="/css/tailwind.css">
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (defer) -->
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+    <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide?.createIcons) window.lucide.createIcons();
+    });
+    window.safeCreateIcons = function() {
+      if (window.lucide?.createIcons) window.lucide.createIcons();
+    };
+    </script>
     
     <!-- 4. Project scripts (defer) -->
     <script src="js/cloudflare-config.js?v=4" defer></script>
     
-    <!-- Favicon - הוסף favicon.ico בתיקייה הראשית -->
+    <!-- Preload LCP image (hero logo) -->
+    <link rel="preload" as="image" href="/dark_logo_big3d.webp" fetchpriority="high">
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -396,7 +371,10 @@
                 <div class="flex items-center cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
                     <img src="dark_logo_big3d.webp"
                          alt="BIG 3D"
-                         class="h-10 object-contain opacity-80" />
+                         width="120"
+                         height="47"
+                         class="h-10 object-contain opacity-80"
+                         decoding="async" />
                 </div>
 
                 <div class="hidden md:flex items-center gap-6 text-sm">
@@ -442,10 +420,15 @@
         <div class="absolute inset-0 bg-neutral/70"></div>
 
         <div class="relative text-center px-4 max-w-2xl reveal">
-            <!-- Hero Logo -->
+            <!-- Hero Logo (LCP element) -->
             <div class="hero-logo mb-4 md:mb-6">
                 <img src="dark_logo_big3d.webp"
-                     alt="BIG 3D" />
+                     alt="BIG 3D"
+                     width="360"
+                     height="141"
+                     fetchpriority="high"
+                     loading="eager"
+                     decoding="async" />
             </div>
 
             <h1 class="text-3xl md:text-6xl font-extrabold mb-3 md:mb-4">הדפסות תלת־ממד <br><span class="text-brand-500">במימדי ענק</span></h1>
@@ -479,8 +462,11 @@
                     <!-- הדפסות תלת מימד ענקיות -->
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/plastic_printing/icon.png" 
-                             alt="הדפסות תלת מימד ענקיות" 
+                             alt="הדפסות תלת מימד ענקיות"
+                             width="48"
+                             height="48"
                              loading="lazy"
+                             decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">הדפסות תלת מימד ענקיות</h3>
@@ -496,8 +482,11 @@
                     <!-- הדפסת מתכות -->
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/metal_printing/icon.png" 
-                             alt="הדפסת מתכות" 
+                             alt="הדפסת מתכות"
+                             width="48"
+                             height="48"
                              loading="lazy"
+                             decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">הדפסת מתכות</h3>
@@ -514,8 +503,11 @@
                     <!-- עיבוד שבבי -->
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/cnc/icon.png" 
-                             alt="עיבוד שבבי CNC" 
+                             alt="עיבוד שבבי CNC"
+                             width="48"
+                             height="48"
                              loading="lazy"
+                             decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">עיבוד שבבי</h3>
@@ -531,8 +523,11 @@
                     <!-- חיתוך וחריטה בלייזר CO2 -->
                     <div class="flex items-start gap-4 mb-3">
                         <img src="icons/liser/icon.png" 
-                             alt="חיתוך וחריטה בלייזר" 
+                             alt="חיתוך וחריטה בלייזר"
+                             width="48"
+                             height="48"
                              loading="lazy"
+                             decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold mb-2">חיתוך וחריטה בלייזר CO₂</h3>
@@ -550,8 +545,11 @@
                 <div class="p-8 bg-neutral shadow-card rounded-2xl max-w-4xl mx-auto">
                     <div class="flex items-start gap-4 mb-4">
                         <img src="icons/ALLIN/icon.png" 
-                             alt="מעטפת מלאה" 
+                             alt="מעטפת מלאה"
+                             width="48"
+                             height="48"
                              loading="lazy"
+                             decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0 mt-1">
                         <div class="flex-1">
                             <p class="text-gray-300 text-base leading-relaxed">
@@ -576,98 +574,8 @@
                 <p class="text-gray-400">דוגמאות להדפסה, חיתוך ועיבוד מתקדם</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
-
-                <div onclick="openPortfolioModal('egg')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - ביצה כורסת ישיבה" onkeypress="if(event.key==='Enter') openPortfolioModal('egg')">
-                    <div id="egg-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="egg-thumb" 
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="ביצה - כורסת ישיבה"
-                         onerror="this.src='https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('egg-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('egg-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg">כורסת פעילות לילדים בעלי צרכים</h4>
-                    </div>
-                </div>
-
-                <div onclick="openPortfolioModal('Garbage shaft cleaning model')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - מודל ניקוי פיר אשפה" onkeypress="if(event.key==='Enter') openPortfolioModal('Garbage shaft cleaning model')">
-                    <div id="garbage-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="garbage-thumb"
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="מודל ניקוי פיר אשפה"
-                         onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('garbage-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('garbage-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg">תכנון דגם לרובוט ניקוי פיר אשפה</h4>
-                    </div>
-                </div>
-
-                <div onclick="openPortfolioModal('pizza car holder')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - מחזיק פיצה לרכב" onkeypress="if(event.key==='Enter') openPortfolioModal('pizza car holder')">
-                    <div id="pizza-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="pizza-thumb"
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="מחזיק פיצה לרכב"
-                         onerror="this.src='https://images.unsplash.com/photo-1624823183483-34e8fbd92625?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('pizza-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('pizza-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg">בוסטר פיצה לרכב</h4>
-                    </div>
-                </div>
-
-                <div onclick="openPortfolioModal('trump')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - פרויקט טראמפ" onkeypress="if(event.key==='Enter') openPortfolioModal('trump')">
-                    <div id="trump-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="trump-thumb"
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="פרויקט טראמפ"
-                         onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('trump-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('trump-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg">פרויקט טראמפ</h4>
-                    </div>
-                </div>
-
-                <div onclick="openPortfolioModal('World Cup Cup')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - גביע המונדיאל" onkeypress="if(event.key==='Enter') openPortfolioModal('World Cup Cup')">
-                    <div id="worldcup-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="worldcup-thumb"
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="גביע המונדיאל"
-                         onerror="this.src='https://images.unsplash.com/photo-1624823183483-34e8fbd92625?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('worldcup-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('worldcup-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg">גביע המונדיאל בידינו</h4>
-                    </div>
-                </div>
-
-                <div onclick="openPortfolioModal('shark')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - מודל כריש" onkeypress="if(event.key==='Enter') openPortfolioModal('shark')">
-                    <div id="shark-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="shark-thumb"
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="מודל כריש"
-                         onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('shark-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('shark-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg">הדפסת כריש 2.2 מ׳ אורך</h4>
-                    </div>
-                </div>
-
-                <div onclick="openPortfolioModal('laser')" class="relative rounded-2xl overflow-hidden shadow-card cursor-pointer group" role="button" tabindex="0" aria-label="פתח גלריית תמונות - חריטה בלייזר" onkeypress="if(event.key==='Enter') openPortfolioModal('laser')">
-                    <div id="laser-skeleton" class="skeleton w-full h-60 absolute"></div>
-                    <img id="laser-thumb"
-                         loading="lazy"
-                         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-                         alt="חריטה בלייזר"
-                         onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('laser-skeleton'); if(el) el.style.display='none'"
-                         onload="const el=document.getElementById('laser-skeleton'); if(el) el.style.display='none'">
-                    <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-                        <h4 class="font-bold text-lg"> חריטה בלייזר</h4>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal" id="portfolio-grid">
+                <!-- Portfolio cards populated by portfolio-loader.js (first 6 initially, Load more for rest) -->
             </div>
         </div>
     </section>

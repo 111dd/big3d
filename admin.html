@@ -5,49 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - BIG 3D</title>
     
-    <!-- 1. Tailwind CDN (no defer) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 2. Tailwind config - immediately after CDN -->
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Heebo', 'sans-serif'],
-                    },
-                    colors: {
-                        neutral: {
-                            light: '#fafafa',
-                            DEFAULT: '#2b2b2f',
-                            dark: '#1c1c1e'
-                        },
-                        brand: {
-                            500: '#00D4FF',
-                            600: '#0099CC',
-                            accent: '#FF3366'
-                        }
-                    },
-                    boxShadow: {
-                        card: '0 4px 15px rgba(0,0,0,0.35)',
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- 3. Lucide (no defer) -->
-    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-    <script>
-    function safeCreateIcons() {
-      if (window.lucide && typeof window.lucide.createIcons === "function") {
-        window.lucide.createIcons();
-      }
-    }
-    window.safeCreateIcons = safeCreateIcons;
-    </script>
-    
+    <!-- Compiled Tailwind CSS -->
+    <link rel="stylesheet" href="/css/tailwind.css">
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (defer) -->
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+    <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide?.createIcons) window.lucide.createIcons();
+    });
+    window.safeCreateIcons = function() {
+      if (window.lucide?.createIcons) window.lucide.createIcons();
+    };
+    </script>
     
     <style>
         html { scroll-behavior: smooth; }

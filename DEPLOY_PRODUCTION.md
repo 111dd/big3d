@@ -28,6 +28,15 @@
 5. **DNS** (only if using Custom Domain)
    - Add A/AAAA or CNAME for `api.big3d.co.il` as needed
 
+## Build (required before deploy)
+
+```bash
+npm install
+npm run build
+```
+
+This compiles Tailwind CSS to `css/tailwind.css`. Run before deploying Pages.
+
 ## Deploy Worker
 
 ```bash
@@ -39,6 +48,9 @@ Then add the Custom Domain in the dashboard if not using a route.
 ## Deploy Pages (static only)
 
 Pages is separate from the Worker. Deploy the project root as a static site.
+
+- **Build command:** `npm run build` (compiles Tailwind CSS)
+- **Build output directory:** `/` (root)
 
 - **No wrangler.toml at root** – Worker config lives in `worker/` so Pages won't treat this as a Workers/Pages hybrid
 - **No _redirects** – Removed to avoid SPA fallback infinite loop (site uses hash routing)
