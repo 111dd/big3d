@@ -1,9 +1,6 @@
-# Cloudflare Pages – Static site (BIG 3D)
-# Deploy: npm run build && npx wrangler deploy
-# Build creates dist/, wrangler deploys it as static assets
+# Cloudflare Pages static site (BIG 3D)
+# Deploy with: `npm run build && npx wrangler pages deploy`
 
-name = "big3d-pages"
+name = "big3d"
 compatibility_date = "2024-01-01"
-
-[assets]
-directory = "./dist"
+pages_build_output_dir = "./dist"

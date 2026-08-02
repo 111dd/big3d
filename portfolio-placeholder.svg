@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">BIG 3D portfolio placeholder</title>
+  <desc id="desc">����� ����� ���� ������� ��������� �� BIG 3D</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1c1e"/>
+      <stop offset="100%" stop-color="#2b2b2f"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D4FF"/>
+      <stop offset="100%" stop-color="#0099CC"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <rect x="120" y="120" width="960" height="480" rx="28" fill="none" stroke="url(#accent)" stroke-width="8" opacity="0.65"/>
+  <g fill="none" stroke="url(#accent)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.8">
+    <path d="M330 445l120-120 110 105 150-170 160 185"/>
+    <circle cx="430" cy="255" r="34"/>
+  </g>
+  <text x="600" y="560" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">BIG 3D</text>
+  <text x="600" y="616" text-anchor="middle" fill="#d1d5db" font-family="Arial, Helvetica, sans-serif" font-size="28">Portfolio image unavailable</text>
+</svg>
