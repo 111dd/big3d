@@ -72,13 +72,15 @@ wrangler deploy
 
 ### 7a. פריסת האתר הסטטי (Cloudflare)
 
-הפרויקט מוגדר עם `wrangler.toml` בשורש שמפריס את `dist/`. 
+הפרויקט מוגדר עם `wrangler.toml` בשורש, כולל:
+1. `name = "big3d"` עבור פרויקט ה־Pages
+2. `pages_build_output_dir = "./dist"` עבור Cloudflare Pages
 
-**Build command ב־Cloudflare Dashboard:** `npm run deploy`
+**Deploy command מומלץ ב־Cloudflare Dashboard:** `npm run deploy`
 
 זה מריץ:
-1. `npm run build` – בונה CSS ומכין dist/
-2. `npx wrangler deploy` – מפריס את dist כ־static assets
+1. `npm run build` – בונה CSS ומכין `dist/`
+2. `npx wrangler pages deploy dist --project-name big3d` – מפריס ל־Cloudflare Pages
 
 **Worker ה־API (worker/)** מפריסים בנפרד: `cd worker && wrangler deploy`
 

@@ -18,7 +18,7 @@ async function checkAuth() {
     showLoginScreen();
     const key = localStorage.getItem('cf_admin_key');
     if (!key) {
-        showConnectionStatus(false, 'הכנס API Key כדי להתחבר');
+        showConnectionStatus(false, 'הכנס סיסמה כדי להתחבר');
         return;
     }
     if (!window.cfApi?.verifyAuth) {
@@ -30,13 +30,13 @@ async function checkAuth() {
         if (!valid) {
             localStorage.removeItem('cf_admin_key');
             if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
-            showConnectionStatus(false, 'API Key לא תקף או פג תוקף');
+            showConnectionStatus(false, 'הסיסמה לא תקפה או שפג תוקפה');
             return;
         }
         window.CLOUDFLARE_ADMIN_KEY = key;
         showAdminPanel();
         loadProjects();
-        showConnectionStatus(true, 'חיבור ל-Cloudflare');
+        showConnectionStatus(true, 'החיבור הצליח');
     } catch {
         showConnectionStatus(false, 'שגיאת חיבור לשרת');
     }
@@ -96,7 +96,7 @@ async function handleLogin(e) {
     const originalText = submitBtn?.textContent;
 
     if (!key) {
-        if (errorDiv) { errorDiv.textContent = 'הכנס API Key'; errorDiv.classList.remove('hidden'); }
+        if (errorDiv) { errorDiv.textContent = 'הכנס סיסמה'; errorDiv.classList.remove('hidden'); }
         return;
     }
 
@@ -113,19 +113,19 @@ async function handleLogin(e) {
         if (!valid) {
             localStorage.removeItem('cf_admin_key');
             if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
-            if (errorDiv) { errorDiv.textContent = 'API Key שגוי'; errorDiv.classList.remove('hidden'); }
+            if (errorDiv) { errorDiv.textContent = 'הסיסמה שגויה'; errorDiv.classList.remove('hidden'); }
             return;
         }
         localStorage.setItem('cf_admin_key', key);
         window.CLOUDFLARE_ADMIN_KEY = key;
         showAdminPanel();
         loadProjects();
-        showConnectionStatus(true, 'חיבור ל-Cloudflare');
+        showConnectionStatus(true, 'החיבור הצליח');
     } catch (err) {
         localStorage.removeItem('cf_admin_key');
         if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
         if (errorDiv) {
-            errorDiv.textContent = err.message === 'Unauthorized' ? 'API Key שגוי' : (err.message || 'שגיאת חיבור');
+            errorDiv.textContent = err.message === 'Unauthorized' ? 'הסיסמה שגויה' : (err.message || 'שגיאת חיבור');
             errorDiv.classList.remove('hidden');
         }
     } finally {
@@ -360,7 +360,7 @@ function showDefaultLogo() {
     const container = document.getElementById('current-logo-container');
     if (!container) return;
     container.innerHTML = `
-        <img src="dark_logo_big3d.webp" alt="Current Logo" class="logo-preview">
+        <img src="/optimized/dark_logo_big3d-160.webp" alt="Current Logo" class="logo-preview">
         <p class="text-gray-300 mt-2">לוגו נוכחי (מתיקיית האתר)</p>
         <p class="text-gray-500 text-xs mt-2">💡 העלה לוגו חדש כדי לשמור ב-Cloudflare</p>`;
 }

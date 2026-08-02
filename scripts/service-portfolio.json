@@ -1,0 +1,93 @@
+{
+  "comment": "Checked-in snapshot of real portfolio items surfaced statically on service pages. Titles come from the live portfolio API (refreshed at build time when reachable); images are local repo files served through the optimized image pipeline. Do not add projects that do not exist in the portfolio.",
+  "apiUrl": "https://big3d.111dordavid.workers.dev/projects",
+  "galleryUrl": "/#portfolio",
+  "pages": {
+    "3d-printing-large.html": [
+      {
+        "key": "shark",
+        "title": "כריש באורך 2.2 מטר",
+        "image": "shark/shark-1.jpg",
+        "alt": "כריש באורך 2.2 מטר - פרויקט הדפסת תלת־ממד גדולה מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "egg",
+        "title": "ביצה - כורסת ישיבה סנסורית לילדים",
+        "image": "egg/egg-final-product-1.jpg",
+        "alt": "ביצה - כורסת ישיבה סנסורית לילדים - מוצר מוגמר מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "world-cup-cup",
+        "title": "גביע המונדיאל",
+        "image": "World Cup Cup/world-cup-cup-1.jpg",
+        "alt": "גביע המונדיאל - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "trump",
+        "title": "דונאלד ג'י טראמפ",
+        "image": "trump/trump-1.jpg",
+        "alt": "דמות דונאלד טראמפ - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
+      }
+    ],
+    "laser-cutting.html": [
+      {
+        "key": "laser",
+        "title": "דוגמאות חריטה בלייזר",
+        "image": "laser/laser-engraving-1.jpg",
+        "alt": "דוגמאות חריטה בלייזר CO₂ מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "garbage-shaft-cleaning-model",
+        "title": "רובוט ניקוי פיר אשפה",
+        "image": "Garbage shaft cleaning model/garbage-laser-engraving.jpg",
+        "alt": "חריטה בלייזר בפרויקט רובוט ניקוי פיר אשפה - מתיק העבודות של BIG 3D"
+      }
+    ],
+    "engineering-design.html": [
+      {
+        "key": "garbage-shaft-cleaning-model",
+        "title": "רובוט ניקוי פיר אשפה",
+        "image": "Garbage shaft cleaning model/first_wobg.png",
+        "alt": "מודל רובוט ניקוי פיר אשפה - שלב התכנון בפרויקט מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "egg",
+        "title": "ביצה - כורסת ישיבה סנסורית לילדים",
+        "image": "egg/egg-design-1.jpg",
+        "alt": "תכנון כורסת הישיבה הסנסורית - שלב העיצוב בפרויקט מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "pizza-car-holder",
+        "title": "בוסטר לפיצה",
+        "image": "pizza car holder/pizza-holder-1.jpg",
+        "alt": "בוסטר לפיצה - פרויקט מתיק העבודות של BIG 3D"
+      }
+    ],
+    "prototype-printing.html": [
+      {
+        "key": "egg",
+        "title": "ביצה - כורסת ישיבה סנסורית לילדים",
+        "image": "egg/firtst_egg.jpeg",
+        "alt": "אב־טיפוס מוקדם של כורסת הישיבה הסנסורית - מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "pizza-car-holder",
+        "title": "בוסטר לפיצה",
+        "image": "pizza car holder/pizza-holder-1.jpg",
+        "alt": "בוסטר לפיצה - פרויקט מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "garbage-shaft-cleaning-model",
+        "title": "רובוט ניקוי פיר אשפה",
+        "image": "Garbage shaft cleaning model/garbage-model-1.jpg",
+        "alt": "מודל מודפס של רובוט ניקוי פיר אשפה - מתיק העבודות של BIG 3D"
+      },
+      {
+        "key": "world-cup-cup",
+        "title": "גביע המונדיאל",
+        "image": "World Cup Cup/world-cup-cup-2.jpg",
+        "alt": "גביע המונדיאל - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
+      }
+    ]
+  }
+}
