@@ -42,13 +42,17 @@
     <link rel="sitemap" type="application/xml" href="https://www.big3d.co.il/sitemap.xml">
     
     <!-- Structured Data (JSON-LD) for SEO -->
+    <!-- Merged LocalBusiness + Organization into a single consistent entity (was two disconnected objects) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
+        "@id": "https://www.big3d.co.il/#business",
         "name": "BIG 3D",
         "description": "BIG 3D מספקים הדפסות תלת־ממד גדולות עד 1×1×1 מטר בפלסטיק, הדפסת מתכות בטכנולוגיית Laser Powder Bed Fusion (LPBF), עיבוד שבבי (CNC) וחיתוך וחריטה בלייזר CO₂.",
-        "url": "https://www.big3d.co.il",
+        "url": "https://www.big3d.co.il/",
+        "logo": "https://www.big3d.co.il/dark_logo_big3d.webp",
+        "image": "https://www.big3d.co.il/dark_logo_big3d.webp",
         "telephone": "+972-54-398-4210",
         "email": "D.BIG3D@GMAIL.COM",
         "address": {
@@ -69,9 +73,16 @@
             "closes": "18:00"
         },
         "priceRange": "$$",
-        "image": "https://www.big3d.co.il/dark_logo_big3d.webp",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+972-54-398-4210",
+            "contactType": "customer service",
+            "areaServed": "IL",
+            "availableLanguage": ["Hebrew", "English"]
+        },
         "sameAs": [
-            "https://wa.me/972543984210"
+            "https://wa.me/972543984210",
+            "https://www.facebook.com/profile.php?id=61560572753411"
         ],
         "areaServed": {
             "@type": "Country",
@@ -122,26 +133,6 @@
                 }
             ]
         }
-    }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "BIG 3D",
-        "url": "https://www.big3d.co.il",
-        "logo": "https://www.big3d.co.il/dark_logo_big3d.webp",
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+972-54-398-4210",
-            "contactType": "customer service",
-            "areaServed": "IL",
-            "availableLanguage": ["Hebrew", "English"]
-        },
-        "sameAs": [
-            "https://wa.me/972543984210"
-        ]
     }
     </script>
 
