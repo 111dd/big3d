@@ -3,64 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הדפסת אב־טיפוס | BIG 3D – אב־טיפוס מהיר, פלסטיק ומתכת</title>
-    <meta name="description" content="שירות הדפסת אב־טיפוס בישראל – BIG 3D מספקים אב־טיפוסים מהירים בהדפסת תלת מימד בפלסטיק ומתכת. פיתוח מוצר, איטרציות מהירות, ייעוץ הנדסי. שירות לסטארטאפים ויצרנים.">
-    <meta name="keywords" content="הדפסת אב־טיפוס, אב טיפוס 3D, פיתוח מוצר, הדפסה לפי הזמנה">
+    <title>הדפסת אב־טיפוס | BIG 3D – אב־טיפוס מהיר, תלת־ממד, פלסטיק ומתכת</title>
+    <meta name="description" content="שירות הדפסת אב־טיפוס בישראל - BIG 3D מספקים אב־טיפוסים מהירים בהדפסת תלת־ממד בפלסטיק ובמתכת. פיתוח מוצר, איטרציות מהירות, ייעוץ הנדסי ושירות לסטארטאפים וליצרנים.">
     <link rel="canonical" href="https://www.big3d.co.il/prototype-printing.html">
+    <meta property="og:type" content="website">
     <meta property="og:title" content="הדפסת אב־טיפוס | BIG 3D">
     <meta property="og:url" content="https://www.big3d.co.il/prototype-printing.html">
-    <meta property="og:description" content="אב־טיפוסים מהירים בהדפסת תלת מימד. פיתוח מוצר מהיר בישראל.">
+    <meta property="og:description" content="אב־טיפוסים מהירים בהדפסת תלת־ממד, עם ייעוץ הנדסי וליווי מפיתוח ועד מוצר מוגמר.">
+    <meta property="og:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta property="og:image:alt" content="BIG 3D - הדפסת אב־טיפוס">
+    <meta property="og:locale" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="הדפסת אב־טיפוס | BIG 3D">
+    <meta name="twitter:description" content="אב־טיפוסים מהירים בהדפסת תלת־ממד, עם ייעוץ הנדסי וליווי מפיתוח ועד מוצר מוגמר.">
+    <meta name="twitter:url" content="https://www.big3d.co.il/prototype-printing.html">
+    <meta name="twitter:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
     <meta name="theme-color" content="#00D4FF">
     <meta name="robots" content="index, follow">
-    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="preload" href="/css/tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css"></noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <style>html{scroll-behavior:smooth} body{font-family:Heebo,sans-serif}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>:root{--header-height:4rem;--content-top-gap:2rem} html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + .75rem);min-height:100%;height:auto} body{font-family:Heebo,sans-serif;min-height:100vh;height:auto;overflow-y:auto} main.page-main{padding-top:calc(var(--header-height) + var(--content-top-gap));overflow:visible}</style>
     <script>
     window.safeCreateIcons=function(){if(window.lucide?.createIcons)window.lucide.createIcons()};
     function loadLucideAndInit(){const s=document.createElement('script');s.src='https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js';s.onload=()=>safeCreateIcons();document.head.appendChild(s)}
     if('requestIdleCallback'in window){requestIdleCallback(()=>loadLucideAndInit(),{timeout:2000})}else{window.addEventListener('load',()=>setTimeout(loadLucideAndInit,100))}
     </script>
 </head>
-<body class="dark bg-neutral-dark text-gray-200 font-sans">
+<body class="dark bg-neutral-dark text-gray-200 font-sans min-h-screen overflow-x-hidden">
     <nav class="fixed w-full z-50 bg-neutral/70 backdrop-blur-md border-b border-neutral-light">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <a href="/" class="flex items-center">
-                    <img src="/dark_logo_big3d.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
+                    <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
                 </a>
                 <div class="hidden md:flex items-center gap-6 text-sm">
                     <a href="/" class="hover:text-brand-500 transition">ראשי</a>
                     <a href="/#services" class="hover:text-brand-500 transition">שירותים</a>
                     <a href="/#portfolio" class="hover:text-brand-500 transition">גלריה</a>
+                    <a href="/blog/" class="hover:text-brand-500 transition">בלוג</a>
                     <a href="/#contact" class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-500 transition">צור קשר</a>
                 </div>
+                <button id="mobile-menu-toggle" class="md:hidden p-2" aria-label="פתיחת תפריט ניווט" aria-controls="menu" aria-expanded="false">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-gray-200" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
             </div>
+        </div>
+        <div id="menu" class="hidden md:hidden bg-neutral p-4 border-b border-neutral-light">
+            <a href="/" class="block py-2 hover:text-brand-500">ראשי</a>
+            <a href="/#services" class="block py-2 hover:text-brand-500">שירותים</a>
+            <a href="/#portfolio" class="block py-2 hover:text-brand-500">גלריה</a>
+            <a href="/blog/" class="block py-2 hover:text-brand-500">בלוג</a>
+            <a href="/#contact" class="block py-2 text-brand-500 font-semibold">צור קשר</a>
         </div>
     </nav>
 
-    <main class="pt-24 pb-16 px-4 max-w-4xl mx-auto">
+    <main class="page-main pb-16 px-4 max-w-4xl mx-auto">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-brand-500">הדפסת אב־טיפוס</h1>
 
         <p class="text-lg text-gray-300 mb-6">
-            <strong>BIG 3D</strong> מספקים שירות <strong>הדפסת אב־טיפוס</strong> מהיר ומקצועי – אב־טיפוסים בפלסטיק ומתכת, עם ייעוץ הנדסי וליווי משלב הרעיון ועד למוצר מוגמר. אנחנו מתמחים באיטרציות מהירות, כך שתוכלו לבדוק עיצוב, לבדוק פונקציונליות ולהגיע למוצר הסופי מהר יותר.
+            <strong>BIG 3D</strong> מספקים שירות <strong>הדפסת אב־טיפוס</strong> מהיר ומקצועי - אב־טיפוסים בפלסטיק ובמתכת, עם ייעוץ הנדסי וליווי משלב הרעיון ועד למוצר מוגמר. אנחנו מתמחים באיטרציות מהירות, כך שתוכלו לבדוק עיצוב, לבחון פונקציונליות ולהגיע למוצר הסופי מהר יותר.
         </p>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">מה כולל שירות הדפסת אב־טיפוס?</h2>
         <p class="text-gray-300 mb-4">
-            השירות כולל <strong>הדפסת אב־טיפוס</strong> בפלסטיק – <a href="/3d-printing-large.html" class="text-brand-500 hover:underline">הדפסות תלת מימד גדולות</a> עד 1×1×1 מטר – או במתכת – <a href="/3d-printing-industrial.html" class="text-brand-500 hover:underline">הדפסת מתכות תעשייתית</a> SLM/LPBF. בנוסף, אנחנו מספקים <strong>תכנון הנדסי</strong> – בדיקת קבצי CAD, המלצות על חומרים, אופטימיזציה לעיבוד וייצור, והמרות מסקיצה לחלק מוכן.
+            השירות כולל <strong>הדפסת אב־טיפוס</strong> בפלסטיק - <a href="/3d-printing-large.html" class="text-brand-500 hover:underline">הדפסות תלת־ממד גדולות</a> עד 1×1×1 מטר - או במתכת - <a href="/3d-printing-industrial.html" class="text-brand-500 hover:underline">הדפסת מתכות תעשייתית</a> בטכנולוגיית <strong>LPBF</strong>. בנוסף, אנחנו מספקים <strong>תכנון הנדסי</strong> - בדיקת קבצי CAD, המלצות על חומרים, אופטימיזציה לעיבוד ולייצור והמרה מסקיצה לחלק מוכן.
         </p>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">למי מתאים שירות אב־טיפוס?</h2>
         <p class="text-gray-300 mb-4">
-            השירות מתאים ל־<strong>סטארטאפים</strong> שצריכים לאמת רעיון לפני ייצור סדרתי, <strong>יצרנים</strong> שצריכים לאמת עיצוב לפני כלי ייצור, <strong>מהנדסים</strong> ו־<strong>מעצבים</strong> שצריכים דגמים פיזיים לבדיקה. אנחנו עובדים עם קבצי STL, STEP, OBJ ומרבית פורמטי ה־CAD.
+            השירות מתאים ל־<strong>סטארטאפים</strong> שצריכים לאמת רעיון לפני ייצור סדרתי, <strong>יצרנים</strong> שצריכים לאמת עיצוב לפני השקעה בכלי ייצור, <strong>מהנדסים</strong> ו־<strong>מעצבים</strong> שצריכים דגמים פיזיים לבדיקה. אנחנו עובדים עם קבצי STL, STEP, OBJ ומרבית פורמטי ה־CAD.
         </p>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">תהליך העבודה</h2>
         <p class="text-gray-300 mb-4">
-            התהליך מתחיל בפגישת ייעוץ או בהעברת קובץ. אנחנו בודקים את הגיאומטריה, ממליצים על חומר (פלסטיק או מתכת) ומעריכים זמן ומחיר. לאחר אישור – ההדפסה או הייצור מתבצע, עם אספקה ברחבי ישראל. ניתן לשלב גם <a href="/laser-cutting.html" class="text-brand-500 hover:underline">חיתוך לייזר</a> ו־<a href="/engineering-design.html" class="text-brand-500 hover:underline">עיבוד שבבי</a> באותו פרויקט.
+            התהליך מתחיל בפגישת ייעוץ או בהעברת קובץ. אנחנו בודקים את הגיאומטריה, ממליצים על חומר (פלסטיק או מתכת) ומעריכים זמן ומחיר. לאחר האישור – ההדפסה או הייצור מתבצעים, עם אספקה ברחבי ישראל. ניתן לשלב גם <a href="/laser-cutting.html" class="text-brand-500 hover:underline">חיתוך לייזר</a> ו־<a href="/engineering-design.html" class="text-brand-500 hover:underline">עיבוד שבבי</a> באותו פרויקט.
         </p>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">FAQ – שאלות נפוצות</h2>
@@ -86,8 +107,18 @@
     </main>
 
     <footer class="bg-neutral py-6 border-t border-neutral-light text-center text-gray-400">
-        © 2025 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
+        © 2026 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
     </footer>
-    <script>document.addEventListener('DOMContentLoaded',()=>safeCreateIcons())</script>
+    <script>
+    document.addEventListener('DOMContentLoaded',()=>safeCreateIcons());
+    (function(){
+        var btn=document.getElementById('mobile-menu-toggle'),menu=document.getElementById('menu');
+        if(!btn||!menu)return;
+        function closeMenu(){menu.classList.add('hidden');btn.setAttribute('aria-expanded','false')}
+        btn.addEventListener('click',function(){var open=!menu.classList.toggle('hidden');btn.setAttribute('aria-expanded',open?'true':'false')});
+        menu.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!menu.classList.contains('hidden')){closeMenu();btn.focus()}});
+    })();
+    </script>
 </body>
 </html>

@@ -3,9 +3,23 @@
 
 const INITIAL_COUNT = 6;
 const LOAD_MORE_COUNT = 6;
+const PORTFOLIO_PLACEHOLDER_URL = '/portfolio-placeholder.svg';
 
 window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d.111dordavid.workers.dev';
 window.portfolioRemaining = [];
+let imageManifestPromise = null;
+
+function escapeAttribute(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function getProjectDomId(key) {
+  return (key || 'project').toLowerCase().replace(/[^a-z0-9_-]+/gi, '-');
+}
 
 function buildProject(key, images, title) {
   const urls = Array.isArray(images) ? images : [];
@@ -16,48 +30,162 @@ function buildProject(key, images, title) {
   return { key, title, images: imgs };
 }
 
-/** Returns thumbnail URL with ?w=400 for Worker storage (smaller payload) */
-function getThumbnailUrl(url) {
+function normalizeImageKey(url) {
+  if (!url) return '';
+  try {
+    const parsed = new URL(url, window.location?.origin || 'https://www.big3d.co.il');
+    return decodeURIComponent(parsed.pathname.replace(/^\/+/, ''));
+  } catch (_) {
+    return decodeURIComponent(String(url).split('?')[0].replace(/^\/+/, ''));
+  }
+}
+
+function getOptimizedImageEntry(url) {
+  const manifest = window.OPTIMIZED_IMAGES || {};
+  return manifest[normalizeImageKey(url)] || null;
+}
+
+function buildOptimizedSrcset(url, format) {
+  const entry = getOptimizedImageEntry(url);
+  if (!entry || !Array.isArray(entry[format])) return '';
+  return entry[format].map(item => `${item.url} ${item.width}w`).join(', ');
+}
+
+function getBestOptimizedUrl(url, targetWidth = 800) {
+  const entry = getOptimizedImageEntry(url);
+  if (!entry) return null;
+  const candidates = entry.webp || [];
+  const match = candidates.find(item => item.width >= targetWidth) || candidates[candidates.length - 1];
+  return match?.url || entry.fallback || null;
+}
+
+function isWorkerStorageUrl(url) {
+  try {
+    const u = new URL(url, window.location?.origin || 'https://www.big3d.co.il');
+    const apiBase = (window.CLOUDFLARE_API_URL || '').replace(/\/$/, '');
+    if (!apiBase) return false;
+    return u.origin === new URL(apiBase).origin && u.pathname.includes('/storage/');
+  } catch (_) {
+    return false;
+  }
+}
+
+/** Returns an optimized URL for thumbnails from local assets or Worker storage. */
+function getSizedImageUrl(url, width = 400) {
   if (!url) return url;
+  const localOptimized = getBestOptimizedUrl(url, width);
+  if (localOptimized) return localOptimized;
+
   try {
     const u = new URL(url);
-    const apiBase = (window.CLOUDFLARE_API_URL || '').replace(/\/$/, '');
-    if (!apiBase) return url;
-    const apiOrigin = new URL(apiBase).origin;
-    if (u.origin === apiOrigin && u.pathname.includes('/storage/')) {
-      u.searchParams.set('w', '400');
+    if (isWorkerStorageUrl(url)) {
+      u.searchParams.set('w', String(width));
       return u.toString();
     }
   } catch (_) {}
   return url;
 }
 
+function buildWorkerStorageSrcset(url, widths) {
+  if (!isWorkerStorageUrl(url)) return '';
+  return widths.map(width => `${getSizedImageUrl(url, width)} ${width}w`).join(', ');
+}
+
+function buildImageSources(url, widths) {
+  const avif = buildOptimizedSrcset(url, 'avif');
+  const webp = buildOptimizedSrcset(url, 'webp');
+  const storage = buildWorkerStorageSrcset(url, widths);
+  return { avif, webp: webp || storage };
+}
+
+function loadImageManifestIfNeeded() {
+  if (window.OPTIMIZED_IMAGES) return Promise.resolve();
+  if (imageManifestPromise) return imageManifestPromise;
+
+  imageManifestPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = '/js/image-manifest.js?v=1';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  }).catch(() => {
+    window.OPTIMIZED_IMAGES = window.OPTIMIZED_IMAGES || {};
+  });
+
+  return imageManifestPromise;
+}
+
 function createProjectCard(project) {
   if (!project.images || project.images.length === 0) return null;
   const thumbnail = project.images.find(img => img.is_thumbnail) || project.images[0];
   const thumbnailUrl = thumbnail.url;
-  const safeKey = (project.key || '').replace(/'/g, "\\'");
+  const domId = getProjectDomId(project.key);
 
   const card = document.createElement('div');
   card.className = 'relative rounded-2xl overflow-hidden shadow-card cursor-pointer group';
-  card.setAttribute('onclick', `openPortfolioModal('${safeKey}')`);
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `פתח גלריית תמונות - ${project.title}`);
-  card.setAttribute('onkeypress', `if(event.key==='Enter') openPortfolioModal('${safeKey}')`);
+  card.addEventListener('click', () => openPortfolioModal(project.key));
+  card.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openPortfolioModal(project.key);
+    }
+  });
 
-  const thumbUrl = getThumbnailUrl(thumbnailUrl);
+  const thumbUrl = getSizedImageUrl(thumbnailUrl, 400);
+  const sources = buildImageSources(thumbnailUrl, [400, 800]);
+  const sizes = '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw';
   card.innerHTML = `
-    <div id="${safeKey}-skeleton" class="skeleton w-full h-60 absolute"></div>
-    <img id="${safeKey}-thumb" width="400" height="240" loading="lazy" decoding="async" fetchpriority="low" src="${thumbUrl}"
-         class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
-         alt="פרויקט הדפסת תלת מימד וייצור – ${(project.title || '').replace(/"/g, '&quot;')}"
-         onerror="this.src='https://images.unsplash.com/photo-1560275619-4662e36fa65c?q=80&w=1200&auto=format&fit=crop'; const el=document.getElementById('${safeKey}-skeleton'); if(el) el.style.display='none'"
-         onload="const el=document.getElementById('${safeKey}-skeleton'); if(el) el.style.display='none'">
+    <div id="${domId}-skeleton" class="skeleton w-full h-60 absolute"></div>
+    <picture>
+      ${sources.avif ? `<source type="image/avif" srcset="${escapeAttribute(sources.avif)}" sizes="${sizes}">` : ''}
+      ${sources.webp ? `<source type="image/webp" srcset="${escapeAttribute(sources.webp)}" sizes="${sizes}">` : ''}
+      <img id="${domId}-thumb" width="400" height="240" loading="lazy" decoding="async" fetchpriority="low" src="${escapeAttribute(thumbUrl)}"
+           class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
+           alt="פרויקט הדפסת תלת־ממד וייצור - ${escapeAttribute(project.title)}">
+    </picture>
     <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
       <h4 class="font-bold text-lg">${project.title}</h4>
     </div>`;
+
+  const skeleton = card.querySelector(`#${domId}-skeleton`);
+  const image = card.querySelector(`#${domId}-thumb`);
+  if (image) {
+    image.addEventListener('load', () => {
+      if (skeleton) skeleton.style.display = 'none';
+    });
+    image.addEventListener('error', () => {
+      image.onerror = null;
+      image.src = PORTFOLIO_PLACEHOLDER_URL;
+      image.classList.add('object-contain', 'p-6', 'bg-neutral-dark');
+      if (skeleton) skeleton.style.display = 'none';
+    });
+  }
   return card;
+}
+
+function renderPortfolioSkeletons(count = INITIAL_COUNT) {
+  const grid = document.querySelector('#portfolio .grid');
+  const loadMoreContainer = document.getElementById('portfolio-load-more');
+  if (!grid) return;
+
+  grid.querySelectorAll('[data-portfolio-card], [data-portfolio-skeleton]').forEach(el => el.remove());
+  if (loadMoreContainer) loadMoreContainer.remove();
+
+  for (let i = 0; i < count; i += 1) {
+    const skeletonCard = document.createElement('div');
+    skeletonCard.setAttribute('data-portfolio-skeleton', '1');
+    skeletonCard.className = 'rounded-2xl overflow-hidden shadow-card bg-neutral';
+    skeletonCard.innerHTML = `
+      <div class="skeleton w-full h-60"></div>
+      <div class="p-4 space-y-3">
+        <div class="skeleton h-5 w-2/3"></div>
+        <div class="skeleton h-4 w-1/2"></div>
+      </div>`;
+    grid.appendChild(skeletonCard);
+  }
 }
 
 function renderProjectsToGrid(projects, append = false) {
@@ -66,7 +194,7 @@ function renderProjectsToGrid(projects, append = false) {
   if (!grid) return;
 
   if (!append) {
-    grid.querySelectorAll('[data-portfolio-card]').forEach(el => el.remove());
+    grid.querySelectorAll('[data-portfolio-card], [data-portfolio-skeleton]').forEach(el => el.remove());
     if (loadMoreContainer) loadMoreContainer.remove();
   }
 
@@ -119,15 +247,6 @@ function updatePortfolioGrid(projects) {
   }
 }
 
-function updateThumbnails(projects) {
-  projects.forEach(project => {
-    if (!project.images || project.images.length === 0) return;
-    const thumbnail = project.images.find(img => img.is_thumbnail) || project.images[0];
-    const imgElement = document.getElementById(`${project.key}-thumb`);
-    if (imgElement) imgElement.src = getThumbnailUrl(thumbnail.url);
-  });
-}
-
 async function loadProjectsFromCloudflare() {
   try {
     const base = (window.CLOUDFLARE_API_URL || '').replace(/\/$/, '');
@@ -136,7 +255,7 @@ async function loadProjectsFromCloudflare() {
     const projects = await res.json();
 
     if (!projects || projects.length === 0) {
-      useHardcodedProjects();
+      await useHardcodedProjects();
       return;
     }
 
@@ -153,16 +272,17 @@ async function loadProjectsFromCloudflare() {
     window.projectImages = { ...(window.projectImages || {}), ...projectImages };
     window.projectTitles = { ...(window.projectTitles || {}), ...projectTitles };
     updatePortfolioGrid(projects);
-    updateThumbnails(projects);
   } catch {
-    useHardcodedProjects();
+    await useHardcodedProjects();
   }
 }
 
-function useHardcodedProjects() {
+async function useHardcodedProjects() {
+  await loadImageManifestIfNeeded();
+
   const fallback = {
     'egg': ['egg/firtst_egg.jpeg', 'egg/egg-final-product-1.jpg', 'egg/egg-final-product-2.jpg', 'egg/egg-design-1.jpg', 'egg/egg-design-2.jpg', 'egg/egg-with-kids.png', 'egg/egg-whatsapp-1.jpg'],
-    'Garbage shaft cleaning model': ['Garbage shaft cleaning model/first_wobg.png', 'Garbage shaft cleaning model/garbage-model-1.jpg', 'Garbage shaft cleaning model/garbage-model-2.jpg', 'Garbage shaft cleaning model/garbage-model-3.jpg', 'Garbage shaft cleaning model/garbage-model-4.jpg', 'Garbage shaft cleaning model/garbage-model-5.jpg', 'Garbage shaft cleaning model/garbage-laser-engraving.jpg', 'Garbage shaft cleaning model/garbage-model-7.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-1.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-2.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-3.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-4.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-5.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-6.jpg'],
+    'Garbage shaft cleaning model': ['Garbage shaft cleaning model/first_wobg.png', 'Garbage shaft cleaning model/garbage-model-1.jpg', 'Garbage shaft cleaning model/garbage-model-2.jpg', 'Garbage shaft cleaning model/garbage-model-3-wbg.jpg', 'Garbage shaft cleaning model/garbage-model-4.jpg', 'Garbage shaft cleaning model/garbage-model-5.jpg', 'Garbage shaft cleaning model/garbage-laser-engraving.jpg', 'Garbage shaft cleaning model/garbage-model-7.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-1.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-2.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-3.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-4.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-5.jpg', 'Garbage shaft cleaning model/garbage-whatsapp-6.jpg'],
     'pizza car holder': ['pizza car holder/pizza-holder-1.jpg', 'pizza car holder/pizza-holder-2.jpg'],
     'trump': ['trump/trump-1.jpg', 'trump/trump-2.jpg'],
     'World Cup Cup': ['World Cup Cup/world-cup-cup-1.jpg', 'World Cup Cup/world-cup-cup-2.jpg', 'World Cup Cup/world-cup-cup-3.jpg', 'World Cup Cup/world-cup-cup-4.jpg'],
@@ -188,7 +308,5 @@ function useHardcodedProjects() {
 }
 
 // Initialize
-useHardcodedProjects();
-if (typeof loadProjectsFromCloudflare === 'function') {
-  loadProjectsFromCloudflare();
-}
+renderPortfolioSkeletons();
+loadProjectsFromCloudflare();

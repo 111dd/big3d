@@ -3,91 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הדפסת מתכות תעשייתית | BIG 3D – SLM, LPBF, אלומיניום, טיטניום</title>
-    <meta name="description" content="שירות הדפסת מתכות תעשייתית בישראל – BIG 3D מדפיסים באלומיניום, טיטניום, נירוסטה, כרום קובלט ונחושת בטכנולוגיות SLM/LPBF. חלקים פונקציונליים עם פני שטח חלקים ודיוק גבוה.">
-    <meta name="keywords" content="הדפסת מתכות, 3D printing metal, SLM, LPBF, הדפסת אלומיניום, הדפסת טיטניום, הדפסה תעשייתית">
+    <title>Laser Powder Bed Fusion (LPBF) | הדפסת מתכות תעשייתית | BIG 3D</title>
+    <meta name="description" content="BIG 3D מספקים הדפסת מתכות תעשייתית בטכנולוגיית Laser Powder Bed Fusion (LPBF) לייצור חלקים מורכבים, קלי־משקל ופונקציונליים. מתאימה לתעלות פנימיות, איחוד רכיבים ולפיתוח מהיר של חלקי מתכת מתקדמים.">
     <link rel="canonical" href="https://www.big3d.co.il/3d-printing-industrial.html">
-    <meta property="og:title" content="הדפסת מתכות תעשייתית | BIG 3D">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Laser Powder Bed Fusion (LPBF) | הדפסת מתכות תעשייתית | BIG 3D">
     <meta property="og:url" content="https://www.big3d.co.il/3d-printing-industrial.html">
-    <meta property="og:description" content="הדפסת מתכות בטכנולוגיות SLM/LPBF. חלקים פונקציונליים לאיכות תעשייתית.">
+    <meta property="og:description" content="הדפסת מתכות בטכנולוגיית LPBF ליישומים תעשייתיים מתקדמים: חלקים מורכבים, תעלות פנימיות, הפחתת משקל ואיחוד רכיבים לחלק אחד.">
+    <meta property="og:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta property="og:image:alt" content="BIG 3D - הדפסת מתכות בטכנולוגיית Laser Powder Bed Fusion">
+    <meta property="og:locale" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Laser Powder Bed Fusion (LPBF) | הדפסת מתכות תעשייתית | BIG 3D">
+    <meta name="twitter:description" content="הדפסת מתכות בטכנולוגיית LPBF ליישומים תעשייתיים מתקדמים: חלקים מורכבים, תעלות פנימיות, הפחתת משקל ואיחוד רכיבים לחלק אחד.">
+    <meta name="twitter:url" content="https://www.big3d.co.il/3d-printing-industrial.html">
+    <meta name="twitter:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
     <meta name="theme-color" content="#00D4FF">
     <meta name="robots" content="index, follow">
-    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="preload" href="/css/tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css"></noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <style>html{scroll-behavior:smooth} body{font-family:Heebo,sans-serif}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>:root{--header-height:4rem;--content-top-gap:2rem} html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + .75rem);min-height:100%;height:auto} body{font-family:Heebo,sans-serif;min-height:100vh;height:auto;overflow-y:auto} main.page-main{padding-top:calc(var(--header-height) + var(--content-top-gap));overflow:visible}</style>
     <script>
     window.safeCreateIcons=function(){if(window.lucide?.createIcons)window.lucide.createIcons()};
     function loadLucideAndInit(){const s=document.createElement('script');s.src='https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js';s.onload=()=>safeCreateIcons();document.head.appendChild(s)}
     if('requestIdleCallback'in window){requestIdleCallback(()=>loadLucideAndInit(),{timeout:2000})}else{window.addEventListener('load',()=>setTimeout(loadLucideAndInit,100))}
     </script>
 </head>
-<body class="dark bg-neutral-dark text-gray-200 font-sans">
+<body class="dark bg-neutral-dark text-gray-200 font-sans min-h-screen overflow-x-hidden">
     <nav class="fixed w-full z-50 bg-neutral/70 backdrop-blur-md border-b border-neutral-light">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <a href="/" class="flex items-center">
-                    <img src="/dark_logo_big3d.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
+                    <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
                 </a>
                 <div class="hidden md:flex items-center gap-6 text-sm">
                     <a href="/" class="hover:text-brand-500 transition">ראשי</a>
                     <a href="/#services" class="hover:text-brand-500 transition">שירותים</a>
                     <a href="/#portfolio" class="hover:text-brand-500 transition">גלריה</a>
+                    <a href="/blog/" class="hover:text-brand-500 transition">בלוג</a>
                     <a href="/#contact" class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-500 transition">צור קשר</a>
                 </div>
+                <button id="mobile-menu-toggle" class="md:hidden p-2" aria-label="פתיחת תפריט ניווט" aria-controls="menu" aria-expanded="false">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-gray-200" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
             </div>
+        </div>
+        <div id="menu" class="hidden md:hidden bg-neutral p-4 border-b border-neutral-light">
+            <a href="/" class="block py-2 hover:text-brand-500">ראשי</a>
+            <a href="/#services" class="block py-2 hover:text-brand-500">שירותים</a>
+            <a href="/#portfolio" class="block py-2 hover:text-brand-500">גלריה</a>
+            <a href="/blog/" class="block py-2 hover:text-brand-500">בלוג</a>
+            <a href="/#contact" class="block py-2 text-brand-500 font-semibold">צור קשר</a>
         </div>
     </nav>
 
-    <main class="pt-24 pb-16 px-4 max-w-4xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-brand-500">הדפסת מתכות תעשייתית</h1>
+    <main class="page-main pb-16 px-4 max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-brand-500">הדפסת מתכות ב־Laser Powder Bed Fusion (LPBF)</h1>
 
         <p class="text-lg text-gray-300 mb-6">
-            <strong>BIG 3D</strong> מספקים שירות <strong>הדפסת מתכות תעשייתית</strong> בטכנולוגיות מתקדמות – <strong>SLM</strong> (Selective Laser Melting) ו־<strong>LPBF</strong> (Laser Powder Bed Fusion). הדפסה מתוך אבקת מתכת יוצרת חלקים פונקציונליים עם צפיפות גבוהה, חוזק מכני ומבנה מורכב שאי אפשר להשיג בשיטות מסורתיות. הטכנולוגיה מתאימה לייצור אב־טיפוסים, כלי ייצור, רכיבים אירוטיים, רפואיים ותעשייתיים.
+            <strong>BIG 3D</strong> מספקים שירות <strong>הדפסת מתכות תעשייתית</strong> בטכנולוגיית <strong>Laser Powder Bed Fusion (LPBF)</strong>. בתהליך זה לייזר ממיס באופן סלקטיבי שכבות דקות של אבקת מתכת, עד ליצירת חלק תלת־ממדי מלא. זו אחת הטכנולוגיות המרכזיות לייצור רכיבי מתכת מורכבים, מדויקים וקלי־משקל, במיוחד כשצריך לשלב חופש תכנון גבוה עם ביצועים מכניים אמיתיים.
         </p>
+        <div class="p-5 bg-neutral rounded-2xl border border-brand-500/20 mb-8">
+            <p class="text-gray-200 leading-relaxed">
+                היתרון הגדול של <strong>LPBF</strong> הוא לא רק "להדפיס מתכת", אלא לייצר <strong>מה שלא משתלם או כמעט בלתי אפשרי לייצר בשיטות מסורתיות</strong>: חלקים עם גיאומטריות מורכבות, חללים פנימיים, תעלות קירור, מבנים קלי־משקל ואיחוד של כמה רכיבים לחלק אחד פונקציונלי.
+            </p>
+        </div>
+
+        <h2 class="text-2xl font-bold mt-10 mb-4">מהי בעצם טכנולוגיית LPBF?</h2>
+        <p class="text-gray-300 mb-4">
+            השם התקני הרחב של התהליך הוא <strong>Laser Powder Bed Fusion</strong>, ולעיתים תראו אותו גם כ־<strong>PBF-LB/M</strong>. במילים פשוטות: מפזרים שכבה דקה של אבקת מתכת, הלייזר ממיס רק את האזורים שנבחרו בקובץ, ולאחר מכן נפרסת שכבה חדשה. החלק נבנה שכבה אחר שכבה. התוצאה היא יכולת לייצר גיאומטריות מורכבות מאוד, חללים פנימיים, תעלות פנימיות ומבנים קלי־משקל, בצורה שקשה מאוד או לא משתלמת לייצר בעיבוד שבבי קלאסי.
+        </p>
+
+        <h2 class="text-2xl font-bold mt-10 mb-4">מה הטכנולוגיה מאפשרת בפועל?</h2>
+        <p class="text-gray-300 mb-4">
+            <strong>LPBF</strong> מאפשרת לייצר חלקי מתכת עם <strong>גיאומטריות מורכבות</strong>, <strong>תעלות קירור פנימיות</strong>, <strong>מבנים מחוררים או קלי־משקל</strong> ו־<strong>איחוד של כמה רכיבים לחלק אחד</strong>. זו טכנולוגיה חזקה מאוד כאשר רוצים להפחית משקל, לשלב פונקציות מרובות באותו חלק, לקצר זמני פיתוח או לייצר סדרות קצרות בלי להשקיע בכלי ייצור ייעודיים.
+        </p>
+        <p class="text-gray-300 mb-4">
+            מבחינה יישומית, הטכנולוגיה מתאימה במיוחד ל־<strong>אב־טיפוסים פונקציונליים</strong>, <strong>חלקים הנדסיים מורכבים</strong>, <strong>ג'יגים ופיקסטורות</strong>, <strong>תושבות</strong>, <strong>מארזים</strong>, <strong>רכיבים עם חללים פנימיים</strong> ולפעמים גם לחלקי קצה בסדרות קטנות, כאשר הגיאומטריה מצדיקה שימוש בייצור אדיטיבי.
+        </p>
+        <h2 class="text-2xl font-bold mt-10 mb-4">היתרונות הייחודיים של הדפסת מתכת ב־LPBF</h2>
+        <div class="space-y-4 mb-4">
+            <div class="p-4 bg-neutral rounded-xl">
+                <h3 class="font-bold text-brand-500 mb-2">חופש תכנון אמיתי</h3>
+                <p class="text-gray-300 text-sm">אפשר לתכנן חלקים עם חללים פנימיים, ערוצים פנימיים, lattices ומבנים שאי אפשר להגיע אליהם בכלי חיתוך רגילים.</p>
+            </div>
+            <div class="p-4 bg-neutral rounded-xl">
+                <h3 class="font-bold text-brand-500 mb-2">איחוד של כמה חלקים לרכיב אחד</h3>
+                <p class="text-gray-300 text-sm">במקום לייצר כמה רכיבים, להרכיב, ליישר ולחזק, אפשר לעיתים לתכנן רכיב אחד שמפחית הרכבות, נקודות כשל וזמני ייצור.</p>
+            </div>
+            <div class="p-4 bg-neutral rounded-xl">
+                <h3 class="font-bold text-brand-500 mb-2">הפחתת משקל בלי לוותר על ביצועים</h3>
+                <p class="text-gray-300 text-sm">הטכנולוגיה מתאימה במיוחד כשצריך יחס חוזק־משקל טוב יותר, למשל בחלקים הנדסיים, תושבות, רכיבים תנועתיים או חלקים עם מגבלות מסה.</p>
+            </div>
+            <div class="p-4 bg-neutral rounded-xl">
+                <h3 class="font-bold text-brand-500 mb-2">פיתוח מהיר יותר של חלקי מתכת</h3>
+                <p class="text-gray-300 text-sm">אפשר לעבור מהר יותר בין גרסאות, לבדוק התאמות גיאומטריות ולייצר אב־טיפוסים מתכתיים אמיתיים בלי להמתין לכלי ייצור ייעודיים.</p>
+            </div>
+        </div>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">מגוון חומרים להדפסת מתכות</h2>
         <p class="text-gray-300 mb-4">
-            אנחנו עובדים עם מגוון סגסוגות: <strong>אלומיניום</strong> (AlSi10Mg, AlSi12), <strong>טיטניום</strong> (Ti6Al4V), <strong>נירוסטה</strong> (316L, 17-4PH), <strong>כרום קובלט</strong>, <strong>נחושת</strong> ועוד. כל חומר מתאים ליישומים שונים – חוזק, עמידות לחום, קורוזיה, עמידות לשחיקה. פני השטח שנוצרים ישר מהמדפסת מאפשרים מינימום עיבוד לאחר ההדפסה.
+            אנחנו עובדים עם מגוון סגסוגות: <strong>אלומיניום</strong> (AlSi10Mg, AlSi12), <strong>טיטניום</strong> (Ti6Al4V), <strong>נירוסטה</strong> (316L, 17-4PH), <strong>כרום קובלט</strong>, <strong>נחושת</strong> ועוד. כל חומר מתאים ליישומים שונים - יחס חוזק־משקל, עמידות לחום, עמידות לקורוזיה, קשיחות או הולכת חום. בחירת החומר תלויה ביישום, בגיאומטריה, בסביבת העבודה ובדרישות הגימור.
         </p>
 
-        <h2 class="text-2xl font-bold mt-10 mb-4">יתרונות הדפסת מתכות</h2>
+        <h2 class="text-2xl font-bold mt-10 mb-4">מה חשוב לדעת על היכולות וגם על המגבלות?</h2>
         <p class="text-gray-300 mb-4">
-            הדפסת מתכות מאפשרת גיאומטריות מורכבות – חללים פנימיים, תעלות קירור, מבנים קלים – שאי אפשר לייצר ב־CNC או יציקה. זה חוסך זמן פיתוח, מפחית עלויות כלי ייצור ומאפשר איטרציות מהירות. החלקים מתאימים לשימוש ישיר בתעשייה – רכיבים מכניים, ברגים, מחזיקים, תבניות ועוד.
+            כדי להשתמש נכון ב־<strong>Laser Powder Bed Fusion</strong>, חשוב להבין שלא כל חלק מתאים להדפסה כמו שהוא. כיוון הבנייה, זוויות תלייה, תמיכות, ניקוז אבקה מאזורים פנימיים, דרישות סבילות ואזורים שדורשים עיבוד משלים - כל אלה משפיעים על התוצאה. בחלקים קריטיים נהוג לעיתים לשלב <strong>טיפול חום</strong>, <strong>הסרת תמיכות</strong>, <strong>ליטוש</strong> או <strong>עיבוד שבבי CNC</strong> לקבלת פני שטח וסבילות מדויקים יותר.
+        </p>
+        <p class="text-gray-300 mb-4">
+            לכן אנחנו לא מציגים את LPBF כ"קסם", אלא כטכנולוגיה הנדסית חזקה מאוד שדורשת תכנון נכון. כשמשתמשים בה נכון, היא מאפשרת יכולות שקשה להשיג בתהליכים מסורתיים; כשמשתמשים בה לא נכון, עלויות וזמני עיבוד עלולים לגדול. בדיוק כאן נכנס הליווי שלנו - בחירת חומר, בדיקת גיאומטריה והמלצה אם להדפיס, לעבד ב־CNC או לשלב בין התהליכים.
         </p>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">למי מתאים השירות?</h2>
         <p class="text-gray-300 mb-4">
-            השירות מתאים ליצרנים, סטארטאפים, חברות תעופה, רפואה, רכב וכל מי שצריך חלקי מתכת מדויקים ופונקציונליים. ניתן לשלב עם <a href="/engineering-design.html" class="text-brand-500 hover:underline">עיבוד שבבי</a> לגימור ו־<a href="/3d-printing-large.html" class="text-brand-500 hover:underline">הדפסות פלסטיק</a> לאב־טיפוסים מהירים.
+            השירות מתאים ליצרנים, סטארטאפים, מהנדסים, חברות תעופה, רפואה, רכב וכל מי שצריך חלקי מתכת מדויקים ופונקציונליים עם חופש תכנון גבוה. ניתן לשלב עם <a href="/engineering-design.html" class="text-brand-500 hover:underline">עיבוד שבבי</a> לגימור ועם <a href="/3d-printing-large.html" class="text-brand-500 hover:underline">הדפסות פלסטיק</a> לאב־טיפוסים מהירים - באותו תהליך עבודה.
+        </p>
+        <p class="text-gray-300 mb-4">
+            בפועל, אנחנו רואים ערך גבוה במיוחד בפרויקטים שבהם יש צורך ב־<strong>גיאומטריה מורכבת</strong>, <strong>חלק קומפקטי עם כמה פונקציות</strong>, <strong>חיסכון במשקל</strong> או <strong>סדרה קצרה שלא מצדיקה תבנית או כלי ייצור יקר</strong>. כשאלו הדרישות, LPBF יכולה להיות פתרון חזק בהרבה מהחלופות המקובלות.
         </p>
 
         <h2 class="text-2xl font-bold mt-10 mb-4">FAQ – שאלות נפוצות</h2>
         <div class="space-y-4 mb-10">
             <div class="p-4 bg-neutral rounded-xl">
-                <h3 class="font-bold text-brand-500 mb-2">מה גודל החלקים שניתן להדפיס?</h3>
-                <p class="text-gray-300 text-sm">תלוי במכונה ובחומר. בדרך כלל עד כמה מאות מילימטרים. לחלקים גדולים – נשקול חלוקה או שילוב עם עיבוד שבבי.</p>
+                <h3 class="font-bold text-brand-500 mb-2">איך עובדת טכנולוגיית LPBF?</h3>
+                <p class="text-gray-300 text-sm">בתהליך LPBF נפרסות שכבות דקות של אבקת מתכת, והלייזר מאחה בכל שכבה רק את האזורים שהוגדרו בקובץ. כך החלק נבנה שכבה אחר שכבה עד לקבלת רכיב מתכת מלא.</p>
             </div>
             <div class="p-4 bg-neutral rounded-xl">
-                <h3 class="font-bold text-brand-500 mb-2">האם החלקים מתאימים לשימוש תעשייתי?</h3>
-                <p class="text-gray-300 text-sm">כן. הדפסת מתכות SLM/LPBF יוצרת חלקים צפופים עם תכונות מכניות מצוינות. ניתן גם טיפול חום ועיבוד גימור.</p>
+                <h3 class="font-bold text-brand-500 mb-2">אילו יכולות תכנון הטכנולוגיה מאפשרת?</h3>
+                <p class="text-gray-300 text-sm">LPBF מאפשרת חללים פנימיים, תעלות קירור, מבנים קלי־משקל, חיזוקים מקומיים ואיחוד של כמה חלקים לרכיב אחד. יחד עם זאת, צריך לתכנן נכון כיווני בנייה, תמיכות ואפשרות לניקוז אבקה.</p>
             </div>
             <div class="p-4 bg-neutral rounded-xl">
-                <h3 class="font-bold text-brand-500 mb-2">כמה זמן לוקחת ההדפסה?</h3>
-                <p class="text-gray-300 text-sm">משתנה – חלקים קטנים ימים בודדים, חלקים מורכבים עד שבועיים. נציע תאריך משוער בהערכה.</p>
+                <h3 class="font-bold text-brand-500 mb-2">האם החלקים מתאימים לשימוש תעשייתי אמיתי?</h3>
+                <p class="text-gray-300 text-sm">כן, במקרים רבים בהחלט. החלקים יכולים להיות פונקציונליים ומכניים, אך הדרישות המדויקות תלויות בחומר, בגיאומטריה, בכיוון הבנייה ובשלבי post-processing כמו טיפול חום או עיבוד משלים.</p>
+            </div>
+            <div class="p-4 bg-neutral rounded-xl">
+                <h3 class="font-bold text-brand-500 mb-2">האם צריך עיבוד אחרי ההדפסה?</h3>
+                <p class="text-gray-300 text-sm">לעיתים כן. הסרת תמיכות, טיפול חום, השחזות, הברזות או עיבוד CNC הם חלק טבעי מהתהליך כשצריך גימור, סבילות או תפקוד מדויק יותר.</p>
             </div>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-4 pt-6">
             <a href="/#contact" class="bg-brand-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-brand-500 transition text-center">בקשו הצעת מחיר</a>
-            <a href="/3d-printing-large.html" class="border border-brand-600 text-brand-500 px-8 py-3 rounded-full hover:bg-neutral transition text-center">הדפסות תלת מימד בפלסטיק</a>
+            <a href="/3d-printing-large.html" class="border border-brand-600 text-brand-500 px-8 py-3 rounded-full hover:bg-neutral transition text-center">הדפסות תלת־ממד בפלסטיק</a>
         </div>
     </main>
 
     <footer class="bg-neutral py-6 border-t border-neutral-light text-center text-gray-400">
-        © 2025 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
+        © 2026 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
     </footer>
-    <script>document.addEventListener('DOMContentLoaded',()=>safeCreateIcons())</script>
+    <script>
+    document.addEventListener('DOMContentLoaded',()=>safeCreateIcons());
+    (function(){
+        var btn=document.getElementById('mobile-menu-toggle'),menu=document.getElementById('menu');
+        if(!btn||!menu)return;
+        function closeMenu(){menu.classList.add('hidden');btn.setAttribute('aria-expanded','false')}
+        btn.addEventListener('click',function(){var open=!menu.classList.toggle('hidden');btn.setAttribute('aria-expanded',open?'true':'false')});
+        menu.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!menu.classList.contains('hidden')){closeMenu();btn.focus()}});
+    })();
+    </script>
 </body>
 </html>

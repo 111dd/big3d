@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="googlebot" content="noindex, nofollow">
     <title>Admin Panel - BIG 3D</title>
     
     <!-- Compiled Tailwind CSS -->
@@ -10,7 +12,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet">
     <!-- Lucide Icons (defer) -->
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
     <script defer>
@@ -67,17 +69,17 @@
     <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-neutral-dark">
         <div class="bg-neutral p-8 rounded-3xl shadow-card max-w-md w-full">
             <div class="text-center mb-6">
-                <img src="dark_logo_big3d.webp" alt="BIG 3D" class="h-16 mx-auto mb-4 opacity-80">
+                <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D" class="h-16 mx-auto mb-4 opacity-80">
                 <h1 class="text-3xl font-extrabold text-brand-500">BIG 3D</h1>
                 <p class="text-gray-400 text-sm mt-2">מנהל מערכת</p>
             </div>
             <form id="login-form" class="space-y-4">
                 <div>
-                    <label class="block text-sm text-gray-300 mb-2">Admin API Key</label>
+                    <label class="block text-sm text-gray-300 mb-2">סיסמת ניהול</label>
                     <input type="password" id="login-api-key" 
                            class="w-full bg-neutral-dark border border-neutral-light p-3 rounded-lg text-gray-200 focus:border-brand-500 focus:outline-none transition" 
-                           required placeholder="הכנס Admin API Key מ-Cloudflare">
-                    <p class="text-xs text-gray-400 mt-1">מוגדר ב-wrangler secret put ADMIN_API_KEY</p>
+                           required placeholder="הכנס סיסמת ניהול">
+                    <p class="text-xs text-gray-400 mt-1">השתמשו בסיסמה שהוגדרה למערכת הניהול.</p>
                 </div>
                 <button type="submit" 
                         class="w-full bg-brand-600 py-3 rounded-lg text-white font-bold hover:bg-brand-500 transition">
@@ -94,7 +96,7 @@
         <nav class="bg-neutral/70 backdrop-blur-md border-b border-neutral-light p-4 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <img src="dark_logo_big3d.webp" alt="BIG 3D" class="h-10 opacity-80">
+                    <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D" class="h-10 opacity-80">
                     <h1 class="text-2xl font-extrabold text-brand-500">מנהל מערכת</h1>
                 </div>
                 <div class="flex items-center gap-4">
@@ -214,7 +216,7 @@
                            class="w-full bg-neutral border border-neutral-light p-3 rounded-lg text-gray-200 focus:border-brand-500 focus:outline-none" 
                            required pattern="[a-z0-9-_]+" 
                            placeholder="לדוגמה: new-project">
-                    <p class="text-xs text-gray-400 mt-1">רק אותיות קטנות, מספרים, מקף ותחתית</p>
+                    <p class="text-xs text-gray-400 mt-1">רק אותיות קטנות, מספרים, מקף וקו תחתון</p>
                 </div>
                 
                 <div>

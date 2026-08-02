@@ -3,24 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>בלוג – הדפסות תלת מימד, חיתוך לייזר וייצור | BIG 3D</title>
-    <meta name="description" content="בלוג BIG 3D – טיפים, מדריכים ומאמרים על הדפסות תלת מימד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר. גישה למומחים בתעשייה.">
+    <title>בלוג – הדפסות תלת־ממד, חיתוך לייזר וייצור | BIG 3D</title>
+    <meta name="description" content="בלוג BIG 3D - טיפים, מדריכים ומאמרים על הדפסות תלת־ממד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר. ידע מעשי מהמומחים בתעשייה.">
     <link rel="canonical" href="https://www.big3d.co.il/blog/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="בלוג BIG 3D - הדפסות תלת־ממד, חיתוך לייזר וייצור">
+    <meta property="og:description" content="טיפים, מדריכים ומאמרים על הדפסות תלת־ממד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר.">
+    <meta property="og:url" content="https://www.big3d.co.il/blog/">
+    <meta property="og:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta property="og:image:alt" content="BIG 3D - בלוג מקצועי על ייצור מתקדם">
+    <meta property="og:locale" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="בלוג BIG 3D - הדפסות תלת־ממד, חיתוך לייזר וייצור">
+    <meta name="twitter:description" content="טיפים, מדריכים ומאמרים על הדפסות תלת־ממד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר.">
+    <meta name="twitter:url" content="https://www.big3d.co.il/blog/">
+    <meta name="twitter:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#00D4FF">
-    <link rel="stylesheet" href="/css/tailwind.css">
+    <link rel="preload" href="/css/tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css"></noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <style>html{scroll-behavior:smooth} body{font-family:Heebo,sans-serif}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "בלוג BIG 3D",
+      "url": "https://www.big3d.co.il/blog/",
+      "description": "טיפים, מדריכים ומאמרים על הדפסות תלת־ממד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "BIG 3D",
+        "url": "https://www.big3d.co.il/"
+      }
+    }
+    </script>
+    <style>
+      :root{--header-height:4rem;--content-top-gap:2rem}
+      html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + .75rem);min-height:100%;height:auto}
+      body.blog-page{margin:0;font-family:Heebo,sans-serif;min-height:100vh;height:auto;overflow-x:hidden;overflow-y:auto}
+      nav.blog-nav{position:sticky;top:0;inset-inline:0}
+      main.blog-main{display:block;min-height:calc(100vh - var(--header-height));padding-top:var(--content-top-gap);overflow:visible}
+      article.blog-article{display:block;position:relative}
+    </style>
 </head>
-<body class="dark bg-neutral-dark text-gray-200 font-sans">
-    <nav class="fixed w-full z-50 bg-neutral/70 backdrop-blur-md border-b border-neutral-light">
+<body class="blog-page dark bg-neutral-dark text-gray-200 font-sans min-h-screen overflow-x-hidden">
+    <nav class="blog-nav sticky top-0 w-full z-50 bg-neutral/70 backdrop-blur-md border-b border-neutral-light">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <a href="/" class="flex items-center">
-                    <img src="/dark_logo_big3d.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
+                    <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
                 </a>
                 <div class="hidden md:flex items-center gap-6 text-sm">
                     <a href="/" class="hover:text-brand-500 transition">ראשי</a>
@@ -28,22 +63,31 @@
                     <a href="/#portfolio" class="hover:text-brand-500 transition">גלריה</a>
                     <a href="/#contact" class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-500 transition">צור קשר</a>
                 </div>
+                <button id="mobile-menu-toggle" class="md:hidden p-2" aria-label="פתיחת תפריט ניווט" aria-controls="menu" aria-expanded="false">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-gray-200" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
             </div>
+        </div>
+        <div id="menu" class="hidden md:hidden bg-neutral p-4 border-b border-neutral-light">
+            <a href="/" class="block py-2 hover:text-brand-500">ראשי</a>
+            <a href="/#services" class="block py-2 hover:text-brand-500">שירותים</a>
+            <a href="/#portfolio" class="block py-2 hover:text-brand-500">גלריה</a>
+            <a href="/#contact" class="block py-2 text-brand-500 font-semibold">צור קשר</a>
         </div>
     </nav>
 
-    <main class="pt-24 pb-16 px-4 max-w-4xl mx-auto">
+    <main class="blog-main pb-16 px-4 max-w-4xl mx-auto">
         <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-brand-500">בלוג BIG 3D</h1>
         <p class="text-lg text-gray-300 mb-12">
-            טיפים, מדריכים ומאמרים על הדפסות תלת מימד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר. גישה למומחים בתעשייה.
+            טיפים, מדריכים ומאמרים על הדפסות תלת־ממד, חיתוך לייזר, עיבוד שבבי ופיתוח מוצר — ידע מעשי מהמומחים בתעשייה שיעזור לכם לקבל החלטות מדויקות יותר.
         </p>
 
         <div class="space-y-8">
-            <article class="p-6 bg-neutral rounded-2xl shadow-card hover:shadow-lg transition">
+            <article class="blog-article p-6 bg-neutral rounded-2xl shadow-card hover:shadow-lg transition">
                 <h2 class="text-2xl font-bold mb-2">
-                    <a href="/blog/how-to-choose-3d-printing-service.html" class="text-brand-500 hover:underline">איך לבחור שירות הדפסה בתלת מימד?</a>
+                    <a href="/blog/how-to-choose-3d-printing-service.html" class="text-brand-500 hover:underline">איך לבחור שירות הדפסה בתלת־ממד?</a>
                 </h2>
-                <p class="text-gray-400 text-sm mb-4">מדריך לבחירת ספק הדפסות תלת מימד – מה לבדוק, אילו שאלות לשאול, ואיך להשוות מחירים.</p>
+                <p class="text-gray-400 text-sm mb-4">מדריך לבחירת ספק הדפסות תלת־ממד — מה לבדוק, אילו שאלות לשאול ואיך להשוות מחירים נכון.</p>
                 <a href="/blog/how-to-choose-3d-printing-service.html" class="text-brand-500 font-semibold text-sm">קרא עוד ←</a>
             </article>
 
@@ -58,7 +102,17 @@
     </main>
 
     <footer class="bg-neutral py-6 border-t border-neutral-light text-center text-gray-400">
-        © 2025 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
+        © 2026 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
     </footer>
+    <script>
+    (function(){
+        var btn=document.getElementById('mobile-menu-toggle'),menu=document.getElementById('menu');
+        if(!btn||!menu)return;
+        function closeMenu(){menu.classList.add('hidden');btn.setAttribute('aria-expanded','false')}
+        btn.addEventListener('click',function(){var open=!menu.classList.toggle('hidden');btn.setAttribute('aria-expanded',open?'true':'false')});
+        menu.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!menu.classList.contains('hidden')){closeMenu();btn.focus()}});
+    })();
+    </script>
 </body>
 </html>
