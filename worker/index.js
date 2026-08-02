@@ -245,12 +245,13 @@ async function serveStorage(key, request, env, cors = {}) {
     const width = Math.min(parseInt(w, 10) || 400, 1200);
     try {
       const res = await fetch(originUrl.toString(), {
-        cf: { image: { width, fit: 'scale-down', format: 'auto' } },
+        cf: { image: { width, fit: 'scale-down', format: 'auto', quality: 82 } },
       });
       if (res.ok) {
         const headers = new Headers(res.headers);
         Object.entries(cors).forEach(([k, v]) => headers.set(k, v));
         headers.set('Cache-Control', 'public, max-age=31536000');
+        headers.set('Vary', 'Accept');
         return new Response(res.body, { status: res.status, headers });
       }
     } catch (_) {}
