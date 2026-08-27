@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית LPBF? | בלוג BIG 3D</title>
+    <meta name="description" content="מדריך מלא להדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית Laser Powder Bed Fusion שלב אחר שלב, מה היא מאפשרת, מתי היא עדיפה על עיבוד שבבי, ומה חשוב לדעת על תכנון ועיבוד משלים.">
+    <link rel="canonical" href="https://www.big3d.co.il/blog/metal-3d-printing-lpbf-guide">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="הדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית LPBF? | בלוג BIG 3D">
+    <meta property="og:description" content="מדריך מלא להדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית Laser Powder Bed Fusion שלב אחר שלב, מה היא מאפשרת ומתי היא עדיפה על עיבוד שבבי.">
+    <meta property="og:url" content="https://www.big3d.co.il/blog/metal-3d-printing-lpbf-guide">
+    <meta property="og:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta property="og:image:alt" content="BIG 3D - מדריך להדפסת מתכות בטכנולוגיית LPBF">
+    <meta property="og:locale" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="הדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית LPBF? | בלוג BIG 3D">
+    <meta name="twitter:description" content="מדריך מלא להדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית Laser Powder Bed Fusion שלב אחר שלב, מה היא מאפשרת ומתי היא עדיפה על עיבוד שבבי.">
+    <meta name="twitter:url" content="https://www.big3d.co.il/blog/metal-3d-printing-lpbf-guide">
+    <meta name="twitter:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#00D4FF">
+    <link rel="preload" href="/css/tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css"></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "הדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית LPBF?",
+      "description": "מדריך מלא להדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית Laser Powder Bed Fusion שלב אחר שלב, מה היא מאפשרת, מתי היא עדיפה על עיבוד שבבי, ומה חשוב לדעת על תכנון ועיבוד משלים.",
+      "image": "https://www.big3d.co.il/dark_logo_big3d.webp",
+      "datePublished": "2026-08-27",
+      "dateModified": "2026-08-27",
+      "author": {
+        "@type": "Organization",
+        "name": "BIG 3D"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BIG 3D",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.big3d.co.il/dark_logo_big3d.webp"
+        }
+      },
+      "mainEntityOfPage": "https://www.big3d.co.il/blog/metal-3d-printing-lpbf-guide",
+      "inLanguage": "he-IL"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ראשי", "item": "https://www.big3d.co.il/"},
+            {"@type": "ListItem", "position": 2, "name": "בלוג BIG 3D", "item": "https://www.big3d.co.il/blog/"},
+            {"@type": "ListItem", "position": 3, "name": "הדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית LPBF?", "item": "https://www.big3d.co.il/blog/metal-3d-printing-lpbf-guide"}
+        ]
+    }
+    </script>
+    <style>
+      :root{--header-height:4rem;--content-top-gap:2rem}
+      html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + .75rem);min-height:100%;height:auto}
+      body.blog-page{margin:0;font-family:Heebo,sans-serif;min-height:100vh;height:auto;overflow-x:hidden;overflow-y:auto}
+      nav.blog-nav{position:sticky;top:0;inset-inline:0}
+      main.blog-main{display:block;min-height:calc(100vh - var(--header-height));padding-top:var(--content-top-gap);overflow:visible}
+      article.blog-article{display:block;position:relative}
+    </style>
+</head>
+<body class="blog-page dark bg-neutral-dark text-gray-200 font-sans min-h-screen overflow-x-hidden">
+    <nav class="blog-nav sticky top-0 w-full z-50 bg-neutral/70 backdrop-blur-md border-b border-neutral-light">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="flex items-center">
+                    <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
+                </a>
+                <div class="hidden md:flex items-center gap-6 text-sm">
+                    <a href="/" class="hover:text-brand-500 transition">ראשי</a>
+                    <a href="/blog/" class="hover:text-brand-500 transition">בלוג</a>
+                    <a href="/#contact" class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-500 transition">צור קשר</a>
+                </div>
+                <button id="mobile-menu-toggle" class="md:hidden p-2" aria-label="פתיחת תפריט ניווט" aria-controls="menu" aria-expanded="false">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-gray-200" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+        <div id="menu" class="hidden md:hidden bg-neutral p-4 border-b border-neutral-light">
+            <a href="/" class="block py-2 hover:text-brand-500">ראשי</a>
+            <a href="/blog/" class="block py-2 hover:text-brand-500">בלוג</a>
+            <a href="/#contact" class="block py-2 text-brand-500 font-semibold">צור קשר</a>
+        </div>
+    </nav>
+
+    <main class="blog-main pb-16 px-4 max-w-4xl mx-auto">
+        <article class="blog-article">
+            <a href="/blog/" class="text-brand-500 hover:underline text-sm mb-6 block">← חזרה לבלוג</a>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">הדפסת מתכות בתלת־ממד: איך עובדת טכנולוגיית LPBF?</h1>
+            <p class="text-gray-400 text-sm mb-8">מדריך טכנולוגי ללקוחות ומהנדסים · בלוג BIG 3D</p>
+
+            <div class="prose prose-invert max-w-none text-gray-300 space-y-6">
+                <p>
+                    כשרוב האנשים שומעים "הדפסת תלת־ממד" הם מדמיינים פלסטיק. אבל בעשור האחרון הדפסת מתכות בתלת־ממד הפכה מטכנולוגיית מעבדה לכלי ייצור תעשייתי אמיתי - בתעופה, ברפואה, ברכב ובמכונות. הטכנולוגיה המרכזית בתחום נקראת <strong>Laser Powder Bed Fusion</strong> (בקיצור <strong>LPBF</strong>, ולעיתים PBF-LB/M), ובמאמר הזה נסביר בדיוק איך היא עובדת, מה היא מאפשרת, ומתי כדאי לבחור בה במקום ייצור מסורתי.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">איך עובד התהליך, שלב אחר שלב</h2>
+                <p>
+                    הדפסת LPBF בנויה על עיקרון פשוט: בניית חלק מתכת מלא, שכבה דקה אחר שכבה דקה, מאבקת מתכת עדינה.
+                </p>
+                <ol class="list-decimal pr-6 space-y-3">
+                    <li><strong>פריסת שכבת אבקה:</strong> מנגנון פריסה (Recoater) מפזר שכבה דקה ואחידה של אבקת מתכת - בעובי של עשרות מיקרונים בלבד - על משטח הבנייה.</li>
+                    <li><strong>התכה סלקטיבית בלייזר:</strong> לייזר עוצמתי סורק את השכבה וממיס רק את האזורים שהוגדרו בקובץ התלת־ממדי. האבקה המותכת מתמצקת ומתאחה עם השכבות שמתחתיה.</li>
+                    <li><strong>הורדת המשטח ופריסה מחדש:</strong> משטח הבנייה יורד בגובה שכבה אחת, נפרסת שכבת אבקה חדשה, והלייזר סורק שוב. התהליך חוזר על עצמו אלפי פעמים.</li>
+                    <li><strong>אטמוספרה מבוקרת:</strong> כל התהליך מתרחש בתא סגור עם גז אינרטי (בדרך כלל ארגון או חנקן), כדי למנוע חמצון של המתכת המותכת.</li>
+                    <li><strong>ניקוי והפרדה:</strong> בסוף ההדפסה החלק "קבור" בתוך אבקה לא מותכת. מנקים את האבקה (שברובה ממוחזרת), מפרידים את החלק ממשטח הבנייה ומסירים תמיכות.</li>
+                </ol>
+                <p>
+                    התוצאה היא חלק מתכת מלא וצפוף - לא "דמוי מתכת" ולא מודל ויזואלי - עם תכונות מכניות אמיתיות שמתאימות לשימוש פונקציונלי.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">מה LPBF מאפשרת שייצור מסורתי לא?</h2>
+                <p>
+                    הכוח האמיתי של הטכנולוגיה הוא לא "להדפיס מתכת" אלא לייצר את מה שכמעט בלתי אפשרי - או לא משתלם - לייצר בשיטות אחרות:
+                </p>
+                <ul class="list-disc pr-6 space-y-3">
+                    <li><strong>גיאומטריות מורכבות וחללים פנימיים:</strong> תעלות קירור עוקבות־צורה בתוך תבניות, ערוצי זרימה פנימיים, ומבנים שכלי חיתוך פשוט לא יכול להגיע אליהם.</li>
+                    <li><strong>מבנים קלי־משקל (Lattice):</strong> מילוי סריגי פנימי שמפחית משקל דרמטית תוך שמירה על קשיחות - קריטי בתעופה, ברכב ובכל יישום עם מגבלת מסה.</li>
+                    <li><strong>איחוד רכיבים:</strong> מכלול שהורכב בעבר מכמה חלקים מיוצר כרכיב אחד - פחות הרכבות, פחות נקודות כשל, פחות ברגים ואטמים.</li>
+                    <li><strong>סדרות קצרות בלי כלי ייצור:</strong> אין צורך בתבנית יציקה או בכלי ייעודי. מהקובץ ישר לייצור - יתרון עצום באב־טיפוסים ובסדרות של יחידות בודדות עד עשרות.</li>
+                    <li><strong>איטרציות מהירות:</strong> שינוי תכנון הוא שינוי קובץ, לא כלי ייצור חדש. אפשר לבדוק גרסה, לשפר ולהדפיס שוב.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">LPBF מול עיבוד שבבי (CNC) - מתי כל אחד עדיף?</h2>
+                <p>
+                    זו לא תחרות - אלה כלים משלימים, ולעיתים קרובות הפתרון הנכון משלב את שניהם:
+                </p>
+                <ul class="list-disc pr-6 space-y-3">
+                    <li><strong>עיבוד שבבי עדיף</strong> כשמדובר בגיאומטריה פשוטה יחסית, בדרישות סבילות ופני שטח מחמירות מאוד, בחומר זול וזמין בבלוקים, או בסדרות גדולות שבהן זמן המכונה לחלק נמוך.</li>
+                    <li><strong>LPBF עדיפה</strong> כשהגיאומטריה מורכבת (חללים פנימיים, דפנות דקות, צורות אורגניות), כשחיסכון במשקל קריטי, כשרוצים לאחד כמה רכיבים לאחד, או כשצריך חלק מתכת מהר בלי להשקיע בכלי ייצור.</li>
+                    <li><strong>השילוב המנצח:</strong> ברוב היישומים התעשייתיים החלק מודפס ב־LPBF ואז עובר <a href="/engineering-design" class="text-brand-500 hover:underline">עיבוד שבבי משלים</a> על משטחי ההשקה הקריטיים - כך מקבלים גם חופש גיאומטרי וגם סבילות הדוקה איפה שבאמת צריך.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">מה חשוב לדעת לפני שמתכננים חלק להדפסת מתכת</h2>
+                <p>
+                    LPBF היא טכנולוגיה הנדסית - לא קסם. חלק שתוכנן לעיבוד שבבי או ליציקה לא בהכרח מתאים להדפסה כמו שהוא. הנקודות המרכזיות שמשפיעות על הצלחת ההדפסה:
+                </p>
+                <ul class="list-disc pr-6 space-y-3">
+                    <li><strong>כיוון בנייה:</strong> משפיע על חוזק, על איכות פני השטח ועל כמות התמיכות. חלק מהמשטחים ייצאו חלקים יותר מאחרים בהתאם לזווית שלהם.</li>
+                    <li><strong>תמיכות וזוויות תלייה:</strong> משטחים "תלויים" בזווית חדה מדי דורשים תמיכות שיש להסיר לאחר ההדפסה - עדיף לתכנן זוויות שנתמכות בעצמן היכן שאפשר.</li>
+                    <li><strong>ניקוז אבקה:</strong> חללים פנימיים חייבים פתחי ניקוז כדי שאפשר יהיה להוציא את האבקה הלא־מותכת שנשארת בפנים.</li>
+                    <li><strong>עיבוד משלים (Post-Processing):</strong> ברוב היישומים הרציניים החלק עובר טיפול חום להפגת מאמצים, הסרת תמיכות, ולעיתים ליטוש או עיבוד CNC באזורים שדורשים דיוק גבוה במיוחד.</li>
+                </ul>
+                <p>
+                    בדיוק בגלל זה חשוב שהספק יידע לא רק "להדפיס" אלא ללוות את התכנון: לבחון את הגיאומטריה, להמליץ על כיוון בנייה ועל חומר, ולהגיד ביושר מתי הדפסה היא הפתרון הנכון ומתי עדיף עיבוד שבבי או שילוב של השניים.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">לאילו יישומים זה מתאים בפועל?</h2>
+                <p>
+                    אב־טיפוסים פונקציונליים ממתכת אמיתית, חלקים הנדסיים מורכבים, ג'יגים ופיקסטורות לקו ייצור, תושבות ומארזים, רכיבים עם תעלות קירור פנימיות, וחלקי קצה בסדרות קטנות שבהן תבנית יציקה לא מצדיקה את עצמה. בחירת החומר עצמו - אלומיניום, טיטניום, נירוסטה ועוד - היא נושא בפני עצמו, ולה הקדשנו <a href="/blog/metal-3d-printing-materials" class="text-brand-500 hover:underline">מדריך נפרד לבחירת סגסוגות להדפסת מתכת</a>.
+                </p>
+
+                <p class="mt-10">
+                    ב־<a href="/" class="text-brand-500 hover:underline">BIG 3D</a> אנחנו מתמחים ב<a href="/3d-printing-industrial" class="text-brand-500 hover:underline">הדפסת מתכות בטכנולוגיית LPBF</a> לצד <a href="/engineering-design" class="text-brand-500 hover:underline">תכנון הנדסי ועיבוד שבבי</a> - כך שאפשר לקבל אצלנו את כל המסלול: בדיקת התכנון, המלצת חומר, הדפסה ועיבוד משלים. יש לכם חלק מתכת מורכב? <a href="/#contact" class="text-brand-500 hover:underline">צרו קשר</a> או שלחו לנו קובץ בוואטסאפ ונחזור עם המלצה מקצועית.
+                </p>
+            </div>
+        </article>
+
+        <div class="mt-12 flex flex-wrap gap-4">
+            <a href="/blog/" class="text-brand-500 hover:underline">← חזרה לבלוג</a>
+            <a href="/blog/metal-3d-printing-materials" class="text-brand-500 hover:underline">המדריך לבחירת סגסוגות להדפסת מתכת →</a>
+            <a href="/3d-printing-industrial" class="text-brand-500 hover:underline">שירות הדפסת מתכות LPBF →</a>
+        </div>
+    </main>
+
+    <footer class="bg-neutral py-6 border-t border-neutral-light text-center text-gray-400 mt-16">
+        © 2026 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
+    </footer>
+    <script>
+    (function(){
+        var btn=document.getElementById('mobile-menu-toggle'),menu=document.getElementById('menu');
+        if(!btn||!menu)return;
+        function closeMenu(){menu.classList.add('hidden');btn.setAttribute('aria-expanded','false')}
+        btn.addEventListener('click',function(){var open=!menu.classList.toggle('hidden');btn.setAttribute('aria-expanded',open?'true':'false')});
+        menu.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!menu.classList.contains('hidden')){closeMenu();btn.focus()}});
+    })();
+    </script>
+</body>
+</html>
