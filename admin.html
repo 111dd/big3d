@@ -15,6 +15,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet">
     <!-- Lucide Icons (defer) -->
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+    <!-- Cropper.js - image crop/rotate editor (admin only) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js" defer></script>
     <script defer>
     document.addEventListener("DOMContentLoaded", () => {
       if (window.lucide?.createIcons) window.lucide.createIcons();
@@ -60,6 +63,32 @@
             object-fit: contain;
             border-radius: 0.5rem;
         }
+
+        /* Image tile actions */
+        .tile-actions button {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 2rem; height: 2rem; border-radius: 0.5rem;
+            background: #2b2b2f; color: #e5e7eb; transition: background .15s;
+        }
+        .tile-actions button:hover { background: #3a3a3f; color: #00D4FF; }
+        .tile-actions button:disabled { opacity: .35; cursor: not-allowed; }
+        .tile-actions button.danger:hover { background: #7f1d1d; color: #fff; }
+        .tile-badge {
+            position: absolute; top: .5rem; right: .5rem;
+            font-size: .7rem; padding: .15rem .5rem; border-radius: 999px; font-weight: 700;
+        }
+
+        /* Image editor */
+        .editor-stage { height: min(60vh, 560px); background: #111; border-radius: .75rem; overflow: hidden; }
+        .editor-stage img { max-width: 100%; display: block; }
+        .editor-btn {
+            display: inline-flex; align-items: center; gap: .35rem;
+            padding: .5rem .8rem; border-radius: .5rem; font-size: .875rem;
+            background: #2b2b2f; color: #e5e7eb; border: 1px solid transparent; transition: all .15s;
+        }
+        .editor-btn:hover { background: #3a3a3f; }
+        .editor-btn.active { border-color: #00D4FF; color: #00D4FF; }
+        .cropper-view-box, .cropper-face { border-radius: 0; }
     </style>
 </head>
 
@@ -235,6 +264,10 @@
                             בחר תמונות
                         </button>
                     </div>
+                    <p class="text-xs text-gray-400 mt-2">
+                        התמונה הראשונה היא התמונה הראשית בגלריה. לכל תמונה: <span class="text-gray-300">חיתוך/סיבוב</span>, שינוי סדר, הגדרה כראשית והסרה.
+                        השינויים נשמרים בלחיצה על "שמור".
+                    </p>
                     <div id="image-preview-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                         <!-- Image previews will appear here -->
                     </div>
@@ -254,7 +287,53 @@
         </div>
     </div>
 
+    <!-- Image Editor Modal (crop / rotate / flip) -->
+    <div id="image-editor-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-[1000] items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="image-editor-title">
+        <div class="bg-neutral-dark rounded-3xl shadow-card max-w-4xl w-full p-5 md:p-6 relative max-h-[95vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h2 id="image-editor-title" class="text-xl font-bold text-brand-500">עריכת תמונה</h2>
+                <button type="button" onclick="closeImageEditor()" class="text-gray-300 hover:text-white" aria-label="סגירה">
+                    <i data-lucide="x" class="h-6 w-6"></i>
+                </button>
+            </div>
+
+            <div class="editor-stage">
+                <img id="image-editor-img" alt="תמונה לעריכה">
+            </div>
+            <p id="image-editor-status" class="text-xs text-gray-400 mt-2">גררו את המסגרת לחיתוך, גללו לזום. הגלריה באתר מציגה כרטיסים ביחס 4:3.</p>
+
+            <div class="flex flex-wrap items-center gap-2 mt-4">
+                <span class="text-sm text-gray-400 ml-1">יחס:</span>
+                <button type="button" class="editor-btn" data-aspect="free" onclick="setEditorAspect('free')">חופשי</button>
+                <button type="button" class="editor-btn" data-aspect="4:3" onclick="setEditorAspect('4:3')">4:3 (גלריה)</button>
+                <button type="button" class="editor-btn" data-aspect="1:1" onclick="setEditorAspect('1:1')">1:1</button>
+                <button type="button" class="editor-btn" data-aspect="3:4" onclick="setEditorAspect('3:4')">3:4</button>
+                <button type="button" class="editor-btn" data-aspect="16:9" onclick="setEditorAspect('16:9')">16:9</button>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 mt-3">
+                <button type="button" class="editor-btn" onclick="editorRotate(-90)" title="סיבוב 90° נגד כיוון השעון"><i data-lucide="rotate-ccw" class="h-4 w-4"></i>סובב שמאלה</button>
+                <button type="button" class="editor-btn" onclick="editorRotate(90)" title="סיבוב 90° עם כיוון השעון"><i data-lucide="rotate-cw" class="h-4 w-4"></i>סובב ימינה</button>
+                <button type="button" class="editor-btn" onclick="editorFlip('x')"><i data-lucide="flip-horizontal" class="h-4 w-4"></i>הפוך אופקית</button>
+                <button type="button" class="editor-btn" onclick="editorFlip('y')"><i data-lucide="flip-vertical" class="h-4 w-4"></i>הפוך אנכית</button>
+                <button type="button" class="editor-btn" onclick="editorZoom(0.1)"><i data-lucide="zoom-in" class="h-4 w-4"></i></button>
+                <button type="button" class="editor-btn" onclick="editorZoom(-0.1)"><i data-lucide="zoom-out" class="h-4 w-4"></i></button>
+                <button type="button" class="editor-btn" onclick="editorReset()"><i data-lucide="undo-2" class="h-4 w-4"></i>איפוס</button>
+            </div>
+
+            <div class="flex gap-4 pt-5">
+                <button type="button" id="image-editor-apply" onclick="applyImageEdit()"
+                        class="flex-1 bg-brand-600 py-3 rounded-lg text-white font-bold hover:bg-brand-500 transition">
+                    החל שינויים
+                </button>
+                <button type="button" onclick="closeImageEditor()"
+                        class="flex-1 bg-neutral border border-neutral-light py-3 rounded-lg text-gray-200 hover:bg-neutral-light transition">
+                    ביטול
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/cloudflare-config.js?v=4" defer></script>
-    <script src="js/admin.js?v=4" defer></script>
+    <script src="js/admin.js?v=5" defer></script>
 </body>
 </html>

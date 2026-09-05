@@ -71,6 +71,11 @@ function setupEventListeners() {
         uploadInput.files = e.dataTransfer.files;
         handleImageSelect({ target: uploadInput });
     });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !document.getElementById('image-editor-modal').classList.contains('hidden')) {
+            closeImageEditor();
+        }
+    });
     const logoUpload = document.getElementById('logo-upload');
     logoUpload.addEventListener('change', handleLogoSelect);
     const logoUploadArea = document.getElementById('logo-upload-area');
@@ -253,20 +258,220 @@ function handleImageSelect(e) {
 function updateImagePreview() {
     const container = document.getElementById('image-preview-container');
     container.innerHTML = '';
+    const last = uploadedImages.length - 1;
     uploadedImages.forEach((img, i) => {
         const div = document.createElement('div');
         div.className = 'relative';
+        const badge =
+            (i === 0 ? '<span class="tile-badge bg-brand-600 text-white">תמונה ראשית</span>' : '') +
+            (img.edited ? '<span class="tile-badge bg-amber-500 text-black" style="right:auto;left:.5rem">נערכה</span>' : '');
         div.innerHTML = `
-            <img src="${img.preview}" class="image-preview" alt="Preview ${i + 1}">
-            <button onclick="removeImage(${i})" class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-700"><i data-lucide="x" class="h-4 w-4"></i></button>`;
+            <img src="${img.preview}" class="image-preview cursor-pointer" alt="תמונה ${i + 1}" title="לחיצה לעריכה" onclick="openImageEditor(${i})">
+            ${badge}
+            <div class="tile-actions flex items-center justify-center gap-1 mt-2">
+                <button type="button" onclick="openImageEditor(${i})" title="חיתוך / סיבוב"><i data-lucide="crop" class="h-4 w-4"></i></button>
+                <button type="button" onclick="moveImage(${i}, -1)" title="הזז קדימה" ${i === 0 ? 'disabled' : ''}><i data-lucide="chevron-right" class="h-4 w-4"></i></button>
+                <button type="button" onclick="moveImage(${i}, 1)" title="הזז אחורה" ${i === last ? 'disabled' : ''}><i data-lucide="chevron-left" class="h-4 w-4"></i></button>
+                <button type="button" onclick="setAsCover(${i})" title="הגדר כתמונה ראשית" ${i === 0 ? 'disabled' : ''}><i data-lucide="star" class="h-4 w-4"></i></button>
+                <button type="button" onclick="removeImage(${i})" class="danger" title="הסר"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+            </div>`;
         container.appendChild(div);
     });
     safeCreateIcons();
 }
 
 function removeImage(index) {
+    const img = uploadedImages[index];
+    if (img?.preview?.startsWith('blob:')) URL.revokeObjectURL(img.preview);
     uploadedImages.splice(index, 1);
     updateImagePreview();
+}
+
+function moveImage(index, delta) {
+    const target = index + delta;
+    if (target < 0 || target >= uploadedImages.length) return;
+    const [item] = uploadedImages.splice(index, 1);
+    uploadedImages.splice(target, 0, item);
+    updateImagePreview();
+}
+
+function setAsCover(index) {
+    if (index <= 0 || index >= uploadedImages.length) return;
+    const [item] = uploadedImages.splice(index, 1);
+    uploadedImages.unshift(item);
+    updateImagePreview();
+}
+
+/* ---------------- Image editor (crop / rotate / flip) ---------------- */
+
+const editorState = { cropper: null, index: null, mime: 'image/jpeg', objectUrl: null, aspect: 'free' };
+const ASPECTS = { free: NaN, '4:3': 4 / 3, '1:1': 1, '3:4': 3 / 4, '16:9': 16 / 9 };
+
+function isPngSource(item) {
+    if (item.file) return item.file.type === 'image/png';
+    return /\.png(\?|$)/i.test(item.url || '');
+}
+
+function openImageEditor(index) {
+    const item = uploadedImages[index];
+    if (!item) return;
+    if (typeof Cropper !== 'function') { alert('עורך התמונות עדיין נטען, נסו שוב בעוד רגע.'); return; }
+
+    destroyEditor();
+    editorState.index = index;
+    editorState.mime = isPngSource(item) ? 'image/png' : 'image/jpeg';
+
+    const img = document.getElementById('image-editor-img');
+    const modal = document.getElementById('image-editor-modal');
+    const status = document.getElementById('image-editor-status');
+
+    // Fresh <img> each time - Cropper wraps the element and leaves state behind otherwise.
+    const fresh = img.cloneNode(false);
+    fresh.removeAttribute('src');
+    img.replaceWith(fresh);
+
+    let src;
+    if (item.file) {
+        src = URL.createObjectURL(item.file);
+        editorState.objectUrl = src;
+    } else {
+        src = item.url;
+        fresh.crossOrigin = 'anonymous';
+    }
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    status.textContent = 'טוען תמונה...';
+
+    fresh.onerror = () => {
+        status.textContent = 'לא ניתן לטעון את התמונה לעריכה (בעיית הרשאות CORS). נסו להעלות אותה מחדש.';
+    };
+    fresh.src = src;
+
+    editorState.cropper = new Cropper(fresh, {
+        viewMode: 1,
+        dragMode: 'crop',
+        autoCropArea: 1,
+        responsive: true,
+        background: false,
+        checkOrientation: true,
+        checkCrossOrigin: true,
+        movable: true,
+        zoomable: true,
+        rotatable: true,
+        scalable: true,
+        toggleDragModeOnDblclick: false,
+        ready() {
+            status.textContent = 'גררו את המסגרת לחיתוך, גללו לזום. הגלריה באתר מציגה כרטיסים ביחס 4:3.';
+            setEditorAspect(editorState.aspect || 'free');
+        },
+    });
+    safeCreateIcons();
+}
+
+function destroyEditor() {
+    if (editorState.cropper) {
+        try { editorState.cropper.destroy(); } catch (_) {}
+        editorState.cropper = null;
+    }
+    if (editorState.objectUrl) {
+        URL.revokeObjectURL(editorState.objectUrl);
+        editorState.objectUrl = null;
+    }
+}
+
+function closeImageEditor() {
+    destroyEditor();
+    editorState.index = null;
+    const modal = document.getElementById('image-editor-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function setEditorAspect(name) {
+    editorState.aspect = name;
+    document.querySelectorAll('#image-editor-modal [data-aspect]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.aspect === name);
+    });
+    if (editorState.cropper) editorState.cropper.setAspectRatio(ASPECTS[name]);
+}
+
+function editorRotate(deg) { editorState.cropper?.rotate(deg); }
+function editorZoom(ratio) { editorState.cropper?.zoom(ratio); }
+function editorFlip(axis) {
+    const c = editorState.cropper;
+    if (!c) return;
+    const data = c.getData();
+    if (axis === 'x') c.scaleX(-(data.scaleX || 1));
+    else c.scaleY(-(data.scaleY || 1));
+}
+function editorReset() {
+    editorState.cropper?.reset();
+    setEditorAspect('free');
+}
+
+function fileBaseName(item) {
+    const raw = item.file?.name || decodeURIComponent((item.url || 'image').split('/').pop().split('?')[0]) || 'image';
+    return raw.replace(/\.[^.]+$/, '') || 'image';
+}
+
+async function applyImageEdit() {
+    const c = editorState.cropper;
+    const index = editorState.index;
+    if (!c || index === null) return;
+    const btn = document.getElementById('image-editor-apply');
+    const original = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'מעבד...';
+
+    try {
+        // 2000px cap keeps files well under the 10 MB upload limit and is plenty for the gallery.
+        const canvas = c.getCroppedCanvas({
+            maxWidth: 2000,
+            maxHeight: 2000,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+            fillColor: editorState.mime === 'image/png' ? 'transparent' : '#ffffff',
+        });
+        if (!canvas) throw new Error('canvas');
+        const blob = await new Promise((resolve, reject) =>
+            canvas.toBlob(b => (b ? resolve(b) : reject(new Error('blob'))), editorState.mime, 0.9));
+
+        const item = uploadedImages[index];
+        const ext = editorState.mime === 'image/png' ? 'png' : 'jpg';
+        const file = new File([blob], `${fileBaseName(item)}-edited.${ext}`, { type: editorState.mime });
+        if (item.preview?.startsWith('blob:')) URL.revokeObjectURL(item.preview);
+
+        uploadedImages[index] = {
+            file,
+            preview: URL.createObjectURL(blob),
+            isExisting: false,
+            edited: true,
+            // Remember what this replaces so the old storage object can be cleaned up after save.
+            replacesUrl: item.replacesUrl || (item.isExisting ? item.url : null),
+        };
+        closeImageEditor();
+        updateImagePreview();
+    } catch (err) {
+        const status = document.getElementById('image-editor-status');
+        status.textContent = 'העריכה נכשלה. אם זו תמונה קיימת מהאתר, ייתכן שהדפדפן חוסם אותה (CORS) - נסו להעלות אותה מחדש כקובץ.';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = original;
+    }
+}
+
+/** Returns the R2 key if the URL points at this Worker's /storage/, otherwise null. */
+function storageKeyFromUrl(url) {
+    try {
+        const u = new URL(url);
+        const base = new URL(window.cfApi.getBaseUrl());
+        if (u.origin !== base.origin) return null;
+        const m = u.pathname.match(/^\/(?:api\/)?storage\/(.+)$/);
+        return m ? decodeURIComponent(m[1]) : null;
+    } catch (_) {
+        return null;
+    }
 }
 
 async function handleProjectSubmit(e) {
@@ -274,34 +479,52 @@ async function handleProjectSubmit(e) {
     const title = document.getElementById('project-title').value;
     const key = document.getElementById('project-key').value;
     const description = document.getElementById('project-description').value;
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn?.textContent;
 
     try {
-        const existingImages = uploadedImages.filter(img => img.isExisting && img.url);
-        const newFiles = uploadedImages.filter(img => img.file && !img.isExisting);
-        let imageUrls = existingImages.map(img => img.url);
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'שומר...'; }
 
-        if (currentProjectId) {
-            for (const img of newFiles) {
-                const fd = new FormData();
-                fd.append('file', img.file);
-                const uploaded = await window.cfApi.post(`/projects/${currentProjectId}/images`, fd, true);
-                imageUrls.push(uploaded.url);
-            }
-            await window.cfApi.put(`/projects/${currentProjectId}`, { title, description, images: imageUrls });
-        } else {
-            const body = { title, key, description, images: imageUrls };
-            const created = await window.cfApi.post('/projects', body);
-            for (const img of newFiles) {
-                const fd = new FormData();
-                fd.append('file', img.file);
-                await window.cfApi.post(`/projects/${created.id}/images`, fd, true);
+        let projectId = currentProjectId;
+        if (!projectId) {
+            const created = await window.cfApi.post('/projects', { title, key, description, images: [] });
+            projectId = created.id;
+        }
+
+        // Upload in display order so the saved order matches what the admin sees.
+        const imageUrls = [];
+        const replaced = [];
+        let done = 0;
+        const pending = uploadedImages.filter(img => img.file).length;
+        for (const img of uploadedImages) {
+            if (img.isExisting && img.url) { imageUrls.push(img.url); continue; }
+            if (!img.file) continue;
+            done += 1;
+            if (submitBtn) submitBtn.textContent = `מעלה תמונה ${done}/${pending}...`;
+            const fd = new FormData();
+            fd.append('file', img.file);
+            const uploaded = await window.cfApi.post(`/projects/${projectId}/images`, fd, true);
+            imageUrls.push(uploaded.url);
+            if (img.replacesUrl) replaced.push(img.replacesUrl);
+        }
+
+        await window.cfApi.put(`/projects/${projectId}`, { title, description, images: imageUrls });
+
+        // Best-effort cleanup of storage objects that were replaced by edited versions.
+        for (const url of replaced) {
+            const storageKey = storageKeyFromUrl(url);
+            if (storageKey && !imageUrls.includes(url)) {
+                window.cfApi.delete('/storage/' + storageKey.split('/').map(encodeURIComponent).join('/')).catch(() => {});
             }
         }
+
         closeProjectModal();
         loadProjects();
         alert('הפרויקט נשמר בהצלחה!');
     } catch (err) {
         alert('שגיאה: ' + err.message);
+    } finally {
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText || 'שמור'; }
     }
 }
 

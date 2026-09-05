@@ -104,6 +104,9 @@ export default {
       if (path === '/site-logos' && request.method === 'POST') {
         return await uploadLogo(request, env, cors);
       }
+      if (storageMatch && request.method === 'DELETE') {
+        return await deleteStorageObject(storageMatch[1], env, cors);
+      }
 
       return errorResponse('Not found', 404, cors);
     } catch (err) {
@@ -267,6 +270,29 @@ async function serveStorage(key, request, env, cors = {}) {
       ...cors,
     },
   });
+}
+
+/**
+ * Admin-only cleanup of an R2 object (e.g. an image replaced by an edited copy).
+ * Refuses to delete objects that are still referenced by any image or logo row.
+ */
+async function deleteStorageObject(rawKey, env, cors = {}) {
+  const key = decodeURIComponent(rawKey);
+  if (!key || key.includes('..')) return errorResponse('Invalid key', 400, cors);
+
+  const suffix = `/storage/${key}`;
+  const imgRef = await env.DB.prepare(
+    "SELECT COUNT(*) as c FROM images WHERE url LIKE ? ESCAPE '\\'"
+  ).bind('%' + suffix.replace(/[%_\\]/g, ch => '\\' + ch)).first();
+  const logoRef = await env.DB.prepare(
+    "SELECT COUNT(*) as c FROM site_logos WHERE url LIKE ? ESCAPE '\\'"
+  ).bind('%' + suffix.replace(/[%_\\]/g, ch => '\\' + ch)).first();
+  if ((imgRef?.c ?? 0) > 0 || (logoRef?.c ?? 0) > 0) {
+    return errorResponse('Object is still in use', 409, cors);
+  }
+
+  await env.BUCKET.delete(key);
+  return jsonResponse({ success: true }, 200, cors);
 }
 
 async function uploadLogo(request, env, cors = {}) {
