@@ -186,8 +186,8 @@ img{max-width:100%;height:auto;display:block}
 @media(min-width:768px){.md\:text-6xl{font-size:3.75rem;line-height:1}.md\:mb-4{margin-bottom:1rem}.md\:mb-6{margin-bottom:1.5rem}}
     </style>
     <!-- Full Tailwind (loaded async, non-blocking) -->
-    <link rel="preload" href="/css/tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/css/tailwind.css"></noscript>
+    <link rel="preload" href="/css/tailwind.css?v=20260827" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css?v=20260827"></noscript>
     <!-- Google Fonts (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -422,6 +422,24 @@ img{max-width:100%;height:auto;display:block}
         
         .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
+    <link rel="stylesheet" href="/css/gallery-6946dc7977.css">
+<style id="critical-gallery-sizing">
+/* Critical media geometry: independent of cached utility CSS. */
+#portfolio { padding-block:32px; }
+#portfolio > div { max-width:960px; margin-inline:auto; }
+#portfolio-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.service-gallery-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; max-width:800px; margin-inline:auto; }
+.portfolio-card,.service-gallery-card { min-width:0; width:100%; overflow:hidden; border-radius:12px; box-shadow:none; }
+.portfolio-card picture,.service-gallery-card picture { display:block; width:100%; height:150px; overflow:hidden; background:#222225; }
+.portfolio-card picture img,.service-gallery-card picture img { display:block; box-sizing:border-box; width:100%; height:150px; max-height:150px; object-fit:contain; padding:8px; transform:none; }
+.portfolio-card > div:last-child,.service-gallery-card > span { position:static; display:block; width:100%; padding:10px 12px; background:#2b2b2f; }
+.portfolio-card h4,.service-gallery-card > span { margin:0; font-size:14px; line-height:20px; overflow-wrap:anywhere; }
+.portfolio-card > .skeleton,[data-portfolio-skeleton] > .skeleton { height:150px; }
+main.page-main > img,main.page-main > picture img,main article > img,main article > picture img,main figure img { display:block; width:auto; max-width:100%; height:auto; max-height:240px; object-fit:contain; margin-inline:auto; }
+@media(max-width:759px) { #portfolio-grid,.service-gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; } }
+@media(max-width:479px) { .portfolio-card picture,.service-gallery-card picture,.portfolio-card picture img,.service-gallery-card picture img { height:130px; max-height:130px; } .portfolio-card > .skeleton,[data-portfolio-skeleton] > .skeleton { height:130px; } }
+@media(max-width:319px) { #portfolio-grid,.service-gallery-grid { grid-template-columns:minmax(0,1fr); } }
+</style>
 </head>
 
 <body class="dark bg-neutral-dark text-gray-200 font-sans min-h-screen overflow-x-hidden">
@@ -574,25 +592,25 @@ img{max-width:100%;height:auto;display:block}
                 </article>
 
                 <article class="p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition">
-                    <!-- הדפסות תלת־ממד גדולות -->
-                    <a href="/3d-printing-large" class="block">
+                    <!-- הדפסת פלסטיק בתלת־ממד -->
+                    <a href="/3d-printing-plastic" class="block">
                     <div class="flex items-start gap-4 mb-3">
                         <img src="/optimized/icons/plastic_printing/icon-96.webp" 
-                             alt="הדפסות תלת־ממד גדולות בפלסטיק PLA, ABS ו-PETG"
+                             alt="הדפסת פלסטיק בתלת־ממד בפלסטיק PLA, ABS ו-PETG"
                              width="48"
                              height="48"
                              loading="lazy"
                              decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
-                            <h3 class="text-xl font-bold mb-2">הדפסות תלת־ממד גדולות</h3>
+                            <h3 class="text-xl font-bold mb-2">הדפסת פלסטיק בתלת־ממד</h3>
                             <p class="text-gray-400">
-                                הדפסה של חלקים גדולים בחתיכה אחת, ללא חיבורים וללא פשרות על חוזק ודיוק.
+                                אב־טיפוסים, חלקים פונקציונליים ומודלים לפי הזמנה, כולל הדפסות גדולות. בחירת חומר בהתאם לפרויקט.
                                 תמיכה במגוון רחב של חומרי גלם, כגון: PETG, ABS, Carbon Fiber, Nylon, PC, TPU ועוד.
                             </p>
                         </div>
                     </div>
-                    <span class="text-brand-500 text-sm font-semibold">קראו עוד על הדפסות תלת־ממד גדולות ←</span>
+                    <span class="text-brand-500 text-sm font-semibold">קראו עוד על הדפסת פלסטיק בתלת־ממד ←</span>
                     </a>
                 </article>
 
@@ -864,7 +882,7 @@ img{max-width:100%;height:auto;display:block}
     </footer>
 
     <!-- Portfolio Loader -->
-    <script src="js/portfolio-loader.js?v=7" defer></script>
+    <script src="js/portfolio-loader.js?v=9" defer></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => safeCreateIcons());
@@ -1277,7 +1295,7 @@ img{max-width:100%;height:auto;display:block}
                 img.src = displayPath;
                 if (sources.webp) {
                     img.srcset = sources.webp;
-                    img.sizes = 'min(92vw, 960px)';
+                    img.sizes = '(min-width: 832px) 768px, calc(100vw - 64px)';
                 }
                 img.className = 'carousel-img snap-center watermarked';
                 img.loading = index === 0 ? 'eager' : 'lazy';

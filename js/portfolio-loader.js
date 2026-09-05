@@ -122,7 +122,7 @@ function createProjectCard(project) {
   const domId = getProjectDomId(project.key);
 
   const card = document.createElement('div');
-  card.className = 'relative rounded-2xl overflow-hidden shadow-card cursor-pointer group';
+  card.className = 'portfolio-card relative rounded-2xl overflow-hidden shadow-card cursor-pointer group';
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `פתח גלריית תמונות - ${project.title}`);
@@ -136,18 +136,18 @@ function createProjectCard(project) {
 
   const thumbUrl = getSizedImageUrl(thumbnailUrl, 400);
   const sources = buildImageSources(thumbnailUrl, [400, 800]);
-  const sizes = '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw';
+  const sizes = '(min-width: 960px) 223px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)';
   card.innerHTML = `
     <div id="${domId}-skeleton" class="skeleton w-full h-60 absolute"></div>
     <picture>
       ${sources.avif ? `<source type="image/avif" srcset="${escapeAttribute(sources.avif)}" sizes="${sizes}">` : ''}
       ${sources.webp ? `<source type="image/webp" srcset="${escapeAttribute(sources.webp)}" sizes="${sizes}">` : ''}
-      <img id="${domId}-thumb" width="400" height="240" loading="lazy" decoding="async" fetchpriority="low" src="${escapeAttribute(thumbUrl)}"
+      <img id="${domId}-thumb" width="400" height="150" loading="lazy" decoding="async" fetchpriority="low" src="${escapeAttribute(thumbUrl)}"
            class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
            alt="פרויקט הדפסת תלת־ממד וייצור - ${escapeAttribute(project.title)}">
     </picture>
     <div class="absolute bottom-0 w-full p-4 bg-neutral/90">
-      <h4 class="font-bold text-lg">${project.title}</h4>
+      <h4 class="font-bold text-lg">${escapeAttribute(project.title)}</h4>
     </div>`;
 
   const skeleton = card.querySelector(`#${domId}-skeleton`);

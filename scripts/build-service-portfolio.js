@@ -67,16 +67,16 @@ function renderCard(item, manifest, galleryUrl) {
   const avif = srcset(entry.avif);
   const webp = srcset(entry.webp);
   const fallback = entry.fallback || entry.original;
-  const sizes = '(min-width: 640px) 50vw, 100vw';
+  const sizes = '(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)';
   const title = escapeHtml(item.title);
   const alt = escapeHtml(item.alt || item.title);
 
   return [
-    `                <a href="${galleryUrl}" class="relative block rounded-2xl overflow-hidden shadow-card group" aria-label="${title} - לצפייה בגלריה המלאה">`,
+    `                <a href="${galleryUrl}" class="service-gallery-card relative block rounded-2xl overflow-hidden shadow-card group" aria-label="${title} - לצפייה בגלריה המלאה">`,
     '                    <picture>',
     avif ? `                        <source type="image/avif" srcset="${avif}" sizes="${sizes}">` : null,
     webp ? `                        <source type="image/webp" srcset="${webp}" sizes="${sizes}">` : null,
-    `                        <img src="${fallback}" alt="${alt}" width="400" height="240" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">`,
+    `                        <img src="${fallback}" alt="${alt}" width="400" height="150" style="width:100%;height:150px;max-height:100%;object-fit:contain" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">`,
     '                    </picture>',
     '                    <span class="absolute bottom-0 w-full p-3 bg-neutral/90 font-bold text-sm text-gray-100">' + title + '</span>',
     '                </a>'
@@ -93,7 +93,7 @@ function injectIntoPage(pageFile, items, manifest, galleryUrl) {
   }
 
   const cards = items.map(item => renderCard(item, manifest, galleryUrl)).join('\n');
-  const gridClass = items.length === 3 ? 'grid grid-cols-1 sm:grid-cols-3 gap-4' : 'grid grid-cols-1 sm:grid-cols-2 gap-4';
+  const gridClass = 'service-gallery-grid';
   const generated = [
     START_MARK,
     `            <div class="${gridClass}">`,

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תכנון לייצור אדיטיבי: איך מתכננים חלק להדפסת מתכת? | בלוג BIG 3D</title>
+    <meta name="description" content="מדריך תכנון לייצור אדיטיבי (DfAM): כיוון בנייה, זוויות תלייה ותמיכות, עובי דפנות, ניקוז אבקה, איחוד רכיבים ומתי לשלב עיבוד שבבי - כל מה שחשוב לדעת לפני שמתכננים חלק להדפסת מתכת ב-LPBF.">
+    <link rel="canonical" href="https://www.big3d.co.il/blog/design-for-metal-3d-printing">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="תכנון לייצור אדיטיבי: איך מתכננים חלק להדפסת מתכת? | בלוג BIG 3D">
+    <meta property="og:description" content="מדריך תכנון לייצור אדיטיבי (DfAM): כיוון בנייה, תמיכות, עובי דפנות, ניקוז אבקה ואיחוד רכיבים - לפני שמתכננים חלק להדפסת מתכת ב-LPBF.">
+    <meta property="og:url" content="https://www.big3d.co.il/blog/design-for-metal-3d-printing">
+    <meta property="og:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta property="og:image:alt" content="BIG 3D - מדריך תכנון לייצור אדיטיבי במתכת">
+    <meta property="og:locale" content="he_IL">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="תכנון לייצור אדיטיבי: איך מתכננים חלק להדפסת מתכת? | בלוג BIG 3D">
+    <meta name="twitter:description" content="מדריך תכנון לייצור אדיטיבי (DfAM): כיוון בנייה, תמיכות, עובי דפנות, ניקוז אבקה ואיחוד רכיבים - לפני שמתכננים חלק להדפסת מתכת ב-LPBF.">
+    <meta name="twitter:url" content="https://www.big3d.co.il/blog/design-for-metal-3d-printing">
+    <meta name="twitter:image" content="https://www.big3d.co.il/dark_logo_big3d.webp">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#00D4FF">
+    <link rel="preload" href="/css/tailwind.css?v=20260827" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css?v=20260827"></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "תכנון לייצור אדיטיבי: איך מתכננים חלק להדפסת מתכת?",
+      "description": "מדריך תכנון לייצור אדיטיבי (DfAM): כיוון בנייה, זוויות תלייה ותמיכות, עובי דפנות, ניקוז אבקה, איחוד רכיבים ומתי לשלב עיבוד שבבי - כל מה שחשוב לדעת לפני שמתכננים חלק להדפסת מתכת ב-LPBF.",
+      "image": "https://www.big3d.co.il/dark_logo_big3d.webp",
+      "datePublished": "2026-08-27",
+      "dateModified": "2026-08-27",
+      "author": {
+        "@type": "Organization",
+        "name": "BIG 3D"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BIG 3D",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.big3d.co.il/dark_logo_big3d.webp"
+        }
+      },
+      "mainEntityOfPage": "https://www.big3d.co.il/blog/design-for-metal-3d-printing",
+      "inLanguage": "he-IL"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ראשי", "item": "https://www.big3d.co.il/"},
+            {"@type": "ListItem", "position": 2, "name": "בלוג BIG 3D", "item": "https://www.big3d.co.il/blog/"},
+            {"@type": "ListItem", "position": 3, "name": "תכנון לייצור אדיטיבי: איך מתכננים חלק להדפסת מתכת?", "item": "https://www.big3d.co.il/blog/design-for-metal-3d-printing"}
+        ]
+    }
+    </script>
+    <style>
+      :root{--header-height:4rem;--content-top-gap:2rem}
+      html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-height) + .75rem);min-height:100%;height:auto}
+      body.blog-page{margin:0;font-family:Heebo,sans-serif;min-height:100vh;height:auto;overflow-x:hidden;overflow-y:auto}
+      nav.blog-nav{position:sticky;top:0;inset-inline:0}
+      main.blog-main{display:block;min-height:calc(100vh - var(--header-height));padding-top:var(--content-top-gap);overflow:visible}
+      article.blog-article{display:block;position:relative}
+    </style>
+    <link rel="stylesheet" href="/css/gallery-6946dc7977.css">
+<style id="critical-gallery-sizing">
+/* Critical media geometry: independent of cached utility CSS. */
+#portfolio { padding-block:32px; }
+#portfolio > div { max-width:960px; margin-inline:auto; }
+#portfolio-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.service-gallery-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; max-width:800px; margin-inline:auto; }
+.portfolio-card,.service-gallery-card { min-width:0; width:100%; overflow:hidden; border-radius:12px; box-shadow:none; }
+.portfolio-card picture,.service-gallery-card picture { display:block; width:100%; height:150px; overflow:hidden; background:#222225; }
+.portfolio-card picture img,.service-gallery-card picture img { display:block; box-sizing:border-box; width:100%; height:150px; max-height:150px; object-fit:contain; padding:8px; transform:none; }
+.portfolio-card > div:last-child,.service-gallery-card > span { position:static; display:block; width:100%; padding:10px 12px; background:#2b2b2f; }
+.portfolio-card h4,.service-gallery-card > span { margin:0; font-size:14px; line-height:20px; overflow-wrap:anywhere; }
+.portfolio-card > .skeleton,[data-portfolio-skeleton] > .skeleton { height:150px; }
+main.page-main > img,main.page-main > picture img,main article > img,main article > picture img,main figure img { display:block; width:auto; max-width:100%; height:auto; max-height:240px; object-fit:contain; margin-inline:auto; }
+@media(max-width:759px) { #portfolio-grid,.service-gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; } }
+@media(max-width:479px) { .portfolio-card picture,.service-gallery-card picture,.portfolio-card picture img,.service-gallery-card picture img { height:130px; max-height:130px; } .portfolio-card > .skeleton,[data-portfolio-skeleton] > .skeleton { height:130px; } }
+@media(max-width:319px) { #portfolio-grid,.service-gallery-grid { grid-template-columns:minmax(0,1fr); } }
+</style>
+</head>
+<body class="blog-page dark bg-neutral-dark text-gray-200 font-sans min-h-screen overflow-x-hidden">
+    <nav class="blog-nav sticky top-0 w-full z-50 bg-neutral/70 backdrop-blur-md border-b border-neutral-light">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="flex items-center">
+                    <img src="/optimized/dark_logo_big3d-160.webp" alt="BIG 3D לוגו" width="120" height="47" class="h-10 object-contain opacity-80" decoding="async">
+                </a>
+                <div class="hidden md:flex items-center gap-6 text-sm">
+                    <a href="/" class="hover:text-brand-500 transition">ראשי</a>
+                    <a href="/blog/" class="hover:text-brand-500 transition">בלוג</a>
+                    <a href="/#contact" class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-500 transition">צור קשר</a>
+                </div>
+                <button id="mobile-menu-toggle" class="md:hidden p-2" aria-label="פתיחת תפריט ניווט" aria-controls="menu" aria-expanded="false">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-gray-200" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+        <div id="menu" class="hidden md:hidden bg-neutral p-4 border-b border-neutral-light">
+            <a href="/" class="block py-2 hover:text-brand-500">ראשי</a>
+            <a href="/blog/" class="block py-2 hover:text-brand-500">בלוג</a>
+            <a href="/#contact" class="block py-2 text-brand-500 font-semibold">צור קשר</a>
+        </div>
+    </nav>
+
+    <main class="blog-main pb-16 px-4 max-w-4xl mx-auto">
+        <article class="blog-article">
+            <a href="/blog/" class="text-brand-500 hover:underline text-sm mb-6 block">← חזרה לבלוג</a>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6">תכנון לייצור אדיטיבי: איך מתכננים חלק להדפסת מתכת?</h1>
+            <p class="text-gray-400 text-sm mb-8">מדריך DfAM למהנדסים ומתכננים · בלוג BIG 3D</p>
+
+            <div class="prose prose-invert max-w-none text-gray-300 space-y-6">
+                <p>
+                    הטעות הנפוצה ביותר בהדפסת מתכות היא לקחת חלק שתוכנן לעיבוד שבבי או ליציקה - ולשלוח אותו להדפסה "כמו שהוא". לפעמים זה עובד, אבל לרוב התוצאה היא חלק יקר יותר, עם יותר תמיכות, יותר עיבוד משלים ופחות ניצול של היתרונות האמיתיים של הטכנולוגיה. הגישה הנכונה נקראת <strong>DfAM - Design for Additive Manufacturing</strong> (תכנון לייצור אדיטיבי), ובמאמר הזה נעבור על העקרונות המרכזיים שלה עבור <a href="/blog/metal-3d-printing-lpbf-guide" class="text-brand-500 hover:underline">טכנולוגיית LPBF</a>.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">1. כיוון הבנייה קובע הכול</h2>
+                <p>
+                    חלק מודפס נבנה שכבה אחר שכבה, ולכן הכיוון שבו הוא "עומד" על משטח הבנייה משפיע על כמעט כל תכונה שלו: על כמות התמיכות הנדרשת, על איכות פני השטח בכל משטח, על זמן ההדפסה, ואפילו על התכונות המכניות - חלקים מודפסים נוטים להיות מעט שונים בחוזק לאורך ציר הבנייה לעומת הכיוונים האחרים. מסקנה מעשית: את כיוון הבנייה כדאי לקבוע יחד עם הספק כבר בשלב התכנון, לא אחרי שהקובץ "סגור".
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">2. זוויות תלייה ותמיכות</h2>
+                <p>
+                    משטחים ששוכבים "באוויר" בזווית חדה מדי ביחס למשטח הבנייה דורשים תמיכות - מבני מתכת זמניים שמודפסים יחד עם החלק ומוסרים אחר כך. תמיכות עולות בחומר, בזמן הדפסה ובעבודת הסרה, ומשאירות סימנים על פני השטח. כללי האצבע המרכזיים:
+                </p>
+                <ul class="list-disc pr-6 space-y-2">
+                    <li>משטחים בזווית מתונה ביחס לאנך נבנים לרוב ללא תמיכה; ככל שהמשטח אופקי יותר, כך גדל הצורך בתמיכות.</li>
+                    <li>פתחים עגולים קטנים מודפסים לרוב היטב כמו שהם; פתחים גדולים כדאי לתכנן כטיפה (Teardrop) או כמעוין כדי שיתמכו בעצמם.</li>
+                    <li>תעלות פנימיות שלא ניתן להסיר מהן תמיכות חייבות להיות מתוכננות כך שייבנו ללא תמיכה בכלל.</li>
+                </ul>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">3. עובי דפנות ופרטים קטנים</h2>
+                <p>
+                    לכל תהליך הדפסה יש גבול תחתון לעובי דופן שניתן לייצר באמינות, והוא תלוי בחומר, במכונה ובגובה הדופן. דפנות דקות מדי עלולות להתעוות בזמן ההדפסה או להישבר בניקוי האבקה. אותו עיקרון חל על פינים, צלעות חיזוק ופרטים עדינים. אם החלק שלכם כולל אזורים דקים במיוחד - זה בדיוק סוג הדברים שכדאי לוודא מול הספק לפני ההדפסה, כי הפתרון (עיבוי מקומי, צלע תמיכה, שינוי כיוון) פשוט בתכנון ויקר בתיקון.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">4. חללים פנימיים? תכננו ניקוז אבקה</h2>
+                <p>
+                    אחד היתרונות הגדולים של LPBF הוא היכולת לייצר חללים ותעלות פנימיות - אבל בסוף ההדפסה החללים האלה מלאים באבקת מתכת לא מותכת. בלי פתחי ניקוז מתוכננים, האבקה נשארת כלואה בפנים: משקל עודף, זיהום, ובזבוז אבקה יקרה. הכלל פשוט: לכל חלל סגור חייב להיות לפחות פתח אחד (ועדיף שניים, לכניסת אוויר) שמאפשר לנער ולשאוב את האבקה החוצה.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">5. איחוד רכיבים - היתרון שהכי שווה לנצל</h2>
+                <p>
+                    אם אתם כבר מדפיסים - אל תדפיסו העתק של מכלול מורכב. השאלה הנכונה היא: אילו חלקים במכלול אפשר לאחד לרכיב אחד? כל איחוד כזה חוסך ברגים, אטמים, הרכבה ונקודות כשל, ולעיתים מאפשר גיאומטריה טובה יותר (למשל תעלת זרימה רציפה במקום צנרת מחוברת). זה השלב שבו הדפסת מתכת עוברת מ"תחליף ייצור" ל"שדרוג תכנון".
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">6. הפחתת משקל בתבונה</h2>
+                <p>
+                    מבני סריג (Lattice) ואופטימיזציה טופולוגית מאפשרים להוריד משקל משמעותי תוך שמירה על קשיחות - אבל הם מוסיפים מורכבות לניקוי אבקה, לבדיקה ולתיעוד. ביישומים רגישים עדיף להתחיל מהפחתת משקל "קלאסית" (כיסים, חורים, דפנות מדורגות) ולשמור סריגים למקומות שבהם הם באמת נדרשים.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">7. תכננו מראש את העיבוד המשלים</h2>
+                <p>
+                    משטחי השקה קריטיים, קדחים בסבילות הדוקה והברגות - כמעט תמיד עוברים <a href="/engineering-design" class="text-brand-500 hover:underline">עיבוד שבבי</a> אחרי ההדפסה. המשמעות התכנונית: להשאיר עודף חומר (Machining Allowance) באזורים האלה, ולוודא שיש לחלק בסיס אחיזה נוח לכרסומת. גם טיפול חום להפגת מאמצים הוא שלב סטנדרטי בחלקים הנדסיים - וכדאי שיתוכנן בתהליך מראש ולא יתגלה כהפתעה בהצעת המחיר.
+                </p>
+
+                <h2 class="text-2xl font-bold mt-10 mb-4">רשימת בדיקה מהירה לפני שליחת קובץ</h2>
+                <ol class="list-decimal pr-6 space-y-2">
+                    <li>האם כיוון הבנייה נקבע, והאם המשטחים החשובים מכוונים לאיכות מיטבית?</li>
+                    <li>האם יש משטחים תלויים שדורשים תמיכות שאפשר לחסוך בשינוי קטן?</li>
+                    <li>האם כל הדפנות והפרטים מעל העובי המינימלי המומלץ לחומר?</li>
+                    <li>האם לכל חלל פנימי יש פתחי ניקוז אבקה?</li>
+                    <li>האם אפשר לאחד רכיבים סמוכים לחלק אחד?</li>
+                    <li>האם הושאר עודף חומר באזורים שיעברו עיבוד שבבי?</li>
+                    <li>האם נבחרה <a href="/blog/metal-3d-printing-materials" class="text-brand-500 hover:underline">סגסוגת מתאימה</a> ליישום?</li>
+                </ol>
+
+                <p class="mt-10">
+                    ב־<a href="/" class="text-brand-500 hover:underline">BIG 3D</a> אנחנו מלווים את התכנון עוד לפני ההדפסה: בוחנים את הגיאומטריה, ממליצים על כיוון בנייה וחומר, ומשלבים <a href="/3d-printing-industrial" class="text-brand-500 hover:underline">הדפסת מתכות LPBF</a> עם <a href="/engineering-design" class="text-brand-500 hover:underline">תכנון הנדסי ועיבוד שבבי</a> בפרויקט אחד. אפשר להגיע עם קובץ מוכן - או רק עם רעיון. <a href="/#contact" class="text-brand-500 hover:underline">צרו קשר</a> ונחזור אליכם עם המלצה מקצועית.
+                </p>
+            </div>
+        </article>
+
+        <div class="mt-12 flex flex-wrap gap-4">
+            <a href="/blog/" class="text-brand-500 hover:underline">← חזרה לבלוג</a>
+            <a href="/blog/metal-3d-printing-lpbf-guide" class="text-brand-500 hover:underline">איך עובדת טכנולוגיית LPBF? →</a>
+            <a href="/blog/metal-3d-printing-materials" class="text-brand-500 hover:underline">המדריך לבחירת סגסוגות →</a>
+        </div>
+    </main>
+
+    <footer class="bg-neutral py-6 border-t border-neutral-light text-center text-gray-400 mt-16">
+        © 2026 BIG 3D — <a href="/" class="text-brand-500 hover:underline">חזרה לעמוד הראשי</a>
+    </footer>
+    <script>
+    (function(){
+        var btn=document.getElementById('mobile-menu-toggle'),menu=document.getElementById('menu');
+        if(!btn||!menu)return;
+        function closeMenu(){menu.classList.add('hidden');btn.setAttribute('aria-expanded','false')}
+        btn.addEventListener('click',function(){var open=!menu.classList.toggle('hidden');btn.setAttribute('aria-expanded',open?'true':'false')});
+        menu.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!menu.classList.contains('hidden')){closeMenu();btn.focus()}});
+    })();
+    </script>
+</body>
+</html>
