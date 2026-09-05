@@ -45,14 +45,22 @@ function getOptimizedImageEntry(url) {
   return manifest[normalizeImageKey(url)] || null;
 }
 
-function buildOptimizedSrcset(url, format) {
+/** Card thumbnails use the subject-focused 4:3 "thumb" crop when the manifest has one. */
+function getVariantEntry(url, variant) {
   const entry = getOptimizedImageEntry(url);
+  if (!entry) return null;
+  if (variant === 'thumb' && entry.thumb) return entry.thumb;
+  return entry;
+}
+
+function buildOptimizedSrcset(url, format, variant) {
+  const entry = getVariantEntry(url, variant);
   if (!entry || !Array.isArray(entry[format])) return '';
   return entry[format].map(item => `${item.url} ${item.width}w`).join(', ');
 }
 
-function getBestOptimizedUrl(url, targetWidth = 800) {
-  const entry = getOptimizedImageEntry(url);
+function getBestOptimizedUrl(url, targetWidth = 800, variant) {
+  const entry = getVariantEntry(url, variant);
   if (!entry) return null;
   const candidates = entry.webp || [];
   const match = candidates.find(item => item.width >= targetWidth) || candidates[candidates.length - 1];
@@ -71,9 +79,9 @@ function isWorkerStorageUrl(url) {
 }
 
 /** Returns an optimized URL for thumbnails from local assets or Worker storage. */
-function getSizedImageUrl(url, width = 400) {
+function getSizedImageUrl(url, width = 400, variant) {
   if (!url) return url;
-  const localOptimized = getBestOptimizedUrl(url, width);
+  const localOptimized = getBestOptimizedUrl(url, width, variant);
   if (localOptimized) return localOptimized;
 
   try {
@@ -91,9 +99,9 @@ function buildWorkerStorageSrcset(url, widths) {
   return widths.map(width => `${getSizedImageUrl(url, width)} ${width}w`).join(', ');
 }
 
-function buildImageSources(url, widths) {
-  const avif = buildOptimizedSrcset(url, 'avif');
-  const webp = buildOptimizedSrcset(url, 'webp');
+function buildImageSources(url, widths, variant) {
+  const avif = buildOptimizedSrcset(url, 'avif', variant);
+  const webp = buildOptimizedSrcset(url, 'webp', variant);
   const storage = buildWorkerStorageSrcset(url, widths);
   return { avif, webp: webp || storage };
 }
@@ -104,7 +112,7 @@ function loadImageManifestIfNeeded() {
 
   imageManifestPromise = new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = '/js/image-manifest.js?v=1';
+    script.src = '/js/image-manifest.js?v=2';
     script.onload = resolve;
     script.onerror = reject;
     document.head.appendChild(script);
@@ -134,15 +142,15 @@ function createProjectCard(project) {
     }
   });
 
-  const thumbUrl = getSizedImageUrl(thumbnailUrl, 400);
-  const sources = buildImageSources(thumbnailUrl, [400, 800]);
+  const thumbUrl = getSizedImageUrl(thumbnailUrl, 400, 'thumb');
+  const sources = buildImageSources(thumbnailUrl, [400, 800], 'thumb');
   const sizes = '(min-width: 960px) 223px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)';
   card.innerHTML = `
     <div id="${domId}-skeleton" class="skeleton w-full h-60 absolute"></div>
     <picture>
       ${sources.avif ? `<source type="image/avif" srcset="${escapeAttribute(sources.avif)}" sizes="${sizes}">` : ''}
       ${sources.webp ? `<source type="image/webp" srcset="${escapeAttribute(sources.webp)}" sizes="${sizes}">` : ''}
-      <img id="${domId}-thumb" width="400" height="150" loading="lazy" decoding="async" fetchpriority="low" src="${escapeAttribute(thumbUrl)}"
+      <img id="${domId}-thumb" width="400" height="300" loading="lazy" decoding="async" fetchpriority="low" src="${escapeAttribute(thumbUrl)}"
            class="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500 relative watermarked"
            alt="פרויקט הדפסת תלת־ממד וייצור - ${escapeAttribute(project.title)}">
     </picture>

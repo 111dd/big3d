@@ -62,11 +62,13 @@ function srcset(entries) {
 }
 
 function renderCard(item, manifest, galleryUrl) {
-  const entry = manifest[item.image];
-  if (!entry) throw new Error(`Image not found in manifest: ${item.image}`);
+  const full = manifest[item.image];
+  if (!full) throw new Error(`Image not found in manifest: ${item.image}`);
+  // Prefer the subject-focused 4:3 thumb crop so cards fill edge-to-edge.
+  const entry = full.thumb || full;
   const avif = srcset(entry.avif);
   const webp = srcset(entry.webp);
-  const fallback = entry.fallback || entry.original;
+  const fallback = entry.fallback || full.fallback || full.original;
   const sizes = '(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)';
   const title = escapeHtml(item.title);
   const alt = escapeHtml(item.alt || item.title);
@@ -76,7 +78,7 @@ function renderCard(item, manifest, galleryUrl) {
     '                    <picture>',
     avif ? `                        <source type="image/avif" srcset="${avif}" sizes="${sizes}">` : null,
     webp ? `                        <source type="image/webp" srcset="${webp}" sizes="${sizes}">` : null,
-    `                        <img src="${fallback}" alt="${alt}" width="400" height="150" style="width:100%;height:150px;max-height:100%;object-fit:contain" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">`,
+    `                        <img src="${fallback}" alt="${alt}" width="400" height="300" style="width:100%;height:150px;max-height:100%;object-fit:cover" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">`,
     '                    </picture>',
     '                    <span class="absolute bottom-0 w-full p-3 bg-neutral/90 font-bold text-sm text-gray-100">' + title + '</span>',
     '                </a>'

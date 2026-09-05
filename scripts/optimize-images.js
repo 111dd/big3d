@@ -12,9 +12,20 @@ const outputRoot = path.join(root, 'optimized');
 const manifestPath = path.join(root, 'js', 'image-manifest.js');
 
 const imageExts = new Set(['.jpg', '.jpeg', '.png', '.webp']);
-const skipDirs = new Set(['.git', '.wrangler', 'dist', 'node_modules', 'optimized']);
+const skipDirs = new Set(['.git', '.wrangler', 'dist', 'node_modules', 'optimized', 'big3d.co.il-audit', 'claude-seo']);
 const photoWidths = [400, 800, 1200, 1600];
 const graphicWidths = [96, 160, 240, 360];
+// Gallery cards are 4:3 and use object-fit: cover. A dedicated, subject-focused
+// crop is generated for every photo so cards fill edge-to-edge without margins.
+const thumbAspect = 4 / 3;
+const thumbWidths = [400, 800];
+const focusPath = path.join(__dirname, 'image-focus.json');
+// Optional per-image override of the crop position (sharp gravity/strategy names).
+const focusOverrides = fs.existsSync(focusPath) ? JSON.parse(fs.readFileSync(focusPath, 'utf8')) : {};
+const CONCURRENCY = 4;
+// AVIF effort 4 is visually identical to 6 at these sizes but ~2x faster in CI.
+const AVIF_EFFORT = 4;
+const WEBP_EFFORT = 5;
 
 function toPosix(filePath) {
   return filePath.split(path.sep).join('/');
@@ -82,25 +93,102 @@ async function writeVariant(source, relative, width, format) {
       fit: 'inside',
     });
 
-  if (format === 'avif') {
-    pipeline = pipeline.avif({
-      quality: isGraphic ? 72 : 62,
-      effort: 6,
-      chromaSubsampling: isGraphic ? '4:4:4' : '4:2:0',
-    });
-  } else {
-    pipeline = pipeline.webp({
-      quality: isGraphic ? 90 : 84,
-      effort: 6,
-      smartSubsample: true,
-    });
-  }
-
-  await pipeline.toFile(outputPath);
+  await encode(pipeline, format, isGraphic).toFile(outputPath);
   return { width, url: urlFor(outputRelative), bytes: fs.statSync(outputPath).size };
 }
 
+function encode(pipeline, format, isGraphic) {
+  if (format === 'avif') {
+    return pipeline.avif({
+      quality: isGraphic ? 72 : 62,
+      effort: AVIF_EFFORT,
+      chromaSubsampling: isGraphic ? '4:4:4' : '4:2:0',
+    });
+  }
+  return pipeline.webp({
+    quality: isGraphic ? 90 : 84,
+    effort: WEBP_EFFORT,
+    smartSubsample: true,
+  });
+}
+
+function isGraphicFile(relative) {
+  return relative.startsWith('icons/') || relative.includes('logo') || relative === 'dark_logo_big3d.webp';
+}
+
+/** Writes a 4:3 cover crop centred on the visually salient region. */
+async function writeThumb(source, relative, width, format, meta) {
+  const parsed = path.parse(relative);
+  const outputRelative = toPosix(path.join('optimized', parsed.dir, `${parsed.name}-thumb-${width}.${format}`));
+  const outputPath = path.join(root, outputRelative);
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+
+  const height = Math.round(width / thumbAspect);
+  const override = focusOverrides[relative];
+  const position = override && sharp.strategy[override] ? sharp.strategy[override]
+    : override || sharp.strategy.attention;
+
+  // Never upscale: if the source is narrower than the requested width, cover-crop at source scale.
+  const targetWidth = Math.min(width, meta.width);
+  const targetHeight = Math.round(targetWidth / thumbAspect);
+
+  const pipeline = sharp(source)
+    .rotate()
+    .resize({ width: targetWidth, height: targetHeight, fit: 'cover', position });
+
+  await encode(pipeline, format, false).toFile(outputPath);
+  return { width: targetWidth, url: urlFor(outputRelative), bytes: fs.statSync(outputPath).size };
+}
+
+async function processFile(file) {
+  const relative = toPosix(path.relative(root, file));
+  const meta = await sharp(file).rotate().metadata();
+  if (!meta.width || !meta.height) return null;
+
+  const widths = variantsFor(relative, meta.width);
+  const avif = [];
+  const webp = [];
+  let bytes = 0;
+
+  for (const width of widths) {
+    const avifVariant = await writeVariant(file, relative, width, 'avif');
+    const webpVariant = await writeVariant(file, relative, width, 'webp');
+    avif.push(avifVariant);
+    webp.push(webpVariant);
+    bytes += avifVariant.bytes + webpVariant.bytes;
+  }
+
+  const entry = {
+    width: meta.width,
+    height: meta.height,
+    original: urlFor(relative),
+    fallback: (webp.find(item => item.width >= Math.min(meta.width, 800)) || webp[webp.length - 1]).url,
+    avif,
+    webp,
+  };
+
+  if (!isGraphicFile(relative)) {
+    const thumbAvif = [];
+    const thumbWebp = [];
+    const seen = new Set();
+    for (const width of thumbWidths) {
+      const effective = Math.min(width, meta.width);
+      if (seen.has(effective)) continue;
+      seen.add(effective);
+      const a = await writeThumb(file, relative, width, 'avif', meta);
+      const w = await writeThumb(file, relative, width, 'webp', meta);
+      thumbAvif.push(a);
+      thumbWebp.push(w);
+      bytes += a.bytes + w.bytes;
+    }
+    entry.thumb = { avif: thumbAvif, webp: thumbWebp, fallback: thumbWebp[thumbWebp.length - 1].url };
+  }
+
+  return { relative, entry, sourceBytes: fs.statSync(file).size, optimizedBytes: bytes, variants: avif.length + webp.length + (entry.thumb ? entry.thumb.avif.length + entry.thumb.webp.length : 0) };
+}
+
 async function main() {
+  const started = Date.now();
   if (fs.existsSync(outputRoot)) fs.rmSync(outputRoot, { recursive: true, force: true });
   fs.mkdirSync(outputRoot, { recursive: true });
 
@@ -109,45 +197,38 @@ async function main() {
   let sourceBytes = 0;
   let optimizedBytes = 0;
   let variantCount = 0;
+  let done = 0;
 
-  for (const file of files) {
-    const relative = toPosix(path.relative(root, file));
-    const meta = await sharp(file).metadata();
-    if (!meta.width || !meta.height) continue;
+  console.log(`Optimizing ${files.length} images (${CONCURRENCY} in parallel)...`);
 
-    const originalBytes = fs.statSync(file).size;
-    sourceBytes += originalBytes;
-    const widths = variantsFor(relative, meta.width);
-    const avif = [];
-    const webp = [];
-
-    for (const width of widths) {
-      const avifVariant = await writeVariant(file, relative, width, 'avif');
-      const webpVariant = await writeVariant(file, relative, width, 'webp');
-      avif.push(avifVariant);
-      webp.push(webpVariant);
-      optimizedBytes += avifVariant.bytes + webpVariant.bytes;
-      variantCount += 2;
+  const queue = files.slice();
+  const results = [];
+  async function worker() {
+    while (queue.length) {
+      const file = queue.shift();
+      const result = await processFile(file);
+      done += 1;
+      if (result) results.push(result);
+      if (done % 10 === 0 || done === files.length) {
+        console.log(`  ${done}/${files.length} images (${((Date.now() - started) / 1000).toFixed(0)}s)`);
+      }
     }
+  }
+  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, files.length) }, worker));
 
-    const fallback =
-      webp.find(item => item.width >= Math.min(meta.width, 800)) ||
-      webp[webp.length - 1];
-
-    manifest[relative] = {
-      width: meta.width,
-      height: meta.height,
-      original: urlFor(relative),
-      fallback: fallback.url,
-      avif,
-      webp,
-    };
+  // Deterministic manifest order regardless of completion order.
+  results.sort((a, b) => a.relative.localeCompare(b.relative));
+  for (const result of results) {
+    manifest[result.relative] = result.entry;
+    sourceBytes += result.sourceBytes;
+    optimizedBytes += result.optimizedBytes;
+    variantCount += result.variants;
   }
 
   const js = `// Auto-generated by scripts/optimize-images.js\nwindow.OPTIMIZED_IMAGES = ${JSON.stringify(manifest, null, 2)};\n`;
   fs.writeFileSync(manifestPath, js);
 
-  console.log(`✅ Optimized ${files.length} images into ${variantCount} AVIF/WebP variants`);
+  console.log(`✅ Optimized ${files.length} images into ${variantCount} AVIF/WebP variants in ${((Date.now() - started) / 1000).toFixed(0)}s`);
   console.log(`Source images: ${(sourceBytes / 1024 / 1024).toFixed(2)} MB`);
   console.log(`Generated variants: ${(optimizedBytes / 1024 / 1024).toFixed(2)} MB`);
   console.log('Manifest: js/image-manifest.js');

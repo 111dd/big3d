@@ -94,7 +94,7 @@
     function loadLucideAndInit(){const s=document.createElement('script');s.src='https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js';s.onload=()=>safeCreateIcons();document.head.appendChild(s)}
     if('requestIdleCallback'in window){requestIdleCallback(()=>loadLucideAndInit(),{timeout:2000})}else{window.addEventListener('load',()=>setTimeout(loadLucideAndInit,100))}
     </script>
-    <link rel="stylesheet" href="/css/gallery-6946dc7977.css">
+    <link rel="stylesheet" href="/css/gallery-fe19138afa.css">
 <style id="critical-gallery-sizing">
 /* Critical media geometry: independent of cached utility CSS. */
 #portfolio { padding-block:32px; }
@@ -103,7 +103,7 @@
 .service-gallery-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; max-width:800px; margin-inline:auto; }
 .portfolio-card,.service-gallery-card { min-width:0; width:100%; overflow:hidden; border-radius:12px; box-shadow:none; }
 .portfolio-card picture,.service-gallery-card picture { display:block; width:100%; height:150px; overflow:hidden; background:#222225; }
-.portfolio-card picture img,.service-gallery-card picture img { display:block; box-sizing:border-box; width:100%; height:150px; max-height:150px; object-fit:contain; padding:8px; transform:none; }
+.portfolio-card picture img,.service-gallery-card picture img { display:block; box-sizing:border-box; width:100%; height:150px; max-height:150px; object-fit:cover; object-position:center; padding:0; transform:none; }
 .portfolio-card > div:last-child,.service-gallery-card > span { position:static; display:block; width:100%; padding:10px 12px; background:#2b2b2f; }
 .portfolio-card h4,.service-gallery-card > span { margin:0; font-size:14px; line-height:20px; overflow-wrap:anywhere; }
 .portfolio-card > .skeleton,[data-portfolio-skeleton] > .skeleton { height:150px; }
@@ -202,33 +202,33 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
             <div class="service-gallery-grid">
                 <a href="/#portfolio" class="service-gallery-card relative block rounded-2xl overflow-hidden shadow-card group" aria-label="כריש באורך 2.2 מטר - לצפייה בגלריה המלאה">
                     <picture>
-                        <source type="image/avif" srcset="/optimized/shark/shark-1-400.avif 400w, /optimized/shark/shark-1-800.avif 800w, /optimized/shark/shark-1-900.avif 900w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <source type="image/webp" srcset="/optimized/shark/shark-1-400.webp 400w, /optimized/shark/shark-1-800.webp 800w, /optimized/shark/shark-1-900.webp 900w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <img src="/optimized/shark/shark-1-800.webp" alt="כריש באורך 2.2 מטר - פרויקט הדפסת תלת־ממד גדולה מתיק העבודות של BIG 3D" width="400" height="150" style="width:100%;height:150px;max-height:100%;object-fit:contain" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <source type="image/avif" srcset="/optimized/shark/shark-1-thumb-400.avif 400w, /optimized/shark/shark-1-thumb-800.avif 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <source type="image/webp" srcset="/optimized/shark/shark-1-thumb-400.webp 400w, /optimized/shark/shark-1-thumb-800.webp 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <img src="/optimized/shark/shark-1-thumb-800.webp" alt="כריש באורך 2.2 מטר - פרויקט הדפסת תלת־ממד גדולה מתיק העבודות של BIG 3D" width="400" height="300" style="width:100%;height:150px;max-height:100%;object-fit:cover" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                     </picture>
                     <span class="absolute bottom-0 w-full p-3 bg-neutral/90 font-bold text-sm text-gray-100">כריש באורך 2.2 מטר</span>
                 </a>
                 <a href="/#portfolio" class="service-gallery-card relative block rounded-2xl overflow-hidden shadow-card group" aria-label="ביצה - כורסת ישיבה סנסורית לילדים - לצפייה בגלריה המלאה">
                     <picture>
-                        <source type="image/avif" srcset="/optimized/egg/egg-final-product-1-400.avif 400w, /optimized/egg/egg-final-product-1-800.avif 800w, /optimized/egg/egg-final-product-1-1000.avif 1000w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <source type="image/webp" srcset="/optimized/egg/egg-final-product-1-400.webp 400w, /optimized/egg/egg-final-product-1-800.webp 800w, /optimized/egg/egg-final-product-1-1000.webp 1000w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <img src="/optimized/egg/egg-final-product-1-800.webp" alt="ביצה - כורסת ישיבה סנסורית לילדים - מוצר מוגמר מתיק העבודות של BIG 3D" width="400" height="150" style="width:100%;height:150px;max-height:100%;object-fit:contain" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <source type="image/avif" srcset="/optimized/egg/egg-final-product-1-thumb-400.avif 400w, /optimized/egg/egg-final-product-1-thumb-800.avif 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <source type="image/webp" srcset="/optimized/egg/egg-final-product-1-thumb-400.webp 400w, /optimized/egg/egg-final-product-1-thumb-800.webp 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <img src="/optimized/egg/egg-final-product-1-thumb-800.webp" alt="ביצה - כורסת ישיבה סנסורית לילדים - מוצר מוגמר מתיק העבודות של BIG 3D" width="400" height="300" style="width:100%;height:150px;max-height:100%;object-fit:cover" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                     </picture>
                     <span class="absolute bottom-0 w-full p-3 bg-neutral/90 font-bold text-sm text-gray-100">ביצה - כורסת ישיבה סנסורית לילדים</span>
                 </a>
                 <a href="/#portfolio" class="service-gallery-card relative block rounded-2xl overflow-hidden shadow-card group" aria-label="גביע המונדיאל - לצפייה בגלריה המלאה">
                     <picture>
-                        <source type="image/avif" srcset="/optimized/World%20Cup%20Cup/world-cup-cup-1-400.avif 400w, /optimized/World%20Cup%20Cup/world-cup-cup-1-576.avif 576w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <source type="image/webp" srcset="/optimized/World%20Cup%20Cup/world-cup-cup-1-400.webp 400w, /optimized/World%20Cup%20Cup/world-cup-cup-1-576.webp 576w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <img src="/optimized/World%20Cup%20Cup/world-cup-cup-1-576.webp" alt="גביע המונדיאל - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D" width="400" height="150" style="width:100%;height:150px;max-height:100%;object-fit:contain" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <source type="image/avif" srcset="/optimized/World%20Cup%20Cup/world-cup-cup-2-thumb-400.avif 400w, /optimized/World%20Cup%20Cup/world-cup-cup-2-thumb-800.avif 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <source type="image/webp" srcset="/optimized/World%20Cup%20Cup/world-cup-cup-2-thumb-400.webp 400w, /optimized/World%20Cup%20Cup/world-cup-cup-2-thumb-800.webp 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <img src="/optimized/World%20Cup%20Cup/world-cup-cup-2-thumb-800.webp" alt="גביע המונדיאל - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D" width="400" height="300" style="width:100%;height:150px;max-height:100%;object-fit:cover" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                     </picture>
                     <span class="absolute bottom-0 w-full p-3 bg-neutral/90 font-bold text-sm text-gray-100">גביע המונדיאל</span>
                 </a>
                 <a href="/#portfolio" class="service-gallery-card relative block rounded-2xl overflow-hidden shadow-card group" aria-label="דונאלד ג'י טראמפ - לצפייה בגלריה המלאה">
                     <picture>
-                        <source type="image/avif" srcset="/optimized/trump/trump-1-400.avif 400w, /optimized/trump/trump-1-800.avif 800w, /optimized/trump/trump-1-1200.avif 1200w, /optimized/trump/trump-1-1600.avif 1600w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <source type="image/webp" srcset="/optimized/trump/trump-1-400.webp 400w, /optimized/trump/trump-1-800.webp 800w, /optimized/trump/trump-1-1200.webp 1200w, /optimized/trump/trump-1-1600.webp 1600w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
-                        <img src="/optimized/trump/trump-1-800.webp" alt="דמות דונאלד טראמפ - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D" width="400" height="150" style="width:100%;height:150px;max-height:100%;object-fit:contain" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <source type="image/avif" srcset="/optimized/trump/trump-1-thumb-400.avif 400w, /optimized/trump/trump-1-thumb-800.avif 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <source type="image/webp" srcset="/optimized/trump/trump-1-thumb-400.webp 400w, /optimized/trump/trump-1-thumb-800.webp 800w" sizes="(min-width: 832px) 191px, (min-width: 760px) calc((100vw - 68px) / 4), calc((100vw - 42px) / 2)">
+                        <img src="/optimized/trump/trump-1-thumb-800.webp" alt="דמות דונאלד טראמפ - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D" width="400" height="300" style="width:100%;height:150px;max-height:100%;object-fit:cover" loading="lazy" decoding="async" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                     </picture>
                     <span class="absolute bottom-0 w-full p-3 bg-neutral/90 font-bold text-sm text-gray-100">דונאלד ג'י טראמפ</span>
                 </a>
