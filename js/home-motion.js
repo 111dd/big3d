@@ -1,7 +1,8 @@
 /**
  * Home page motion system: Lenis smooth scroll + GSAP ScrollTrigger.
  *
- * - Hero: the logo is "printed" layer by layer (LPBF style) as the visitor scrolls.
+ * - Hero: the logo is "printed" layer by layer in bare metal (LPBF style) as the visitor
+ *   scrolls, then a red finish is sprayed across it.
  * - Section headings, cards and boxes reveal as they enter the viewport.
  * - Desktop only: spotlight/tilt on service cards, magnetic hero buttons, hero glow.
  *
@@ -48,7 +49,7 @@
     }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
 
-  /* ---------- Hero: layer-by-layer logo print ---------- */
+  /* ---------- Hero: layer-by-layer logo print, then a red finish ---------- */
   function initLogoPrint() {
     const hero = document.getElementById('home');
     const stage = document.querySelector('[data-print-stage]');
@@ -58,42 +59,49 @@
     }
 
     const part = stage.querySelector('.print-part');
+    const finish = stage.querySelector('.print-finish');
     const laser = stage.querySelector('.print-laser');
     const pool = stage.querySelector('.print-pool');
     const heat = stage.querySelector('.print-heat');
+    const spray = stage.querySelector('.print-spray');
     const sparksBox = stage.querySelector('.print-sparks');
     const hud = document.querySelector('[data-print-hud]');
+    const hudPhase = hud && hud.querySelector('[data-print-phase]');
     const hudLayer = hud && hud.querySelector('[data-print-layer]');
     const hudPct = hud && hud.querySelector('[data-print-pct]');
     const hudBar = hud && hud.querySelector('.print-bar i');
     const hint = document.querySelector('[data-print-hint]');
 
     const LAYERS = 60;
+    // Scroll budget: first the metal build, a short beat of bare metal, then the red finish.
+    const PRINT_END = 0.64;
+    const FINISH_START = 0.72;
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
     const state = { p: 0 };
     let intro = 0;
     let scrollP = 0;
-    let lastLayer = -1;
     let lastSpark = 0;
 
     const sparks = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 12; i++) {
       const s = document.createElement('i');
       sparksBox.appendChild(s);
       sparks.push(s);
     }
     let sparkIndex = 0;
 
-    function spark(x, y) {
+    function spark(x, y, mist) {
       const now = performance.now();
       if (now - lastSpark < 45) return;
       lastSpark = now;
       const s = sparks[sparkIndex++ % sparks.length];
+      s.classList.toggle('is-mist', !!mist);
       gsap.killTweensOf(s);
       gsap.fromTo(s,
         { x, y, autoAlpha: 1, scale: 1 },
         {
-          x: x + gsap.utils.random(-26, 26),
-          y: y - gsap.utils.random(8, 34),
+          x: x + (mist ? gsap.utils.random(-30, 4) : gsap.utils.random(-26, 26)),
+          y: y + (mist ? gsap.utils.random(-14, 14) : -gsap.utils.random(8, 34)),
           autoAlpha: 0,
           scale: 0.3,
           duration: gsap.utils.random(0.35, 0.7),
@@ -102,54 +110,63 @@
     }
 
     function render() {
-      const p = Math.min(1, Math.max(0, state.p));
-      const exact = p * LAYERS;
-      const layer = Math.min(LAYERS, Math.floor(exact));
-      const done = p >= 0.995;
+      const p = clamp01(state.p);
+      const pp = clamp01(p / PRINT_END);
+      const pf = clamp01((p - FINISH_START) / (1 - FINISH_START));
+      const printed = pp >= 0.995;
+      const done = pf >= 0.995;
+      const printing = pp > 0.005 && !printed;
+      const finishing = pf > 0.005 && !done;
       const h = stage.clientHeight;
       const w = stage.clientWidth;
 
-      // Printed height grows in whole layers, like a real build.
-      const printed = done ? 1 : layer / LAYERS;
-      const top = (1 - printed) * 100;
+      // Phase 1: bare metal grows in whole layers, like a real build.
+      const exact = pp * LAYERS;
+      const layer = Math.min(LAYERS, Math.floor(exact));
+      const top = printed ? 0 : (1 - layer / LAYERS) * 100;
       part.style.clipPath = 'inset(' + top + '% 0 0 0)';
 
-      // Laser sits on the layer being melted and rasters across it (alternating direction).
-      const lineY = (1 - (layer + 1) / LAYERS) * h;
+      // The laser sits on the layer being melted and rasters across it (alternating direction).
+      const lineY = Math.max(0, (1 - (layer + 1) / LAYERS) * h);
       const frac = exact - Math.floor(exact);
-      const sweep = layer % 2 === 0 ? frac : 1 - frac;
-      const poolX = sweep * w;
-      gsap.set(laser, { y: Math.max(0, lineY) });
+      const poolX = (layer % 2 === 0 ? frac : 1 - frac) * w;
+      gsap.set(laser, { y: lineY });
+      gsap.set(heat, { y: lineY });
       gsap.set(pool, { x: poolX });
-      gsap.set(heat, { y: Math.max(0, lineY) });
+      if (printing) spark(poolX, lineY, false);
 
-      if (layer !== lastLayer || frac > 0.02) {
-        if (p > 0.005 && !done) spark(poolX, Math.max(0, lineY));
-      }
-      lastLayer = layer;
+      // Phase 2: a red finish is sprayed across the part, right to left (reading direction).
+      const edge = (1 - pf) * 100;
+      finish.style.clipPath = done ? 'none' : 'inset(0 0 0 ' + edge + '%)';
+      const sprayX = (edge / 100) * w;
+      gsap.set(spray, { x: sprayX });
+      if (finishing) spark(sprayX, gsap.utils.random(0.15, 0.85) * h, true);
 
-      stage.classList.toggle('is-printing', p > 0.005 && !done);
+      stage.classList.toggle('is-printing', printing);
+      stage.classList.toggle('is-printed', printed);
+      stage.classList.toggle('is-finishing', finishing);
       stage.classList.toggle('is-done', done);
 
       if (hud) {
-        const shown = done ? LAYERS : Math.max(0, layer);
-        hudLayer.textContent = String(shown).padStart(2, '0') + '/' + LAYERS;
-        hudPct.textContent = done ? 'הושלם' : Math.round(p * 100) + '%';
-        hudBar.style.transform = 'scaleX(' + p + ')';
+        hudPhase.textContent = pf > 0.005 ? 'FINISH' : 'LPBF';
+        hudLayer.textContent = String(printed ? LAYERS : Math.max(0, layer)).padStart(2, '0') + '/' + LAYERS;
+        hudPct.textContent = done ? 'הושלם' : printed && pf <= 0.005 ? 'מתכת' : Math.round((pf > 0.005 ? pf : pp) * 100) + '%';
+        hudBar.style.transform = 'scaleX(' + (pf > 0.005 ? pf : pp) + ')';
+        hud.classList.toggle('is-finishing', pf > 0.005 && !done);
         hud.classList.toggle('is-done', done);
       }
-      if (hint) hint.classList.toggle('is-hidden', p > 0.2);
+      if (hint) hint.classList.toggle('is-hidden', p > 0.15);
     }
 
     const pTo = gsap.quickTo(state, 'p', { duration: 0.7, ease: 'power3.out', onUpdate: render });
     const target = () => Math.max(intro, scrollP);
 
-    // Pin the hero while printing when it fits on screen; otherwise print over a short scroll.
+    // Pin the hero while printing when it fits on screen; otherwise run it over a short scroll.
     const canPin = hero.offsetHeight <= window.innerHeight + 4;
     ScrollTrigger.create({
       trigger: hero,
       start: 'top top',
-      end: () => '+=' + Math.round(window.innerHeight * (canPin ? 0.9 : 0.45)),
+      end: () => '+=' + Math.round(window.innerHeight * (canPin ? 1.3 : 0.6)),
       pin: canPin,
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -165,7 +182,7 @@
 
     // Short intro so the empty build plate comes alive before the first scroll.
     gsap.to({ v: 0 }, {
-      v: 0.12,
+      v: 0.08,
       duration: 1.6,
       delay: 0.35,
       ease: 'power2.inOut',
