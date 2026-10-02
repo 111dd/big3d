@@ -16,24 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function checkAuth() {
     showLoginScreen();
-    const key = localStorage.getItem('cf_admin_key');
-    if (!key) {
-        showConnectionStatus(false, 'הכנס סיסמה כדי להתחבר');
-        return;
-    }
     if (!window.cfApi?.verifyAuth) {
         showConnectionStatus(false, 'שגיאת טעינה – רענן את העמוד');
         return;
     }
     try {
-        const valid = await window.cfApi.verifyAuth(key);
-        if (!valid) {
-            localStorage.removeItem('cf_admin_key');
-            if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
-            showConnectionStatus(false, 'הסיסמה לא תקפה או שפג תוקפה');
+        if (!(await window.cfApi.verifyAuth())) {
+            showConnectionStatus(false, 'הכנס סיסמה כדי להתחבר');
             return;
         }
-        window.CLOUDFLARE_ADMIN_KEY = key;
         showAdminPanel();
         loadProjects();
         showConnectionStatus(true, 'החיבור הצליח');
@@ -114,23 +105,25 @@ async function handleLogin(e) {
     if (errorDiv) errorDiv.classList.add('hidden');
 
     try {
-        const valid = await window.cfApi.verifyAuth(key);
-        if (!valid) {
-            localStorage.removeItem('cf_admin_key');
-            if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
+        if (!(await window.cfApi.login(key))) {
             if (errorDiv) { errorDiv.textContent = 'הסיסמה שגויה'; errorDiv.classList.remove('hidden'); }
             return;
         }
-        localStorage.setItem('cf_admin_key', key);
-        window.CLOUDFLARE_ADMIN_KEY = key;
+        if (keyInput) keyInput.value = '';
+        // The password was right; if the session still doesn't verify, the browser dropped the cookie.
+        if (!(await window.cfApi.verifyAuth())) {
+            if (errorDiv) {
+                errorDiv.textContent = 'הדפדפן חוסם את עוגיית ההתחברות. נסו דפדפן אחר או אפשרו עוגיות לאתר.';
+                errorDiv.classList.remove('hidden');
+            }
+            return;
+        }
         showAdminPanel();
         loadProjects();
         showConnectionStatus(true, 'החיבור הצליח');
     } catch (err) {
-        localStorage.removeItem('cf_admin_key');
-        if (window.CLOUDFLARE_ADMIN_KEY) window.CLOUDFLARE_ADMIN_KEY = '';
         if (errorDiv) {
-            errorDiv.textContent = err.message === 'Unauthorized' ? 'הסיסמה שגויה' : (err.message || 'שגיאת חיבור');
+            errorDiv.textContent = err.message || 'שגיאת חיבור';
             errorDiv.classList.remove('hidden');
         }
     } finally {
@@ -139,8 +132,7 @@ async function handleLogin(e) {
 }
 
 function logout() {
-    localStorage.removeItem('cf_admin_key');
-    window.CLOUDFLARE_ADMIN_KEY = '';
+    window.cfApi?.logout();
     showLoginScreen();
     uploadedImages = [];
     currentProjectId = null;
@@ -531,7 +523,7 @@ async function handleProjectSubmit(e) {
 async function editProject(projectId) {
     currentProjectId = projectId;
     try {
-        const project = await window.cfApi.get(`/projects/${projectId}`, true);
+        const project = await window.cfApi.get(`/projects/${projectId}`);
         document.getElementById('modal-title').textContent = 'ערוך פרויקט';
         document.getElementById('project-title').value = project.title;
         document.getElementById('project-key').value = project.key;
