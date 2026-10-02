@@ -106,13 +106,36 @@ wrangler deploy
 
 ## Rate Limiting (Production)
 
-מומלץ להגדיר **Rate limiting** ב-Cloudflare Dashboard:
+### שכבה 1: בתוך ה-Worker (כבר בקוד)
 
-1. דף ה-Worker → Settings → Add trigger
-2. או: Security → WAF → Rate limiting rules
-3. הגדר למשל: 100 requests/minute ל-API, 10/min ל-POST/PUT/DELETE
+`worker/wrangler.toml` מגדיר שני bindings של Workers Rate Limiting, לפי כתובת IP:
 
-זה מגן מפני brute-force והתקפות DDoS.
+| Binding | חל על | מגבלה |
+|---------|-------|-------|
+| `PUBLIC_RATE_LIMITER` | GET ציבורי: `/projects`, `/site-logos`, `/storage/*` | 300 בקשות לדקה |
+| `ADMIN_RATE_LIMITER` | כל שאר הנתיבים (admin), נבדק לפני בדיקת המפתח | 60 בקשות לדקה |
+
+מעל המגבלה ה-Worker מחזיר `429 { "error": "Too many requests" }`.
+זה עובד גם על `big3d.111dordavid.workers.dev`, כולל בתוכנית Free. כדי להפעיל: `cd worker && npx wrangler deploy`.
+לשינוי המספרים: ערוך `limit` (ו-`period`, רק 10 או 60) ב-`wrangler.toml` ופרוס שוב.
+
+### שכבה 2 (אופציונלי): WAF Rate limiting rule בדשבורד
+
+כללי WAF חלים רק על תעבורה שעוברת דרך דומיין שלך (zone), **לא** על `*.workers.dev`. לכן צריך קודם דומיין מותאם ל-Worker:
+
+1. Workers & Pages → **big3d** (ה-Worker) → Settings → **Domains & Routes** → Add → **Custom domain** → `api.big3d.co.il` → Add domain.
+2. עדכן את `CLOUDFLARE_API_URL` ב-`js/cloudflare-config.js` וב-`js/portfolio-loader.js` ל-`https://api.big3d.co.il`, ופרוס את האתר.
+3. בדשבורד בחר את ה-zone **big3d.co.il** → Security → **WAF** → לשונית **Rate limiting rules** → **Create rule**:
+   - Rule name: `API rate limit`
+   - If incoming requests match: Field `Hostname`, Operator `equals`, Value `api.big3d.co.il`
+   - With the same characteristics: `IP` (ברירת מחדל)
+   - When rate exceeds: `100` requests, Period `10 seconds`
+   - Then take action: `Block`, Duration `10 seconds`
+   - **Deploy**
+4. בדיקה: בטרמינל `for i in $(seq 1 120); do curl -s -o /dev/null -w "%{http_code}\n" https://api.big3d.co.il/projects; done | sort | uniq -c` אמור להראות חלק מהתשובות כ-`429`.
+5. אחרי שהאתר עובד מול הדומיין החדש: Worker → Settings → Domains & Routes → כבה את `workers.dev`, אחרת אפשר לעקוף את כלל ה-WAF דרכו.
+
+בתוכנית Free יש כלל rate limiting אחד, עם period ו-duration של 10 שניות בלבד, וספירה לפי IP.
 
 ## התחברות ל-Admin
 
