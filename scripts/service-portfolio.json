@@ -6,7 +6,7 @@
     "3d-printing-large.html": [
       {
         "key": "shark",
-        "title": "כריש באורך 2.2 מטר",
+        "title": "הדפסת כריש 2.2 מטר",
         "image": "shark/shark-1.jpg",
         "alt": "כריש באורך 2.2 מטר - פרויקט הדפסת תלת־ממד גדולה מתיק העבודות של BIG 3D"
       },
@@ -18,13 +18,13 @@
       },
       {
         "key": "world-cup-cup",
-        "title": "גביע המונדיאל",
+        "title": "גביע המונדיאל ענק 70 ס\"מ",
         "image": "World Cup Cup/world-cup-cup-2.jpg",
         "alt": "גביע המונדיאל - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
       },
       {
         "key": "trump",
-        "title": "דונאלד ג'י טראמפ",
+        "title": "דונאלד טראמפ גודל אמיתי",
         "image": "trump/trump-1.jpg",
         "alt": "דמות דונאלד טראמפ - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
       }
@@ -38,7 +38,7 @@
       },
       {
         "key": "garbage-shaft-cleaning-model",
-        "title": "רובוט ניקוי פיר אשפה",
+        "title": "מודל של רובוט לניקוי פיר אשפה",
         "image": "Garbage shaft cleaning model/garbage-laser-engraving.jpg",
         "alt": "חריטה בלייזר בפרויקט רובוט ניקוי פיר אשפה - מתיק העבודות של BIG 3D"
       }
@@ -46,7 +46,7 @@
     "engineering-design.html": [
       {
         "key": "garbage-shaft-cleaning-model",
-        "title": "רובוט ניקוי פיר אשפה",
+        "title": "מודל של רובוט לניקוי פיר אשפה",
         "image": "Garbage shaft cleaning model/first_wobg.png",
         "alt": "מודל רובוט ניקוי פיר אשפה - שלב התכנון בפרויקט מתיק העבודות של BIG 3D"
       },
@@ -58,7 +58,7 @@
       },
       {
         "key": "pizza-car-holder",
-        "title": "בוסטר לפיצה",
+        "title": "בוסטר לפיצה לרכב",
         "image": "pizza car holder/pizza-holder-1.jpg",
         "alt": "בוסטר לפיצה - פרויקט מתיק העבודות של BIG 3D"
       }
@@ -72,19 +72,19 @@
       },
       {
         "key": "pizza-car-holder",
-        "title": "בוסטר לפיצה",
+        "title": "בוסטר לפיצה לרכב",
         "image": "pizza car holder/pizza-holder-1.jpg",
         "alt": "בוסטר לפיצה - פרויקט מתיק העבודות של BIG 3D"
       },
       {
         "key": "garbage-shaft-cleaning-model",
-        "title": "רובוט ניקוי פיר אשפה",
+        "title": "מודל של רובוט לניקוי פיר אשפה",
         "image": "Garbage shaft cleaning model/garbage-model-1.jpg",
         "alt": "מודל מודפס של רובוט ניקוי פיר אשפה - מתיק העבודות של BIG 3D"
       },
       {
         "key": "world-cup-cup",
-        "title": "גביע המונדיאל",
+        "title": "גביע המונדיאל ענק 70 ס\"מ",
         "image": "World Cup Cup/world-cup-cup-1.jpg",
         "alt": "גביע המונדיאל בזמן ההדפסה - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
       }
