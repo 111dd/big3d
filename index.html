@@ -94,7 +94,8 @@
         },
         "serviceType": [
             "הדפסת מתכות בתלת־ממד",
-            "תכנון הנדסי ועיבוד שבבי CNC",
+            "תכנון הנדסי ופיתוח מוצר",
+            "עיבוד שבבי CNC",
             "הדפסות תלת־ממד גדולות בפלסטיק",
             "חיתוך בלייזר CO₂",
             "חריטה בלייזר CO₂"
@@ -115,8 +116,18 @@
                     "@type": "Offer",
                     "itemOffered": {
                         "@type": "Service",
-                        "name": "תכנון הנדסי ועיבוד שבבי CNC",
-                        "description": "תכנון הנדסי, כרסום CNC ומחרטה לחלקים מפלדה, אלומיניום, עץ, סיבי פחמן, פלסטיק, נחושת ועוד."
+                        "name": "תכנון הנדסי ופיתוח מוצר",
+                        "description": "מרעיון, סקיצה או חלק קיים למודל CAD מוכן לייצור: אפיון, התאמה לתהליך הייצור, בחירת חומר ואב־טיפוס.",
+                        "url": "https://www.big3d.co.il/engineering-design"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "עיבוד שבבי CNC",
+                        "description": "כרסום CNC ומחרטה לחלקים מפלדה, אלומיניום, עץ, סיבי פחמן, פלסטיק, נחושת ועוד.",
+                        "url": "https://www.big3d.co.il/cnc-machining"
                     }
                 },
                 {
@@ -190,8 +201,8 @@ img{max-width:100%;height:auto;display:block}
 @media(min-width:768px){.md\:text-6xl{font-size:3.75rem;line-height:1}.md\:mb-4{margin-bottom:1rem}.md\:mb-6{margin-bottom:1.5rem}}
     </style>
     <!-- Full Tailwind (loaded async, non-blocking) -->
-    <link rel="preload" href="/css/tailwind.css?v=20261002" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/css/tailwind.css?v=20261002"></noscript>
+    <link rel="preload" href="/css/tailwind.css?v=20261002b" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css?v=20261002b"></noscript>
     <!-- Google Fonts (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -700,9 +711,9 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                 <h2 data-motion-heading class="text-3xl font-extrabold">מעטפת ייצור שלמה</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal" data-reveal-group>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 reveal" data-reveal-group>
 
-                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
+                <article class="svc-card lg:col-span-2 p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- הדפסת מתכות -->
                     <a href="/3d-printing-industrial" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -725,30 +736,53 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                     </a>
                 </article>
 
-                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
-                    <!-- עיבוד שבבי -->
+                <article class="svc-card lg:col-span-2 p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
+                    <!-- תכנון הנדסי -->
                     <a href="/engineering-design" class="block">
                     <div class="flex items-start gap-4 mb-3">
-                        <img src="/optimized/icons/cnc/icon-96.webp" 
-                             alt="תכנון הנדסי ועיבוד שבבי CNC"
+                        <img src="/optimized/icons/ALLIN/icon-96.webp" 
+                             alt="תכנון הנדסי ופיתוח מוצר"
                              width="48"
                              height="48"
                              loading="lazy"
                              decoding="async"
                              class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
                         <div class="flex-1">
-                            <h3 class="text-xl font-bold mb-2">תכנון הנדסי ועיבוד שבבי</h3>
+                            <h3 class="text-xl font-bold mb-2">תכנון הנדסי ופיתוח מוצר</h3>
                             <p class="text-gray-400">
-                                תכנון הנדסי, כרסום CNC ומחרטה של חומרים רבים כגון: פלדה, ברזל, אלומיניום, עץ, סיבי פחמן, פלסטיק, נחושת, כסף, MDF ועוד.
+                                מרעיון, סקיצה או חלק קיים למודל CAD מוכן לייצור: אפיון, התאמה לתהליך הייצור, בחירת חומר ואב־טיפוס.
+                                ליווי מלא עד לחלק המוגמר, בכל הטכנולוגיות שלנו.
+                            </p>
+                        </div>
+                    </div>
+                    <span class="text-brand-500 text-sm font-semibold">קראו עוד על תכנון הנדסי ←</span>
+                    </a>
+                </article>
+
+                <article class="svc-card lg:col-span-2 p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
+                    <!-- עיבוד שבבי -->
+                    <a href="/cnc-machining" class="block">
+                    <div class="flex items-start gap-4 mb-3">
+                        <img src="/optimized/icons/cnc/icon-96.webp" 
+                             alt="עיבוד שבבי CNC, כרסום ומחרטה"
+                             width="48"
+                             height="48"
+                             loading="lazy"
+                             decoding="async"
+                             class="w-12 h-12 rounded-full object-cover opacity-80 border border-brand-500/20 shadow-md flex-shrink-0">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold mb-2">עיבוד שבבי CNC</h3>
+                            <p class="text-gray-400">
+                                כרסום CNC ומחרטה של חומרים רבים כגון: פלדה, ברזל, אלומיניום, עץ, סיבי פחמן, פלסטיק, נחושת, כסף, MDF ועוד.
                                 שילוב בין דיוק גבוה וגימור איכותי לחלקים פונקציונליים ומכאניים.
                             </p>
                         </div>
                     </div>
-                    <span class="text-brand-500 text-sm font-semibold">קרא עוד על תכנון הנדסי ועיבוד שבבי ←</span>
+                    <span class="text-brand-500 text-sm font-semibold">קראו עוד על עיבוד שבבי CNC ←</span>
                     </a>
                 </article>
 
-                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
+                <article class="svc-card lg:col-span-3 p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- הדפסת פלסטיק בתלת־ממד -->
                     <a href="/3d-printing-plastic" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -771,7 +805,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                     </a>
                 </article>
 
-                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
+                <article class="svc-card md:col-span-2 lg:col-span-3 p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- חיתוך וחריטה בלייזר CO2 -->
                     <a href="/laser-cutting" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -810,7 +844,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                             <p class="text-gray-300 text-base leading-relaxed">
                                 אנחנו מספקים מעטפת מלאה משלב הרעיון ועד למוצר מוגמר – תכנון, פיתוח וייצור מתקדם.
                                 <br><br>
-                                העבודה שלנו משלבת <a href="/3d-printing-industrial" class="text-brand-500 hover:underline">הדפסת מתכות בתלת־ממד</a>, <a href="/engineering-design" class="text-brand-500 hover:underline">תכנון הנדסי ועיבוד שבבי</a>, <a href="/3d-printing-large" class="text-brand-500 hover:underline">הדפסות תלת־ממד</a> בפלסטיק ו<a href="/laser-cutting" class="text-brand-500 hover:underline">חיתוך לייזר</a>, ומאפשרת פתרונות מדויקים, מהירים ואיכותיים ללקוחות תעשייתיים ופרטיים.
+                                העבודה שלנו משלבת <a href="/3d-printing-industrial" class="text-brand-500 hover:underline">הדפסת מתכות בתלת־ממד</a>, <a href="/engineering-design" class="text-brand-500 hover:underline">תכנון הנדסי</a>, <a href="/cnc-machining" class="text-brand-500 hover:underline">עיבוד שבבי CNC</a>, <a href="/3d-printing-large" class="text-brand-500 hover:underline">הדפסות תלת־ממד</a> בפלסטיק ו<a href="/laser-cutting" class="text-brand-500 hover:underline">חיתוך לייזר</a>, ומאפשרת פתרונות מדויקים, מהירים ואיכותיים ללקוחות תעשייתיים ופרטיים.
                                 <br><br>
                                 בפרויקטי מתכת אנחנו עובדים בטכנולוגיית <a href="/3d-printing-industrial" class="text-brand-500 hover:underline">Laser Powder Bed Fusion (LPBF)</a> לייצור רכיבים מורכבים, תעלות פנימיות, מבנים קלי־משקל וחלקים פונקציונליים עם חופש תכנון גבוה.
                                 <br><br>
@@ -994,6 +1028,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                                 <option value="חיתוך בלייזר">חיתוך בלייזר</option>
                                 <option value="חריטה בלייזר">חריטה בלייזר</option>
                                 <option value="ייעוץ ותכנון הנדסי">ייעוץ ותכנון הנדסי</option>
+                                <option value="עיבוד שבבי CNC">עיבוד שבבי CNC</option>
                                 <option value="אחר">אחר…</option>
                             </select>
                             <span class="error-message" id="service-error">אנא בחרו סוג שירות</span>
