@@ -1,8 +1,8 @@
 /**
  * Home page motion system: Lenis smooth scroll + GSAP ScrollTrigger.
  *
- * - Hero: the logo is "printed" layer by layer in bare metal (LPBF style) as the visitor
- *   scrolls, then a red finish is sprayed across it.
+ * - Hero: on load the logo is "printed" layer by layer in bare metal (LPBF style),
+ *   then a red finish is sprayed across it. It plays on its own, independent of scroll.
  * - Section headings, cards and boxes reveal as they enter the viewport.
  * - Desktop only: spotlight/tilt on service cards, magnetic hero buttons, hero glow.
  *
@@ -32,7 +32,7 @@
   let lenis = null;
   if (window.Lenis) {
     lenis = new window.Lenis({
-      lerp: 0.09,
+      lerp: 0.12,
       smoothWheel: true,
       wheelMultiplier: 0.9,
       anchors: true, // honours html scroll-padding-top for the fixed navbar
@@ -70,16 +70,13 @@
     const hudLayer = hud && hud.querySelector('[data-print-layer]');
     const hudPct = hud && hud.querySelector('[data-print-pct]');
     const hudBar = hud && hud.querySelector('.print-bar i');
-    const hint = document.querySelector('[data-print-hint]');
 
     const LAYERS = 60;
-    // Scroll budget: first the metal build, a short beat of bare metal, then the red finish.
+    // Sequence: first the metal build, a short beat of bare metal, then the red finish.
     const PRINT_END = 0.64;
     const FINISH_START = 0.72;
     const clamp01 = (v) => Math.min(1, Math.max(0, v));
     const state = { p: 0 };
-    let intro = 0;
-    let scrollP = 0;
     let lastSpark = 0;
 
     const sparks = [];
@@ -155,42 +152,18 @@
         hud.classList.toggle('is-finishing', pf > 0.005 && !done);
         hud.classList.toggle('is-done', done);
       }
-      if (hint) hint.classList.toggle('is-hidden', p > 0.15);
     }
 
-    const pTo = gsap.quickTo(state, 'p', { duration: 0.7, ease: 'power3.out', onUpdate: render });
-    const target = () => Math.max(intro, scrollP);
-
-    // Pin the hero while printing when it fits on screen; otherwise run it over a short scroll.
-    const canPin = hero.offsetHeight <= window.innerHeight + 4;
-    ScrollTrigger.create({
-      trigger: hero,
-      start: 'top top',
-      end: () => '+=' + Math.round(window.innerHeight * (canPin ? 1.3 : 0.6)),
-      pin: canPin,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        scrollP = self.progress;
-        pTo(target());
-      },
-      onRefresh: (self) => {
-        scrollP = self.progress;
-        pTo(target());
-      },
-    });
-
-    // Short intro so the empty build plate comes alive before the first scroll.
-    gsap.to({ v: 0 }, {
-      v: 0.08,
-      duration: 1.6,
-      delay: 0.35,
-      ease: 'power2.inOut',
-      onUpdate: function () {
-        intro = this.targets()[0].v;
-        pTo(target());
-      },
-    });
+    // Plays on its own as soon as the page is ready; scrolling never holds it back.
+    // If the visitor arrives below the hero (e.g. a #contact link), show the finished logo.
+    if (hero.getBoundingClientRect().bottom <= 0) {
+      state.p = 1;
+    } else {
+      gsap.timeline({ delay: 0.3, onUpdate: render })
+        .to(state, { p: PRINT_END, duration: 3.2, ease: 'power1.inOut' })
+        .to(state, { p: FINISH_START, duration: 0.5, ease: 'none' })
+        .to(state, { p: 1, duration: 1.4, ease: 'power2.inOut' });
+    }
 
     window.addEventListener('resize', render, { passive: true });
     render();

@@ -454,7 +454,6 @@ img{max-width:100%;height:auto;display:block}
         html.js-print .print-stage { max-width: min(400px, 80vw); }
         html.js-print .print-hud { max-width: min(400px, 80vw); }
         .print-powder, .print-heat, .print-laser, .print-sparks { display: none; }
-        html.js-print #home { min-height: 100vh; min-height: 100svh; }
         html.js-print .print-stage .print-part {
             clip-path: inset(100% 0 0 0); opacity: 1;
             /* Raw printed metal: the red lettering reads as bright bare alloy until the finish is applied */
@@ -538,22 +537,6 @@ img{max-width:100%;height:auto;display:block}
         .print-hud.is-done { color: #00D4FF; }
         [data-print-pct] { direction: rtl; min-width: 3.5em; text-align: right; }
 
-        .print-hint {
-            display: none; position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
-            flex-direction: column; align-items: center; gap: .4rem;
-            font-size: .75rem; color: #9ca3af; transition: opacity .5s ease;
-        }
-        html.js-print .print-hint { display: flex; }
-        .print-hint.is-hidden { opacity: 0; }
-        .print-hint span {
-            width: 22px; height: 34px; border: 1.5px solid rgba(255, 255, 255, 0.35); border-radius: 12px; position: relative;
-        }
-        .print-hint span::after {
-            content: ""; position: absolute; top: 6px; left: 50%; width: 3px; height: 7px; margin-left: -1.5px;
-            border-radius: 2px; background: #00D4FF; animation: hint-wheel 1.8s ease-in-out infinite;
-        }
-        @keyframes hint-wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(10px); } }
-
         /* Masked word reveal for section headings */
         .motion-word-mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; }
         .motion-word { display: inline-block; will-change: transform; }
@@ -577,7 +560,7 @@ img{max-width:100%;height:auto;display:block}
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .print-hint span::after, .print-pool, .print-sheen { animation: none !important; }
+            .print-pool, .print-sheen { animation: none !important; }
         }
     </style>
     <link rel="stylesheet" href="/css/gallery-fe19138afa.css">
@@ -668,7 +651,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
         <div class="hero-grid" aria-hidden="true"></div>
 
         <div class="relative text-center px-4 max-w-2xl reveal">
-            <!-- Hero Logo (LCP element), printed layer by layer on scroll by js/home-motion.js -->
+            <!-- Hero Logo (LCP element), printed layer by layer on load by js/home-motion.js -->
             <div class="hero-logo print-stage mb-4 md:mb-6" data-print-stage>
                 <div class="print-powder" aria-hidden="true"></div>
                 <img class="print-part"
@@ -706,10 +689,6 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
             </div>
         </div>
 
-        <div class="print-hint" data-print-hint aria-hidden="true">
-            <span></span>
-            גללו כדי להדפיס
-        </div>
     </section>
 
     <!-- Services -->
@@ -1066,7 +1045,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
     <script src="/js/vendor/gsap-3.15.0.min.js" defer></script>
     <script src="/js/vendor/ScrollTrigger-3.15.0.min.js" defer></script>
     <script src="/js/vendor/lenis-1.3.26.min.js" defer></script>
-    <script src="/js/home-motion.js?v=2" defer></script>
+    <script src="/js/home-motion.js?v=3" defer></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => safeCreateIcons());
