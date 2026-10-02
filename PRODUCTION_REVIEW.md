@@ -9,7 +9,7 @@
 | No secrets in frontend | ✅ | ADMIN_API_KEY is only in Worker secrets (wrangler secret). Never in JS. |
 | admin.js | ✅ | No hardcoded keys. Key entered at login and exchanged for an HttpOnly session cookie; never stored in the browser. |
 | CORS | ✅ | Restricted via `ALLOWED_ORIGINS` in worker/wrangler.toml. Set to production domains. |
-| Rate limiting | ⚠️ | Not in code. **Action:** Configure via Cloudflare Dashboard WAF (see CLOUDFLARE_SETUP.md). |
+| Rate limiting | ✅ | Per-IP Workers Rate Limiting bindings in worker/wrangler.toml (public GET 300/min, admin 60/min, 429 when exceeded). Optional extra WAF rule: see CLOUDFLARE_SETUP.md. |
 | File upload validation | ✅ | Worker validates: MIME type (image/*), max 10 MB. Frontend pre-validates size. |
 
 ### 2. Worker Configuration ✅
@@ -68,7 +68,7 @@
 ### Remaining Recommendations
 
 1. **Rate limiting**  
-   Configure WAF rate limiting in Cloudflare Dashboard for the Worker.
+   Done in the Worker. Optionally add a WAF rate limiting rule once the API has a custom domain (see CLOUDFLARE_SETUP.md).
 
 2. **ALLOWED_ORIGINS**  
    For production, set in worker/wrangler.toml:

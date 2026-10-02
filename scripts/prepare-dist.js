@@ -14,7 +14,7 @@ if (fs.existsSync(dist)) fs.rmSync(dist, { recursive: true });
 fs.mkdirSync(dist, { recursive: true });
 
 // Copy everything except build/config files
-const exclude = ['node_modules', '.git', 'dist', 'src', 'scripts', 'worker', 'tailwind.config.js', 'package.json', 'package-lock.json', '.gitignore'];
+const exclude = ['node_modules', '.git', '.claude', 'dist', 'src', 'scripts', 'worker', 'tailwind.config.js', 'package.json', 'package-lock.json', '.gitignore'];
 const excludeExt = ['.md'];
 function shouldExclude(name) {
   if (exclude.includes(name)) return true;
