@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Hero logo print: hide the logo before first paint only when motion will run; fall back after 4s -->
+    <script>
+    (function(){var d=document.documentElement;if(window.matchMedia&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('js-print');setTimeout(function(){if(!d.classList.contains('motion-ready'))d.classList.remove('js-print')},4000)}})();
+    </script>
     <!-- Preload LCP image ASAP for faster paint -->
     <link rel="preload" as="image" href="/optimized/dark_logo_big3d-360.webp" type="image/webp" fetchpriority="high">
     <title>BIG 3D – הדפסת מתכות בתלת־ממד ותכנון הנדסי | הדפסות תלת־ממד בישראל</title>
@@ -186,8 +190,8 @@ img{max-width:100%;height:auto;display:block}
 @media(min-width:768px){.md\:text-6xl{font-size:3.75rem;line-height:1}.md\:mb-4{margin-bottom:1rem}.md\:mb-6{margin-bottom:1.5rem}}
     </style>
     <!-- Full Tailwind (loaded async, non-blocking) -->
-    <link rel="preload" href="/css/tailwind.css?v=20260827" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/css/tailwind.css?v=20260827"></noscript>
+    <link rel="preload" href="/css/tailwind.css?v=20261002" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/tailwind.css?v=20261002"></noscript>
     <!-- Google Fonts (non-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -421,6 +425,131 @@ img{max-width:100%;height:auto;display:block}
         }
         
         .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+        /* ===== Motion system (js/home-motion.js) ===== */
+        html.lenis, html.lenis body { height: auto; }
+        html.lenis { scroll-behavior: auto; }
+        .lenis.lenis-stopped { overflow: clip; }
+        .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            html { scroll-behavior: auto; }
+        }
+
+        /* Hero backdrop: build-plate grid + pointer glow */
+        .hero-grid {
+            position: absolute; inset: 0; pointer-events: none;
+            background-image:
+                radial-gradient(600px circle at var(--gx, 50%) var(--gy, 40%), rgba(0, 212, 255, 0.10), transparent 60%),
+                linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+            background-size: auto, 48px 48px, 48px 48px;
+            -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 80%);
+            mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 80%);
+        }
+
+        /* Logo print stage */
+        .print-stage { isolation: isolate; }
+        html.js-print .print-stage { max-width: min(400px, 80vw); }
+        html.js-print .print-hud { max-width: min(400px, 80vw); }
+        .print-powder, .print-heat, .print-laser, .print-sparks { display: none; }
+        html.js-print #home { min-height: 100vh; min-height: 100svh; }
+        html.js-print .print-stage .print-part { clip-path: inset(100% 0 0 0); opacity: 1; }
+        html.js-print .print-powder {
+            display: block; position: absolute; inset: 0; z-index: -1;
+            background-color: #232326;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.09) 0.8px, transparent 1.2px);
+            background-size: 4px 4px;
+        }
+        html.js-print .print-heat,
+        html.js-print .print-laser,
+        html.js-print .print-sparks { display: block; position: absolute; left: 0; right: 0; top: 0; pointer-events: none; }
+        .print-heat {
+            height: 22%;
+            background: linear-gradient(to bottom, rgba(255, 140, 50, 0.45), rgba(255, 60, 30, 0.12) 45%, transparent);
+            mix-blend-mode: screen; opacity: 0; transition: opacity .4s ease;
+        }
+        .print-laser {
+            height: 2px; opacity: 0; transition: opacity .3s ease;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.55) 15%, rgba(0, 212, 255, 0.55) 85%, transparent);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+        }
+        .print-pool {
+            position: absolute; top: -5px; left: -6px; width: 12px; height: 12px; border-radius: 50%;
+            background: radial-gradient(circle, #fff 0 25%, #9ff0ff 45%, rgba(0, 212, 255, 0) 70%);
+            box-shadow: 0 0 18px 6px rgba(0, 212, 255, 0.55), 0 0 4px 2px #fff;
+            animation: pool-flicker .12s steps(2) infinite;
+        }
+        .print-sparks { height: 100%; overflow: visible; }
+        .print-sparks i {
+            position: absolute; top: -1.5px; left: -1.5px; width: 3px; height: 3px; border-radius: 50%;
+            background: #ffe7b0; box-shadow: 0 0 6px 1px rgba(255, 170, 60, 0.9); opacity: 0;
+        }
+        .print-stage.is-printing .print-laser,
+        .print-stage.is-printing .print-heat { opacity: 1; }
+        .print-stage::after {
+            content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+            background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+            transform: translateX(-120%);
+        }
+        .print-stage.is-done::after { animation: print-shine 1.1s ease-out forwards; }
+        @keyframes print-shine { 0% { opacity: 1; transform: translateX(-120%); } 100% { opacity: 1; transform: translateX(120%); } }
+        @keyframes pool-flicker { 50% { transform: scale(0.8); opacity: .85; } }
+
+        .print-hud {
+            display: none; align-items: center; justify-content: center; gap: .75rem;
+            margin: -0.5rem auto 1.25rem; max-width: 280px;
+            font: 600 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            letter-spacing: .08em; color: #8adff0; direction: ltr;
+        }
+        html.js-print .print-hud { display: flex; }
+        .print-hud .print-bar { flex: 1; height: 2px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; overflow: hidden; }
+        .print-hud .print-bar i { display: block; height: 100%; background: #00D4FF; transform: scaleX(0); transform-origin: left; }
+        .print-hud.is-done { color: #00D4FF; }
+        [data-print-pct] { direction: rtl; min-width: 3.5em; text-align: right; }
+
+        .print-hint {
+            display: none; position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
+            flex-direction: column; align-items: center; gap: .4rem;
+            font-size: .75rem; color: #9ca3af; transition: opacity .5s ease;
+        }
+        html.js-print .print-hint { display: flex; }
+        .print-hint.is-hidden { opacity: 0; }
+        .print-hint span {
+            width: 22px; height: 34px; border: 1.5px solid rgba(255, 255, 255, 0.35); border-radius: 12px; position: relative;
+        }
+        .print-hint span::after {
+            content: ""; position: absolute; top: 6px; left: 50%; width: 3px; height: 7px; margin-left: -1.5px;
+            border-radius: 2px; background: #00D4FF; animation: hint-wheel 1.8s ease-in-out infinite;
+        }
+        @keyframes hint-wheel { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(10px); } }
+
+        /* Masked word reveal for section headings */
+        .motion-word-mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; }
+        .motion-word { display: inline-block; will-change: transform; }
+
+        /* Service cards: cursor spotlight (desktop) */
+        .svc-card { position: relative; transform-style: preserve-3d; }
+        .svc-card::before {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+            background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 212, 255, 0.12), transparent 60%);
+            transition: opacity .4s ease;
+        }
+        .svc-card::after {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; padding: 1px; opacity: 0;
+            background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(0, 212, 255, 0.6), transparent 60%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            transition: opacity .4s ease;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .svc-card:hover::before, .svc-card:hover::after { opacity: 1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .print-hint span::after, .print-pool { animation: none; }
+        }
     </style>
     <link rel="stylesheet" href="/css/gallery-fe19138afa.css">
 <style id="critical-gallery-sizing">
@@ -507,17 +636,29 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
     <section id="home" class="relative min-h-[75vh] flex items-center justify-center pt-20 pb-8 overflow-hidden">
 
         <div class="absolute inset-0 bg-gradient-to-b from-neutral-dark/90 via-neutral/80 to-neutral-dark/90"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
 
         <div class="relative text-center px-4 max-w-2xl reveal">
-            <!-- Hero Logo (LCP element) -->
-            <div class="hero-logo mb-4 md:mb-6">
-                <img src="/optimized/dark_logo_big3d-360.webp"
+            <!-- Hero Logo (LCP element), printed layer by layer on scroll by js/home-motion.js -->
+            <div class="hero-logo print-stage mb-4 md:mb-6" data-print-stage>
+                <div class="print-powder" aria-hidden="true"></div>
+                <img class="print-part"
+                     src="/optimized/dark_logo_big3d-360.webp"
                      alt="BIG 3D"
                      width="360"
                      height="141"
                      fetchpriority="high"
                      loading="eager"
                      decoding="async" />
+                <div class="print-heat" aria-hidden="true"></div>
+                <div class="print-laser" aria-hidden="true"><span class="print-pool"></span></div>
+                <div class="print-sparks" aria-hidden="true"></div>
+            </div>
+            <div class="print-hud" data-print-hud aria-hidden="true">
+                <span>LPBF</span>
+                <span data-print-layer>00/60</span>
+                <span class="print-bar"><i></i></span>
+                <span data-print-pct>0%</span>
             </div>
 
             <h1 class="text-3xl md:text-6xl font-extrabold mb-3 md:mb-4">הדפסת מתכות בתלת־ממד <br><span class="text-brand-500">ותכנון הנדסי בישראל</span></h1>
@@ -528,9 +669,14 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
             </p>
 
             <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-2">
-                <a href="#services" class="bg-brand-600 text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base whitespace-nowrap">שירותים</a>
-                <a href="#contact" class="border border-brand-600 text-brand-500 px-6 md:px-8 py-2.5 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap">צור קשר</a>
+                <a href="#services" data-magnetic class="bg-brand-600 text-white px-6 md:px-8 py-2.5 md:py-3 rounded-full font-semibold text-sm md:text-base whitespace-nowrap hover:bg-brand-500 transition-colors">שירותים</a>
+                <a href="#contact" data-magnetic class="border border-brand-600 text-brand-500 px-6 md:px-8 py-2.5 md:py-3 rounded-full text-sm md:text-base whitespace-nowrap hover:bg-brand-600/10 transition-colors">צור קשר</a>
             </div>
+        </div>
+
+        <div class="print-hint" data-print-hint aria-hidden="true">
+            <span></span>
+            גללו כדי להדפיס
         </div>
     </section>
 
@@ -540,12 +686,12 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
 
             <div class="text-center mb-12 reveal">
                 <p class="text-gray-400 text-sm tracking-wide mb-2">מה אנחנו עושים</p>
-                <h2 class="text-3xl font-extrabold">מעטפת ייצור שלמה</h2>
+                <h2 data-motion-heading class="text-3xl font-extrabold">מעטפת ייצור שלמה</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 reveal" data-reveal-group>
 
-                <article class="p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition">
+                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- הדפסת מתכות -->
                     <a href="/3d-printing-industrial" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -568,7 +714,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                     </a>
                 </article>
 
-                <article class="p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition">
+                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- עיבוד שבבי -->
                     <a href="/engineering-design" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -591,7 +737,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                     </a>
                 </article>
 
-                <article class="p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition">
+                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- הדפסת פלסטיק בתלת־ממד -->
                     <a href="/3d-printing-plastic" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -614,7 +760,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
                     </a>
                 </article>
 
-                <article class="p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition">
+                <article class="svc-card p-7 bg-neutral shadow-card rounded-2xl hover:shadow-lg transition-shadow" data-tilt-card>
                     <!-- חיתוך וחריטה בלייזר CO2 -->
                     <a href="/laser-cutting" class="block">
                     <div class="flex items-start gap-4 mb-3">
@@ -672,7 +818,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
         <div class="max-w-7xl mx-auto px-4">
 
             <div class="text-center mb-10 reveal">
-                <h2 class="text-3xl font-extrabold">תיק עבודות</h2>
+                <h2 data-motion-heading class="text-3xl font-extrabold">תיק עבודות</h2>
                 <p class="text-gray-400">דוגמאות להדפסה, חיתוך ועיבוד מתקדם</p>
             </div>
 
@@ -684,7 +830,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
 
 
     <!-- MODAL – גלריית החלקה -->
-    <div id="portfolio-modal"
+    <div id="portfolio-modal" data-lenis-prevent
          class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-[999] flex items-center justify-center p-4">
 
         <div class="bg-neutral-dark rounded-3xl shadow-card max-w-5xl w-full p-4 md:p-6 relative">
@@ -743,11 +889,11 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
         <div class="max-w-4xl mx-auto px-4">
 
             <div class="text-center mb-10 reveal">
-                <h2 class="text-3xl font-extrabold">שאלות נפוצות</h2>
+                <h2 data-motion-heading class="text-3xl font-extrabold">שאלות נפוצות</h2>
                 <p class="text-gray-400">כל מה שחשוב לדעת לפני שמתחילים</p>
             </div>
 
-            <div class="space-y-4 reveal">
+            <div class="space-y-4 reveal" data-reveal-group>
                 <div class="p-6 bg-neutral rounded-2xl shadow-card">
                     <h3 class="text-lg font-bold text-brand-500 mb-2">מה גודל ההדפסה המרבי בתלת־ממד?</h3>
                     <p class="text-gray-300">בפלסטיק אנחנו מדפיסים גם חלקים גדולים במיוחד - בחתיכה אחת או בחלוקה חכמה למספר חלקים, בהתאם לגיאומטריה. הדפסת מתכות מתבצעת בטכנולוגיית LPBF ועד כמה מאות מילימטרים בהתאם למכונה, לחומר ולגיאומטריה.</p>
@@ -771,7 +917,7 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
 
             <div class="bg-neutral p-8 rounded-3xl shadow-card reveal" id="contact-box">
 
-                <h2 class="text-center text-3xl font-extrabold mb-8">צור קשר</h2>
+                <h2 data-motion-heading class="text-center text-3xl font-extrabold mb-8">צור קשר</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
@@ -883,6 +1029,12 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
 
     <!-- Portfolio Loader -->
     <script src="js/portfolio-loader.js?v=10" defer></script>
+
+    <!-- Motion system: GSAP + ScrollTrigger + Lenis (self-hosted, see js/vendor/README.md) -->
+    <script src="/js/vendor/gsap-3.15.0.min.js" defer></script>
+    <script src="/js/vendor/ScrollTrigger-3.15.0.min.js" defer></script>
+    <script src="/js/vendor/lenis-1.3.26.min.js" defer></script>
+    <script src="/js/home-motion.js?v=1" defer></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => safeCreateIcons());
@@ -911,7 +1063,8 @@ main.page-main > img,main.page-main > picture img,main article > img,main articl
         window.addEventListener('scroll', updateScrollProgress);
         window.addEventListener('resize', updateScrollProgress);
         backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (window.__lenis) window.__lenis.scrollTo(0);
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
         });
         
         /* MOBILE MENU ARIA */
