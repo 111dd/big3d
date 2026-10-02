@@ -299,11 +299,11 @@ async function useHardcodedProjects() {
   };
   const fallbackTitles = {
     'egg': 'ביצה - כורסת ישיבה',
-    'Garbage shaft cleaning model': 'מודל ניקוי פיר אשפה',
-    'pizza car holder': 'מחזיק פיצה לרכב',
-    'trump': 'פרויקט טראמפ',
-    'World Cup Cup': 'גביע המונדיאל',
-    'shark': 'מודל כריש',
+    'Garbage shaft cleaning model': 'מודל של רובוט לניקוי פיר אשפה',
+    'pizza car holder': 'בוסטר לפיצה לרכב',
+    'trump': 'דונאלד טראמפ גודל אמיתי',
+    'World Cup Cup': 'גביע המונדיאל ענק 70 ס"מ',
+    'shark': 'הדפסת כריש 2.2 מטר',
     'laser': 'דוגמאות חריטה בלייזר'
   };
   window.projectImages = { ...(window.projectImages || {}), ...fallback };
