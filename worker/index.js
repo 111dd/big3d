@@ -39,6 +39,21 @@ function requireAdmin(request, env, cors) {
   return null;
 }
 
+/**
+ * Per-IP rate limit via a Workers Rate Limiting binding (see [[ratelimits]] in wrangler.toml).
+ * Returns a 429 Response when over the limit, null otherwise. No binding (e.g. local dev) = no limit.
+ */
+async function rateLimit(limiter, request, cors) {
+  if (!limiter) return null;
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const { success } = await limiter.limit({ key: ip });
+  if (success) return null;
+  return new Response(JSON.stringify({ error: 'Too many requests' }), {
+    status: 429,
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Retry-After': '60', ...cors },
+  });
+}
+
 function jsonResponse(data, status = 200, cors = {}) {
   return new Response(JSON.stringify(data), {
     status,
@@ -63,6 +78,15 @@ export default {
     const path = url.pathname.replace(/^\/api/, '') || '/';
 
     try {
+      const isPublic =
+        ((path === '/' || path === '/projects') && request.method === 'GET') ||
+        (path === '/site-logos' && request.method === 'GET') ||
+        (path.match(/^\/storage\//) && request.method === 'GET');
+
+      // Admin routes are limited before the key check, so this also caps key guessing.
+      const limited = await rateLimit(isPublic ? env.PUBLIC_RATE_LIMITER : env.ADMIN_RATE_LIMITER, request, cors);
+      if (limited) return limited;
+
       if (path === '/' || path === '/projects') {
         if (request.method === 'GET') return await getProjects(env, cors);
       }
@@ -73,11 +97,6 @@ export default {
       if (storageMatch && request.method === 'GET') {
         return await serveStorage(storageMatch[1], request, env, cors);
       }
-
-      const isPublic =
-        ((path === '/' || path === '/projects') && request.method === 'GET') ||
-        (path === '/site-logos' && request.method === 'GET') ||
-        (path.match(/^\/storage\//) && request.method === 'GET');
 
       const authError = requireAdmin(request, env, cors);
       if (authError) return authError;
