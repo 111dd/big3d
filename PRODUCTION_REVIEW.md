@@ -7,7 +7,7 @@
 | Item | Status | Details |
 |------|--------|---------|
 | No secrets in frontend | ✅ | ADMIN_API_KEY is only in Worker secrets (wrangler secret). Never in JS. |
-| admin.js | ✅ | No hardcoded keys. Key entered at login, stored in localStorage. |
+| admin.js | ✅ | No hardcoded keys. Key entered at login and exchanged for an HttpOnly session cookie; never stored in the browser. |
 | CORS | ✅ | Restricted via `ALLOWED_ORIGINS` in worker/wrangler.toml. Set to production domains. |
 | Rate limiting | ✅ | Per-IP Workers Rate Limiting bindings in worker/wrangler.toml (public GET 300/min, admin 60/min, 429 when exceeded). Optional extra WAF rule: see CLOUDFLARE_SETUP.md. |
 | File upload validation | ✅ | Worker validates: MIME type (image/*), max 10 MB. Frontend pre-validates size. |
@@ -51,7 +51,7 @@
 
 | Item | Status |
 |------|--------|
-| Direct access protection | ✅ Login required (key in localStorage). Worker enforces X-Admin-Key. |
+| Direct access protection | ✅ Login required (HttpOnly session cookie, 12h). Worker enforces the cookie or X-Admin-Key. |
 | Upload failure handling | ✅ User-friendly messages for size/type errors |
 | API error handling | ✅ cfApi handles non-JSON responses safely |
 
@@ -80,8 +80,9 @@
 3. **HTTPS only**  
    Cloudflare serves over HTTPS. No HTTP fallback.
 
-4. **API Key storage**  
-   Admin key in localStorage – consider sessionStorage or a more secure flow for high-sensitivity use.
+4. **API Key storage** ✅  
+   `POST /admin/login` exchanges the admin key for a signed HttpOnly cookie (`__Host-big3d_admin`, 12h, `SameSite=None; Partitioned`). Cookie-authenticated writes must come from an origin in `ALLOWED_ORIGINS`. Rotating `ADMIN_API_KEY` ends all sessions.  
+   Because the Worker runs on `*.workers.dev` (a different site from big3d.co.il), browsers that block third-party cookies (Safari) may refuse it. Serving the API from the same site (route `www.big3d.co.il/api/*` or custom domain `api.big3d.co.il`) fixes that.
 
 ---
 

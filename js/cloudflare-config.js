@@ -4,9 +4,9 @@
 
 window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d.111dordavid.workers.dev';
 
-// Admin API Key - set via wrangler secret put ADMIN_API_KEY
-// Stored in localStorage after login
-window.CLOUDFLARE_ADMIN_KEY = window.CLOUDFLARE_ADMIN_KEY || localStorage.getItem('cf_admin_key') || '';
+// Admin auth is an HttpOnly session cookie set by the Worker (POST /admin/login).
+// The admin password is never stored in the browser; drop any key saved by older versions.
+try { localStorage.removeItem('cf_admin_key'); } catch (_) {}
 
 /** API client helpers */
 window.cfApi = {
@@ -14,74 +14,50 @@ window.cfApi = {
     getBaseUrl() {
         return (window.CLOUDFLARE_API_URL || '').replace(/\/$/, '');
     },
-    getHeaders(includeAuth = false) {
-        const h = { 'Content-Type': 'application/json' };
-        if (includeAuth) {
-            const key = window.CLOUDFLARE_ADMIN_KEY || localStorage.getItem('cf_admin_key');
-            if (key) h['X-Admin-Key'] = key;
+    async request(path, opts = {}) {
+        const res = await fetch(this.getBaseUrl() + path, { credentials: 'include', ...opts });
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+            this.on401?.();
+            throw new Error(data.error || 'Unauthorized');
         }
-        return h;
+        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
+        return data;
     },
-    async verifyAuth(key) {
-        const res = await fetch(this.getBaseUrl() + '/admin/me', {
-            headers: { 'X-Admin-Key': key || '' }
+    /** Exchanges the admin password for a session cookie. Returns false on a wrong password. */
+    async login(key) {
+        const res = await fetch(this.getBaseUrl() + '/admin/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key })
         });
         if (res.status === 401) return false;
         if (!res.ok) throw new Error('Request failed');
         return true;
     },
-    async get(path, includeAuth = false) {
-        const opts = includeAuth ? { headers: this.getHeaders(true) } : {};
-        const res = await fetch(this.getBaseUrl() + path, opts);
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 401) {
-            this.on401?.();
-            throw new Error(data.error || 'Unauthorized');
-        }
-        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
-        return data;
+    async logout() {
+        await fetch(this.getBaseUrl() + '/admin/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
     },
-    async post(path, body, useFormData = false) {
-        const key = window.CLOUDFLARE_ADMIN_KEY || localStorage.getItem('cf_admin_key');
-        const opts = {
-            method: 'POST',
-            headers: useFormData ? { 'X-Admin-Key': key || '' } : this.getHeaders(true),
-            body: useFormData ? body : JSON.stringify(body)
-        };
-        const res = await fetch(this.getBaseUrl() + path, opts);
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 401) {
-            this.on401?.();
-            throw new Error(data.error || 'Unauthorized');
-        }
-        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
-        return data;
+    /** True if the browser currently holds a valid admin session cookie. */
+    async verifyAuth() {
+        const res = await fetch(this.getBaseUrl() + '/admin/me', { credentials: 'include' });
+        if (res.status === 401) return false;
+        if (!res.ok) throw new Error('Request failed');
+        return true;
     },
-    async put(path, body) {
-        const res = await fetch(this.getBaseUrl() + path, {
-            method: 'PUT',
-            headers: this.getHeaders(true),
-            body: JSON.stringify(body)
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 401) {
-            this.on401?.();
-            throw new Error(data.error || 'Unauthorized');
-        }
-        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
-        return data;
+    get(path) {
+        return this.request(path);
     },
-    async delete(path) {
-        const res = await fetch(this.getBaseUrl() + path, {
-            method: 'DELETE',
-            headers: this.getHeaders(true)
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.status === 401) {
-            this.on401?.();
-            throw new Error(data.error || 'Unauthorized');
-        }
-        if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
-        return data;
+    post(path, body, useFormData = false) {
+        return this.request(path, useFormData
+            ? { method: 'POST', body }
+            : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    },
+    put(path, body) {
+        return this.request(path, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    },
+    delete(path) {
+        return this.request(path, { method: 'DELETE' });
     }
 };

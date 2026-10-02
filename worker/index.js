@@ -6,37 +6,159 @@
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
-function getCorsHeaders(origin, env) {
+const SESSION_COOKIE = '__Host-big3d_admin';
+const SESSION_TTL_SECONDS = 12 * 60 * 60; // 12 hours
+
+function getAllowedOrigins(env) {
   const raw = (env.ALLOWED_ORIGINS || '').trim();
-  const allowed = raw ? raw.split(',').map(o => o.trim()).filter(Boolean) : [];
+  return raw ? raw.split(',').map(o => o.trim()).filter(Boolean) : [];
+}
+
+/** True only for origins listed explicitly (a '*' entry never counts for credentialed requests). */
+function isExplicitlyAllowedOrigin(origin, env) {
+  return !!origin && getAllowedOrigins(env).includes(origin);
+}
+
+function getCorsHeaders(origin, env) {
+  const allowed = getAllowedOrigins(env);
   const allowOrigin = origin && allowed.length && (allowed.includes('*') || allowed.includes(origin))
     ? origin
     : (allowed[0] || '*');
-  return {
+  const headers = {
     'Access-Control-Allow-Origin': allowOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Key',
     'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin',
   };
+  // The admin session cookie is only sent back to origins we list by name.
+  if (isExplicitlyAllowedOrigin(origin, env)) headers['Access-Control-Allow-Credentials'] = 'true';
+  return headers;
 }
 
-/** Check if request has valid admin key (X-Admin-Key matches env.ADMIN_API_KEY) */
-function isValidAdmin(request, env) {
-  const key = request.headers.get('X-Admin-Key');
-  const secret = env.ADMIN_API_KEY;
-  if (!key || !secret) return false;
-  if (key.length !== secret.length) return false;
+function timingSafeEqual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
   let diff = 0;
-  for (let i = 0; i < key.length; i++) diff |= key.charCodeAt(i) ^ secret.charCodeAt(i);
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
 }
 
+function base64url(bytes) {
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+/** HMAC key derived from ADMIN_API_KEY, so rotating the admin key also ends every session. */
+async function getSessionKey(env) {
+  return crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode('big3d-admin-session:' + env.ADMIN_API_KEY),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+}
+
+async function signSession(payload, env) {
+  const key = await getSessionKey(env);
+  const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  return base64url(new Uint8Array(sig));
+}
+
+/** Session token: "v1.<expires-epoch-seconds>.<random>.<hmac>" */
+async function createSessionToken(env) {
+  const exp = Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS;
+  const nonce = base64url(crypto.getRandomValues(new Uint8Array(16)));
+  const payload = `v1.${exp}.${nonce}`;
+  return `${payload}.${await signSession(payload, env)}`;
+}
+
+async function isValidSessionToken(token, env) {
+  const parts = (token || '').split('.');
+  if (parts.length !== 4 || parts[0] !== 'v1') return false;
+  const exp = parseInt(parts[1], 10);
+  if (!exp || exp < Math.floor(Date.now() / 1000)) return false;
+  const expected = await signSession(parts.slice(0, 3).join('.'), env);
+  return timingSafeEqual(parts[3], expected);
+}
+
+function getCookie(request, name) {
+  const header = request.headers.get('Cookie') || '';
+  for (const part of header.split(';')) {
+    const i = part.indexOf('=');
+    if (i > -1 && part.slice(0, i).trim() === name) return part.slice(i + 1).trim();
+  }
+  return null;
+}
+
+/**
+ * HttpOnly so page scripts never see it. SameSite=None + Partitioned because the admin page
+ * (big3d.co.il) and the Worker (*.workers.dev) are different sites; CSRF is handled by the
+ * Origin check in isValidAdmin.
+ */
+function sessionCookie(value, maxAge) {
+  return `${SESSION_COOKIE}=${value}; Max-Age=${maxAge}; Path=/; Secure; HttpOnly; SameSite=None; Partitioned`;
+}
+
+/**
+ * Admin auth: either the X-Admin-Key header (scripts / curl) or the HttpOnly session cookie
+ * issued by POST /admin/login. Cookie-authenticated writes must come from an allowed Origin.
+ */
+async function isValidAdmin(request, env) {
+  const secret = env.ADMIN_API_KEY;
+  if (!secret) return false;
+
+  const headerKey = request.headers.get('X-Admin-Key');
+  if (headerKey) return timingSafeEqual(headerKey, secret);
+
+  const token = getCookie(request, SESSION_COOKIE);
+  if (!token) return false;
+  if (!['GET', 'HEAD'].includes(request.method)) {
+    if (!isExplicitlyAllowedOrigin(request.headers.get('Origin'), env)) return false;
+  }
+  return isValidSessionToken(token, env);
+}
+
 /** Guard: returns 401 Response if invalid, null if allowed */
-function requireAdmin(request, env, cors) {
-  if (!isValidAdmin(request, env)) {
+async function requireAdmin(request, env, cors) {
+  if (!(await isValidAdmin(request, env))) {
     return errorResponse('Unauthorized', 401, cors);
   }
   return null;
+}
+
+async function login(request, env, cors) {
+  const origin = request.headers.get('Origin');
+  if (origin && !isExplicitlyAllowedOrigin(origin, env)) return errorResponse('Forbidden', 403, cors);
+
+  const body = await request.json().catch(() => ({}));
+  const secret = env.ADMIN_API_KEY;
+  if (!secret || !timingSafeEqual(typeof body.key === 'string' ? body.key : '', secret)) {
+    return errorResponse('Unauthorized', 401, cors);
+  }
+  const token = await createSessionToken(env);
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Set-Cookie': sessionCookie(token, SESSION_TTL_SECONDS),
+      ...cors,
+    },
+  });
+}
+
+function logout(cors) {
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Set-Cookie': sessionCookie('', 0),
+      ...cors,
+    },
+  });
 }
 
 /**
@@ -98,7 +220,14 @@ export default {
         return await serveStorage(storageMatch[1], request, env, cors);
       }
 
-      const authError = requireAdmin(request, env, cors);
+      if (path === '/admin/login' && request.method === 'POST') {
+        return await login(request, env, cors);
+      }
+      if (path === '/admin/logout' && request.method === 'POST') {
+        return logout(cors);
+      }
+
+      const authError = await requireAdmin(request, env, cors);
       if (authError) return authError;
 
       if (path === '/admin/me' && request.method === 'GET') {
