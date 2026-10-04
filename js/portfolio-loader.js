@@ -1,12 +1,10 @@
 // Portfolio Loader - Loads projects from Cloudflare API
 // Renders first 6 initially, "Load more" for the rest
 
-const INITIAL_COUNT = 6;
-const LOAD_MORE_COUNT = 6;
+const SKELETON_COUNT = 6;
 const PORTFOLIO_PLACEHOLDER_URL = '/portfolio-placeholder.svg';
 
 window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d.111dordavid.workers.dev';
-window.portfolioRemaining = [];
 let imageManifestPromise = null;
 
 // Projects whose photos live in the repo and are always shown first in the
@@ -195,13 +193,11 @@ function createProjectCard(project) {
   return card;
 }
 
-function renderPortfolioSkeletons(count = INITIAL_COUNT) {
+function renderPortfolioSkeletons(count = SKELETON_COUNT) {
   const grid = document.querySelector('#portfolio .grid');
-  const loadMoreContainer = document.getElementById('portfolio-load-more');
   if (!grid) return;
 
   grid.querySelectorAll('[data-portfolio-card], [data-portfolio-skeleton]').forEach(el => el.remove());
-  if (loadMoreContainer) loadMoreContainer.remove();
 
   for (let i = 0; i < count; i += 1) {
     const skeletonCard = document.createElement('div');
@@ -219,12 +215,10 @@ function renderPortfolioSkeletons(count = INITIAL_COUNT) {
 
 function renderProjectsToGrid(projects, append = false) {
   const grid = document.querySelector('#portfolio .grid');
-  const loadMoreContainer = document.getElementById('portfolio-load-more');
   if (!grid) return;
 
   if (!append) {
     grid.querySelectorAll('[data-portfolio-card], [data-portfolio-skeleton]').forEach(el => el.remove());
-    if (loadMoreContainer) loadMoreContainer.remove();
   }
 
   projects.forEach(project => {
@@ -236,44 +230,13 @@ function renderProjectsToGrid(projects, append = false) {
   });
 }
 
-function updateLoadMoreButton() {
-  const container = document.getElementById('portfolio-load-more');
-  if (!container) return;
-  if (window.portfolioRemaining.length === 0) {
-    container.remove();
-  } else {
-    container.classList.remove('hidden');
-  }
-}
-
-function loadMorePortfolio() {
-  const next = window.portfolioRemaining.splice(0, LOAD_MORE_COUNT);
-  if (next.length === 0) return;
-  renderProjectsToGrid(next, true);
-  updateLoadMoreButton();
-  safeCreateIcons?.();
-}
-
 function updatePortfolioGrid(projects) {
   const grid = document.querySelector('#portfolio .grid');
   if (!grid) return;
 
+  // All projects are shown at once (no "load more" button).
   const valid = projects.filter(p => p.images && p.images.length > 0);
-  const initial = valid.slice(0, INITIAL_COUNT);
-  window.portfolioRemaining = valid.slice(INITIAL_COUNT);
-
-  renderProjectsToGrid(initial, false);
-
-  if (window.portfolioRemaining.length > 0) {
-    const container = document.createElement('div');
-    container.id = 'portfolio-load-more';
-    container.className = 'col-span-full flex justify-center mt-8';
-    container.innerHTML = `
-      <button onclick="loadMorePortfolio()" class="bg-brand-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-brand-500 transition">
-        טען עוד פרויקטים
-      </button>`;
-    grid.parentElement.appendChild(container);
-  }
+  renderProjectsToGrid(valid, false);
 }
 
 async function loadProjectsFromCloudflare() {
