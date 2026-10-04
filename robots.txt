@@ -1,9 +1,22 @@
+# Search engines and AI assistants are welcome to read the whole public site.
 User-agent: *
 Allow: /
-
-# Disallow admin from indexing (security)
 Disallow: /admin.html
 
-# Sitemap
-Sitemap: https://www.big3d.co.il/sitemap.xml
+# AI search and answer engines (ChatGPT, Claude, Perplexity, Gemini, Apple, Bing Copilot).
+# Listed explicitly so the intent is clear even if a default bot rule changes.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+Allow: /
+Disallow: /admin.html
 
+Sitemap: https://www.big3d.co.il/sitemap.xml

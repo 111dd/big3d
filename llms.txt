@@ -1,0 +1,36 @@
+# BIG 3D
+
+> BIG 3D (big3d.co.il) is an Israeli manufacturing service: metal 3D printing (Laser Powder Bed Fusion, LPBF), engineering design and product development, CNC machining, large-format plastic 3D printing, prototyping, and CO₂ laser cutting and engraving. Customers are industry, startups, product developers and private clients across Israel. The site is in Hebrew.
+>
+> BIG 3D היא חברת ייצור ישראלית: הדפסת מתכות בתלת־ממד (LPBF), תכנון הנדסי ופיתוח מוצר, עיבוד שבבי CNC, הדפסות תלת־ממד גדולות בפלסטיק, אב־טיפוס, וחיתוך וחריטה בלייזר CO₂. מלווים פרויקט מרעיון וסקיצה, דרך מודל CAD, ועד חלק מוכן.
+
+Key facts:
+- Metal alloys (LPBF): aluminium (AlSi10Mg, AlSi12), titanium (Ti6Al4V), stainless steel (316L, 17-4PH), cobalt chrome, copper.
+- Plastic materials: PLA, ABS, PETG, TPU, nylon, polycarbonate (PC), carbon fiber filled.
+- Laser (CO₂): cuts and engraves wood, acrylic, leather, cardboard, fabric, bamboo, rubber; engraves glass, stone and anodized aluminium.
+- Accepted files: STL, STEP, OBJ and most CAD formats; DXF, SVG, AI, PDF for laser.
+- Delivery anywhere in Israel. Small jobs take a few days, large jobs up to about two weeks.
+- Contact: phone / WhatsApp +972-54-398-4210, email d.big3d@gmail.com, quotes through the contact form at https://www.big3d.co.il/#contact
+
+## Services (שירותים)
+
+- [הדפסת מתכות בתלת־ממד (LPBF)](https://www.big3d.co.il/3d-printing-industrial): industrial metal 3D printing for complex, lightweight and functional parts, internal channels and part consolidation.
+- [תכנון הנדסי ופיתוח מוצר](https://www.big3d.co.il/engineering-design): from idea or sketch to a production-ready CAD model, matched to the right process and material.
+- [עיבוד שבבי CNC](https://www.big3d.co.il/cnc-machining): CNC milling and turning in steel, aluminium, copper, wood, carbon fiber and plastics; single parts and small batches, plus finishing of printed parts.
+- [הדפסות תלת־ממד גדולות](https://www.big3d.co.il/3d-printing-large): large plastic prints in one piece, or split and assembled for even bigger parts (for example a 2.2 m shark model).
+- [הדפסת פלסטיק בתלת־ממד לפי הזמנה](https://www.big3d.co.il/3d-printing-plastic): custom plastic parts, functional parts and models.
+- [הדפסת אב־טיפוס](https://www.big3d.co.il/prototype-printing): fast prototypes in plastic and metal with engineering support.
+- [חיתוך לייזר בהתאמה אישית](https://www.big3d.co.il/laser-cutting): custom CO₂ laser cutting and engraving.
+
+## Guides (מדריכים)
+
+- [הדפסת מתכות בתלת־ממד: איך עובדת LPBF](https://www.big3d.co.il/blog/metal-3d-printing-lpbf-guide): how LPBF works and when it beats CNC.
+- [חומרים להדפסת מתכות](https://www.big3d.co.il/blog/metal-3d-printing-materials): choosing an alloy for metal 3D printing.
+- [תכנון לייצור אדיטיבי (DfAM)](https://www.big3d.co.il/blog/design-for-metal-3d-printing): designing parts for metal printing.
+- [מדריך חומרים להדפסת פלסטיק](https://www.big3d.co.il/blog/plastic-3d-printing-materials): PLA vs ABS vs PETG vs TPU and more.
+- [איך לבחור שירות הדפסה בתלת־ממד](https://www.big3d.co.il/blog/how-to-choose-3d-printing-service): what to check when choosing a 3D printing provider.
+
+## Optional
+
+- [בלוג](https://www.big3d.co.il/blog/)
+- [Sitemap](https://www.big3d.co.il/sitemap.xml)
