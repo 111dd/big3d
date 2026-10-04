@@ -9,6 +9,27 @@ window.CLOUDFLARE_API_URL = window.CLOUDFLARE_API_URL || 'https://big3d.111dorda
 window.portfolioRemaining = [];
 let imageManifestPromise = null;
 
+// Projects whose photos live in the repo and are always shown first in the
+// portfolio, whatever the API returns. A D1 project with the same key wins.
+const LOCAL_PROJECTS = {
+  'metal-printing': {
+    title: 'הדפסות מתכת LPBF',
+    images: ['metal-printing/metal-dragon-big3d.jpg', 'metal-printing/metal-build-plate.jpg', 'metal-printing/metal-octopus-polished.jpg', 'metal-printing/metal-octopus-matte.jpg', 'metal-printing/metal-lattice-sphere.jpg', 'metal-printing/metal-lion-head.jpg']
+  }
+};
+
+function withLocalProjects(projects) {
+  const taken = new Set(projects.map(p => p.key));
+  const local = Object.entries(LOCAL_PROJECTS)
+    .filter(([key]) => !taken.has(key))
+    .map(([key, p]) => {
+      window.projectImages = { ...(window.projectImages || {}), [key]: p.images };
+      window.projectTitles = { ...(window.projectTitles || {}), [key]: p.title };
+      return buildProject(key, p.images, p.title);
+    });
+  return [...local, ...projects];
+}
+
 function escapeAttribute(value) {
   return String(value || '')
     .replace(/&/g, '&amp;')
@@ -112,7 +133,7 @@ function loadImageManifestIfNeeded() {
 
   imageManifestPromise = new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = '/js/image-manifest.js?v=2';
+    script.src = '/js/image-manifest.js?v=3';
     script.onload = resolve;
     script.onerror = reject;
     document.head.appendChild(script);
@@ -279,7 +300,8 @@ async function loadProjectsFromCloudflare() {
 
     window.projectImages = { ...(window.projectImages || {}), ...projectImages };
     window.projectTitles = { ...(window.projectTitles || {}), ...projectTitles };
-    updatePortfolioGrid(projects);
+    await loadImageManifestIfNeeded();
+    updatePortfolioGrid(withLocalProjects(projects));
   } catch {
     await useHardcodedProjects();
   }
@@ -312,7 +334,7 @@ async function useHardcodedProjects() {
   const projects = Object.keys(fallback).map(key =>
     buildProject(key, fallback[key], fallbackTitles[key] || key)
   );
-  updatePortfolioGrid(projects);
+  updatePortfolioGrid(withLocalProjects(projects));
 }
 
 // Initialize

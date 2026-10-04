@@ -65,6 +65,12 @@
     ],
     "prototype-printing.html": [
       {
+        "key": "metal-printing",
+        "title": "הדפסות מתכת LPBF",
+        "image": "metal-printing/metal-octopus-polished.jpg",
+        "alt": "תמנון מתכת מפרקי מלוטש שהודפס בטכנולוגיית LPBF, מתיק העבודות של BIG 3D"
+      },
+      {
         "key": "egg",
         "title": "ביצה - כורסת ישיבה סנסורית לילדים",
         "image": "egg/firtst_egg.jpeg",
@@ -81,12 +87,6 @@
         "title": "מודל של רובוט לניקוי פיר אשפה",
         "image": "Garbage shaft cleaning model/garbage-model-1.jpg",
         "alt": "מודל מודפס של רובוט ניקוי פיר אשפה - מתיק העבודות של BIG 3D"
-      },
-      {
-        "key": "world-cup-cup",
-        "title": "גביע המונדיאל ענק 70 ס\"מ",
-        "image": "World Cup Cup/world-cup-cup-1.jpg",
-        "alt": "גביע המונדיאל בזמן ההדפסה - פרויקט הדפסת תלת־ממד מתיק העבודות של BIG 3D"
       }
     ]
   }
