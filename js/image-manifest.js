@@ -2126,6 +2126,328 @@ window.OPTIMIZED_IMAGES = {
       "fallback": "/optimized/laser/laser-engraving-4-thumb-800.webp"
     }
   },
+  "metal-printing/metal-build-plate.jpg": {
+    "width": 590,
+    "height": 583,
+    "original": "/metal-printing/metal-build-plate.jpg",
+    "fallback": "/optimized/metal-printing/metal-build-plate-590.webp",
+    "avif": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-build-plate-400.avif",
+        "bytes": 26890
+      },
+      {
+        "width": 590,
+        "url": "/optimized/metal-printing/metal-build-plate-590.avif",
+        "bytes": 47743
+      }
+    ],
+    "webp": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-build-plate-400.webp",
+        "bytes": 32006
+      },
+      {
+        "width": 590,
+        "url": "/optimized/metal-printing/metal-build-plate-590.webp",
+        "bytes": 59714
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-build-plate-thumb-400.avif",
+          "bytes": 21831
+        },
+        {
+          "width": 590,
+          "url": "/optimized/metal-printing/metal-build-plate-thumb-800.avif",
+          "bytes": 37842
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-build-plate-thumb-400.webp",
+          "bytes": 25180
+        },
+        {
+          "width": 590,
+          "url": "/optimized/metal-printing/metal-build-plate-thumb-800.webp",
+          "bytes": 46484
+        }
+      ],
+      "fallback": "/optimized/metal-printing/metal-build-plate-thumb-800.webp"
+    }
+  },
+  "metal-printing/metal-dragon-big3d.jpg": {
+    "width": 735,
+    "height": 479,
+    "original": "/metal-printing/metal-dragon-big3d.jpg",
+    "fallback": "/optimized/metal-printing/metal-dragon-big3d-735.webp",
+    "avif": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-dragon-big3d-400.avif",
+        "bytes": 18591
+      },
+      {
+        "width": 735,
+        "url": "/optimized/metal-printing/metal-dragon-big3d-735.avif",
+        "bytes": 42793
+      }
+    ],
+    "webp": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-dragon-big3d-400.webp",
+        "bytes": 21760
+      },
+      {
+        "width": 735,
+        "url": "/optimized/metal-printing/metal-dragon-big3d-735.webp",
+        "bytes": 54100
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-dragon-big3d-thumb-400.avif",
+          "bytes": 21682
+        },
+        {
+          "width": 735,
+          "url": "/optimized/metal-printing/metal-dragon-big3d-thumb-800.avif",
+          "bytes": 42077
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-dragon-big3d-thumb-400.webp",
+          "bytes": 25540
+        },
+        {
+          "width": 735,
+          "url": "/optimized/metal-printing/metal-dragon-big3d-thumb-800.webp",
+          "bytes": 56568
+        }
+      ],
+      "fallback": "/optimized/metal-printing/metal-dragon-big3d-thumb-800.webp"
+    }
+  },
+  "metal-printing/metal-lattice-sphere.jpg": {
+    "width": 429,
+    "height": 427,
+    "original": "/metal-printing/metal-lattice-sphere.jpg",
+    "fallback": "/optimized/metal-printing/metal-lattice-sphere-429.webp",
+    "avif": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-lattice-sphere-400.avif",
+        "bytes": 25162
+      },
+      {
+        "width": 429,
+        "url": "/optimized/metal-printing/metal-lattice-sphere-429.avif",
+        "bytes": 27840
+      }
+    ],
+    "webp": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-lattice-sphere-400.webp",
+        "bytes": 30264
+      },
+      {
+        "width": 429,
+        "url": "/optimized/metal-printing/metal-lattice-sphere-429.webp",
+        "bytes": 33672
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-lattice-sphere-thumb-400.avif",
+          "bytes": 21436
+        },
+        {
+          "width": 429,
+          "url": "/optimized/metal-printing/metal-lattice-sphere-thumb-800.avif",
+          "bytes": 23575
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-lattice-sphere-thumb-400.webp",
+          "bytes": 25684
+        },
+        {
+          "width": 429,
+          "url": "/optimized/metal-printing/metal-lattice-sphere-thumb-800.webp",
+          "bytes": 29070
+        }
+      ],
+      "fallback": "/optimized/metal-printing/metal-lattice-sphere-thumb-800.webp"
+    }
+  },
+  "metal-printing/metal-lion-head.jpg": {
+    "width": 368,
+    "height": 459,
+    "original": "/metal-printing/metal-lion-head.jpg",
+    "fallback": "/optimized/metal-printing/metal-lion-head-368.webp",
+    "avif": [
+      {
+        "width": 368,
+        "url": "/optimized/metal-printing/metal-lion-head-368.avif",
+        "bytes": 30885
+      }
+    ],
+    "webp": [
+      {
+        "width": 368,
+        "url": "/optimized/metal-printing/metal-lion-head-368.webp",
+        "bytes": 36332
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 368,
+          "url": "/optimized/metal-printing/metal-lion-head-thumb-400.avif",
+          "bytes": 22705
+        }
+      ],
+      "webp": [
+        {
+          "width": 368,
+          "url": "/optimized/metal-printing/metal-lion-head-thumb-400.webp",
+          "bytes": 26254
+        }
+      ],
+      "fallback": "/optimized/metal-printing/metal-lion-head-thumb-400.webp"
+    }
+  },
+  "metal-printing/metal-octopus-matte.jpg": {
+    "width": 480,
+    "height": 467,
+    "original": "/metal-printing/metal-octopus-matte.jpg",
+    "fallback": "/optimized/metal-printing/metal-octopus-matte-480.webp",
+    "avif": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-octopus-matte-400.avif",
+        "bytes": 22550
+      },
+      {
+        "width": 480,
+        "url": "/optimized/metal-printing/metal-octopus-matte-480.avif",
+        "bytes": 29121
+      }
+    ],
+    "webp": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-octopus-matte-400.webp",
+        "bytes": 25164
+      },
+      {
+        "width": 480,
+        "url": "/optimized/metal-printing/metal-octopus-matte-480.webp",
+        "bytes": 34390
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-octopus-matte-thumb-400.avif",
+          "bytes": 21127
+        },
+        {
+          "width": 480,
+          "url": "/optimized/metal-printing/metal-octopus-matte-thumb-800.avif",
+          "bytes": 27888
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-octopus-matte-thumb-400.webp",
+          "bytes": 23604
+        },
+        {
+          "width": 480,
+          "url": "/optimized/metal-printing/metal-octopus-matte-thumb-800.webp",
+          "bytes": 31922
+        }
+      ],
+      "fallback": "/optimized/metal-printing/metal-octopus-matte-thumb-800.webp"
+    }
+  },
+  "metal-printing/metal-octopus-polished.jpg": {
+    "width": 496,
+    "height": 463,
+    "original": "/metal-printing/metal-octopus-polished.jpg",
+    "fallback": "/optimized/metal-printing/metal-octopus-polished-496.webp",
+    "avif": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-octopus-polished-400.avif",
+        "bytes": 19628
+      },
+      {
+        "width": 496,
+        "url": "/optimized/metal-printing/metal-octopus-polished-496.avif",
+        "bytes": 25457
+      }
+    ],
+    "webp": [
+      {
+        "width": 400,
+        "url": "/optimized/metal-printing/metal-octopus-polished-400.webp",
+        "bytes": 23974
+      },
+      {
+        "width": 496,
+        "url": "/optimized/metal-printing/metal-octopus-polished-496.webp",
+        "bytes": 31602
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-octopus-polished-thumb-400.avif",
+          "bytes": 19543
+        },
+        {
+          "width": 496,
+          "url": "/optimized/metal-printing/metal-octopus-polished-thumb-800.avif",
+          "bytes": 25715
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/metal-printing/metal-octopus-polished-thumb-400.webp",
+          "bytes": 23376
+        },
+        {
+          "width": 496,
+          "url": "/optimized/metal-printing/metal-octopus-polished-thumb-800.webp",
+          "bytes": 31656
+        }
+      ],
+      "fallback": "/optimized/metal-printing/metal-octopus-polished-thumb-800.webp"
+    }
+  },
   "pizza car holder/pizza-holder-1.jpg": {
     "width": 738,
     "height": 554,
