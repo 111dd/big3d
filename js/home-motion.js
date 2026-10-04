@@ -155,14 +155,34 @@
     }
 
     // Plays on its own as soon as the page is ready; scrolling never holds it back.
-    // If the visitor arrives below the hero (e.g. a #contact link), show the finished logo.
-    if (hero.getBoundingClientRect().bottom <= 0) {
+    // The print repeats roughly every 10 s (about 5 s of print, then the finished
+    // logo holds for 5 s) and pauses while the hero is off screen.
+    const REPEAT_HOLD = 5;
+    const tl = gsap.timeline({ delay: 0.3, repeat: -1, repeatDelay: REPEAT_HOLD, onUpdate: render })
+      .to(state, { p: PRINT_END, duration: 3.2, ease: 'power1.inOut' })
+      .to(state, { p: FINISH_START, duration: 0.5, ease: 'none' })
+      .to(state, { p: 1, duration: 1.4, ease: 'power2.inOut' });
+
+    // If the visitor arrives below the hero (e.g. a #contact link), show the finished
+    // logo and start the loop with a hold when the hero first comes into view.
+    let waitingForHero = hero.getBoundingClientRect().bottom <= 0;
+    if (waitingForHero) {
+      tl.pause();
       state.p = 1;
-    } else {
-      gsap.timeline({ delay: 0.3, onUpdate: render })
-        .to(state, { p: PRINT_END, duration: 3.2, ease: 'power1.inOut' })
-        .to(state, { p: FINISH_START, duration: 0.5, ease: 'none' })
-        .to(state, { p: 1, duration: 1.4, ease: 'power2.inOut' });
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        const onScreen = entries[entries.length - 1].isIntersecting;
+        if (!onScreen) {
+          tl.pause();
+        } else if (waitingForHero) {
+          waitingForHero = false;
+          gsap.delayedCall(REPEAT_HOLD, () => tl.restart());
+        } else {
+          tl.resume();
+        }
+      }).observe(hero);
     }
 
     window.addEventListener('resize', render, { passive: true });
