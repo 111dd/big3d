@@ -2448,6 +2448,73 @@ window.OPTIMIZED_IMAGES = {
       "fallback": "/optimized/metal-printing/metal-octopus-polished-thumb-800.webp"
     }
   },
+  "og-image.jpg": {
+    "width": 1200,
+    "height": 630,
+    "original": "/og-image.jpg",
+    "fallback": "/optimized/og-image-800.webp",
+    "avif": [
+      {
+        "width": 400,
+        "url": "/optimized/og-image-400.avif",
+        "bytes": 9464
+      },
+      {
+        "width": 800,
+        "url": "/optimized/og-image-800.avif",
+        "bytes": 24057
+      },
+      {
+        "width": 1200,
+        "url": "/optimized/og-image-1200.avif",
+        "bytes": 38043
+      }
+    ],
+    "webp": [
+      {
+        "width": 400,
+        "url": "/optimized/og-image-400.webp",
+        "bytes": 12334
+      },
+      {
+        "width": 800,
+        "url": "/optimized/og-image-800.webp",
+        "bytes": 32912
+      },
+      {
+        "width": 1200,
+        "url": "/optimized/og-image-1200.webp",
+        "bytes": 51474
+      }
+    ],
+    "thumb": {
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/og-image-thumb-400.avif",
+          "bytes": 15763
+        },
+        {
+          "width": 800,
+          "url": "/optimized/og-image-thumb-800.avif",
+          "bytes": 33499
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/og-image-thumb-400.webp",
+          "bytes": 19672
+        },
+        {
+          "width": 800,
+          "url": "/optimized/og-image-thumb-800.webp",
+          "bytes": 46880
+        }
+      ],
+      "fallback": "/optimized/og-image-thumb-800.webp"
+    }
+  },
   "pizza car holder/pizza-holder-1.jpg": {
     "width": 738,
     "height": 554,

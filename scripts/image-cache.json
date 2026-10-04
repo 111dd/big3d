@@ -2647,6 +2647,78 @@
     "optimizedBytes": 200951,
     "variants": 8
   },
+  "og-image.jpg": {
+    "key": "1ca8695989f49345e556d7a811300b7d4d493c04",
+    "entry": {
+      "width": 1200,
+      "height": 630,
+      "original": "/og-image.jpg",
+      "fallback": "/optimized/og-image-800.webp",
+      "avif": [
+        {
+          "width": 400,
+          "url": "/optimized/og-image-400.avif",
+          "bytes": 9464
+        },
+        {
+          "width": 800,
+          "url": "/optimized/og-image-800.avif",
+          "bytes": 24057
+        },
+        {
+          "width": 1200,
+          "url": "/optimized/og-image-1200.avif",
+          "bytes": 38043
+        }
+      ],
+      "webp": [
+        {
+          "width": 400,
+          "url": "/optimized/og-image-400.webp",
+          "bytes": 12334
+        },
+        {
+          "width": 800,
+          "url": "/optimized/og-image-800.webp",
+          "bytes": 32912
+        },
+        {
+          "width": 1200,
+          "url": "/optimized/og-image-1200.webp",
+          "bytes": 51474
+        }
+      ],
+      "thumb": {
+        "avif": [
+          {
+            "width": 400,
+            "url": "/optimized/og-image-thumb-400.avif",
+            "bytes": 15763
+          },
+          {
+            "width": 800,
+            "url": "/optimized/og-image-thumb-800.avif",
+            "bytes": 33499
+          }
+        ],
+        "webp": [
+          {
+            "width": 400,
+            "url": "/optimized/og-image-thumb-400.webp",
+            "bytes": 19672
+          },
+          {
+            "width": 800,
+            "url": "/optimized/og-image-thumb-800.webp",
+            "bytes": 46880
+          }
+        ],
+        "fallback": "/optimized/og-image-thumb-800.webp"
+      }
+    },
+    "optimizedBytes": 284098,
+    "variants": 10
+  },
   "pizza car holder/pizza-holder-1.jpg": {
     "key": "7c9056666f401e3151bea082d8ed60c24c9f2187",
     "entry": {
